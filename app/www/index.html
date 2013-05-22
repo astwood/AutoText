@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" /> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" type="text/css" href="css/jquery/jquery.mobile-1.2.0.min.css" />
+        <link rel="stylesheet" type="text/css" href="js/jquery/themes/ios/styles.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery/jquery.swipeButton.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery/jquery.progressbar.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/mobiscroll/mobiscroll.custom-2.4.4.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>AutoText</title>
+    </head>
+    <body style="display: none;">
+        <div data-role="page" id="splash">
+
+        </div>
+
+        <div data-role="page" id="login" class="form-pg">
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+            <div data-role="content" class="vHidden"> 
+                <form method="post" action="#" data-ajax="false">
+                    <label for="login-country" class="ui-hidden-accessible">Country</label>
+                    <select name="login-country" id="login-country">
+                        <option value="">Loading...</option>
+                    </select>
+
+                    <label for="login-phone_number" class="ui-hidden-accessible">Phone Number</label>
+                    <input type="tel" name="login-phone_number" id="login-phone_number" placeholder="Phone Number" />
+
+                    <label for="login-password" class="ui-hidden-accessible">Password</label>
+                    <input type="password" name="login-password" id="login-password" placeholder="Password" />
+
+                    <a href="#" id="login-submit-button" data-role="button">Log in</a>
+                    <a href="#register" id="register-button" data-role="button">New? Register Here</a>
+                    <a href="#forgotten" id="forgotten-button" data-role="button" class="no-margin-bottom">Forgotten your password?</a>
+                </form>
+            </div>
+        </div> <!-- login -->
+
+        <div data-role="page" id="register" class="form-pg">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Register</h1>
+                <a href="#" class="back">Login</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <p>Welcome to AutoText. In order to setup your account we'll need to send a verification code to your mobile phone.</p>
+                <p>Please enter your mobile phone number below and then hit Send.</p>
+                <form method="post" action="#" data-ajax="false">
+                    <label for="register-country" class="ui-hidden-accessible">Country</label>
+                    <select name="register-country" id="register-country">
+                        <option value="">Loading...</option>
+                    </select>
+
+                    <label for="register-phone_number" class="ui-hidden-accessible">Phone Number</label>
+                    <input type="tel" name="register-phone_number" id="register-phone_number" placeholder="Phone Number" />
+
+                    <label for="register-password" class="ui-hidden-accessible">Password</label>
+                    <input type="password" name="register-password" id="register-password" placeholder="Password" />
+
+                    <a href="#" id="register-submit-button" data-role="button" class="no-margin-bottom">Send</a>
+                </form>
+            </div>
+        </div> <!-- register -->
+
+        <div data-role="page" id="forgotten" class="form-pg">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Reset Password</h1>
+                <a href="#" class="back">Login</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <p>Forgotten your password?</p>
+                <p>Simply enter the phone number that your account is registered to and we'll send you a verification code to reset your password.</p>
+                <form method="post" action="#" data-ajax="false">
+                    <label for="forgotten-country" class="ui-hidden-accessible">Country</label>
+                    <select name="forgotten-country" id="forgotten-country">
+                        <option value="">Loading...</option>
+                    </select>
+
+                    <label for="forgotten-phone_number" class="ui-hidden-accessible">Phone Number</label>
+                    <input type="tel" name="forgotten-phone_number" id="forgotten-phone_number" placeholder="Phone Number" />
+
+                    <a href="#" id="forgotten-submit-button" data-role="button" class="no-margin-bottom">Send</a>
+                </form>
+            </div>
+        </div> <!-- forgotten -->
+
+        <div data-role="page" id="verification" class="form-pg">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Verification</h1>
+                <a href="#" class="back">Back</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <p id="verification-firstline">You will shortly receive your verification code via text message. Simply enter the code in the box below and hit Verify.</p>
+                <form method="post" action="#" data-ajax="false">
+                    <label for="verification-pin" class="ui-hidden-accessible">Phone Number</label>
+                    <input type="text" pattern="[0-9]*" name="verification-pin" id="verification-pin" placeholder="Verification Code" />
+
+                    <label for="verification-password" class="ui-hidden-accessible" style="display: none;">New Password</label>
+                    <input type="password" name="verification-password" id="verification-password" placeholder="New Password" style="display: none;" />
+
+                    <a href="#" id="verification-submit-button" data-role="button">Verify</a>
+
+                    <div id="verification-password_text" style="display: none;">
+                        Please be aware that by completing your registration you are agreeing to our terms of use. Please review these now to make sure that you are happy with them (<a href="#" class="terms">Review Terms of Use</a>).
+                    </div>
+
+                    <div id="verification-nocode-text" style="display: none;">
+                        <p>Code Sent to: <span id="verification-sent-number"></span></p>
+                        <p>Does this number appear in the wrong format for your country? Notify our support team now and we will investigate for you. <a href="#" id="verification-invalid-format">Notify AutoText</a>.</p>
+                    </div>
+                </form>
+            </div>
+        </div> <!-- verification -->
+
+        <div data-role="page" id="terms">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Terms of Use</h1>
+                <a href="#" class="back">Back</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <p id="terms-content"></p>
+            </div>
+        </div> <!-- terms -->
+
+        <div data-role="page" id="scheduled">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Scheduled</h1>
+                <a href="#" class="settings"></a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <ul data-filter="true" data-filter-placeholder="Search" data-role="listview" id="scheduled-message-list">
+                    <li id="scheduled-message-template" style="display: none;" data-id=""><a href="#" class="edit-message">
+                        <h3><b class="message-recipients"></b></h3>
+                        <p class="message-content"></p>
+                        <p class="ui-li-aside">
+                            <span class="message-status-container"><span class="message-status"></span> <img src="img/icon_black.png" class="status-icon" /></span><br />
+                            <span class="message-date"></span><br />
+                            <span class="message-time"></span>
+                        </p>
+                    </a></li>
+                </ul>
+            </div>
+
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-id="footer-nav">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#" data-icon="custom" class="new-link">New</a></li>
+                        <li><a href="#" data-icon="custom" class="ui-btn-active ui-state-persist schedule-link">Scheduled</a></li>
+                        <li><a href="#" data-icon="custom" class="history-link">History</a></li>
+                        <li><a href="#" class="groups-link" data-icon="custom">Groups</a></li>
+                        <li><a href="#" data-icon="custom" class="reminder-link">RemindMe</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="ui-dialog" id="delete-repeats-confirm">
+                <div data-role="content">
+                    <a href="#" data-role="button" data-theme="e" class="single">Delete just this message</a>
+                    <a href="#" data-role="button" data-theme="e" class="all">Delete this and unsent repeat messages</a>      
+                    <a href="#" data-role="button" data-theme="a" class="cancel">Cancel</a>    
+                </div>
+            </div>
+            <div class="dialog-overlay"></div>
+        </div> <!-- scheduled -->
+
+        <div data-role="page" id="history">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>History</h1>
+                <a href="#" class="settings"></a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <ul data-filter="true" data-filter-placeholder="Search" data-role="listview" id="history-message-list">
+                    <li id="history-message-template" style="display: none;" data-id="" data-schedule-id=""><a href="#" class="view-message">
+                        <h3><b class="message-recipients"></b></h3>
+                        <p class="message-content"></p>
+                        <p class="ui-li-aside">
+                            <span class="message-status-container"><span class="message-status"></span> <img src="img/icon_tick.png" class="status-icon" /></span><br />
+                            <span class="message-date"></span><br />
+                            <span class="message-time"></span>
+                        </p>
+                    </a></li>
+                </ul>
+            </div>
+
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-id="footer-nav">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#" data-icon="custom" class="new-link">New</a></li>
+                        <li><a href="#" data-icon="custom" class="schedule-link">Scheduled</a></li>
+                        <li><a href="#" data-icon="custom" class="ui-btn-active ui-state-persist history-link">History</a></li>
+                        <li><a href="#" class="groups-link" data-icon="custom">Groups</a></li>
+                        <li><a href="#" data-icon="custom" class="reminder-link">RemindMe</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div> <!-- history -->
+
+        <div data-role="page" id="new">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav" class="page-header">
+                <h1>
+                    <span class="page-title">New Message</span>
+                    <span class="progressbar-status">Scheduling...</span>
+                    <span class="progressbar"></span>
+                </h1>
+                <a href="#" class="back">Back</a>
+                <a href="#" class="save">Cancel</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="main-content vHidden">                
+                <input type="hidden" name="id" value="" class="edit-id" />
+
+                <div data-role="fieldcontain" class="fieldcontain" id="new-to-field">
+                    <label for="new-recipient">To:</label>
+                    <input type="tel" name="new-recipient" id="new-recipient" />
+                </div>
+
+                <div class="bar-link" id="new-status">
+                    <a href="#status-dialog" data-transition="slideup">
+                        <span class="floatL">Status:</span><span class="floatR" id="new-status-text"></span>
+                        <span class="clear"></span>
+                        <div class="arrow"></div>
+                    </a>
+                </div>
+                <div class="bar-link" id="new-schedule">
+                    <a href="#" id="edit-schedule-options-link">
+                        <span class="floatL">Date:</span><span class="floatR" id="new-scheduled"></span>
+                        <span class="clear"></span>
+                        <div class="arrow"></div>
+                    </a>
+                </div>
+
+                <div class="bubble" id="new-content-bubble"></div>
+
+                <div id="new-to-bottom">
+                    <label for="new-content" class="ui-hidden-accessible">Message</label>
+                    <textarea name="new-content" id="new-content"></textarea>
+
+                    <a href="#" id="new-submit-button" data-role="button" class="ui-disabled">Schedule</a>
+                </div>
+
+                <div class="ui-dialog edit-repeats">
+                    <div data-role="content">
+                        <a href="#" data-role="button" data-theme="e" class="single">Save just this message</a>
+                        <a href="#" data-role="button" data-theme="e" class="all">Save this and unsent repeat messages</a>
+                        <a href="#" data-role="button" data-theme="a" class="cancel">Cancel</a>    
+                    </div>
+                </div>
+                <div class="dialog-overlay"></div>
+            </div>
+        </div> <!-- new -->
+
+        <div data-role="page" id="status-dialog">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Message Status</h1>
+                <a href="#" class="back">Back</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <p id="status-dialog-content"></p>
+                <p id="status-dialog-cost-p">This message costs a total of <span id="status-dialog-cost"></span> credits. Remember longer messages and messages to international numbers will cost more, <a href="#" class="messagecredits-button">click here</a> for more info.</p>
+                <p id="status-dialog-repeats-start">This text is a repeating message (<span id="status-dialog-repeats-text"></span>) started on the <span id="status-dialog-repeats-startdate"></span><span id="status-dialog-repeats-end">, ending on <span id="status-dialog-repeats-enddate"></span></span>.</p>
+            </div>
+        </div> <!-- new-status -->
+
+        <div data-role="page" id="schedule-options">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav" class="page-header">
+                <h1>
+                    <span class="page-title">Schedule SMS</span>
+                    <span class="progressbar-status">Scheduling...</span>
+                    <span class="progressbar"></span>
+                </h1>
+                <a href="#" class="back">Back</a>
+                <a href="#" class="save">Save</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="main-content vHidden">
+                <div class="bar-link grey-bottom" id="new-name-link">
+                    <span class="floatL">Name</span><span class="floatR" id="new-name-text"></span>
+                    <span class="clear"></span>
+                    <div class="arrow"></div>
+                </div>
+
+                <div class="bar-link link-disabled grey-bottom" id="new-date-link">
+                    <span class="floatL">Date</span><span class="floatR" id="new-date-text"></span>
+                    <span class="clear"></span>
+                    <div class="arrow"></div>
+                </div>
+
+                <div class="bar-link" id="new-repeats-link">
+                    <span class="floatL">Repeats</span><span class="floatR" id="new-repeats-text"></span>
+                    <span class="clear"></span>
+                    <div class="arrow"></div>
+                </div>
+
+                <label for="new-date" class="ui-hidden-accessible">Date/time</label>
+                <input type="text" name="new-date" id="new-date" />
+
+                <div id="delete-to-draft">
+                    <p>Want to stop scheduling this message but keep its content? Simply hit Delete to Draft below and your message content will be saved but in draft mode so no messages are sent. Please note if your message repeats this will stop future scheduled messages as well.</p>
+                    <p><a href="#" id="delete-to-draft-btn" data-role="button">Delete to Draft</a>
+                </div>
+            </div>
+
+            <div class="ui-dialog edit-repeats">
+                <div data-role="content">
+                    <a href="#" data-role="button" data-theme="e" class="single">Save just this message</a>
+                    <a href="#" data-role="button" data-theme="e" class="all">Save this and unsent repeat messages</a>
+                    <a href="#" data-role="button" data-theme="a" class="cancel">Cancel</a>    
+                </div>
+            </div>
+            <div class="ui-dialog" id="delete-to-draft-repeats-confirm">
+                <div data-role="content">
+                    <a href="#" data-role="button" data-theme="e" class="single">Delete just this message</a>
+                    <a href="#" data-role="button" data-theme="e" class="all">Delete this and unsent repeat messages</a>      
+                    <a href="#" data-role="button" data-theme="a" class="cancel">Cancel</a>    
+                </div>
+            </div>
+            <div class="dialog-overlay"></div>
+        </div> <!-- schedule-options -->
+
+        <div data-role="page" id="message-name">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Message Name</h1>
+                <a href="#" class="back">Schedule Options</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden">
+                <p>Name your message something short to remember it by once scheduled or leave blank if not needed.</p>
+
+                <label for="new-name" class="ui-hidden-accessible">Message Name</label>
+                <input type="text" name="new-name" id="new-name" placeholder="Message Name" />
+            </div>
+        </div> <!-- message-name -->
+
+        <div data-role="page" id="message-repeats">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Repeats</h1>
+                <a href="#" class="back">Schedule SMS</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden">
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <fieldset data-role="controlgroup">
+                        <legend>Repeat Options</legend>
+
+                        <input type="radio" name="message-repeats" id="message-repeats-none" value="" checked="checked" />
+                        <label for="message-repeats-none">Never</label>
+
+                        <input type="radio" name="message-repeats" id="message-repeats-d" value="d"  />
+                        <label for="message-repeats-d">Daily</label>
+
+                        <input type="radio" name="message-repeats" id="message-repeats-w" value="w"  />
+                        <label for="message-repeats-w">Weekly</label>
+
+                        <input type="radio" name="message-repeats" id="message-repeats-m" value="m"  />
+                        <label for="message-repeats-m">Monthly</label>
+
+                        <input type="radio" name="message-repeats" id="message-repeats-y" value="y"  />
+                        <label for="message-repeats-y">Annually</label>
+                    </fieldset>
+                </div>
+
+                <label for="message-repeats-wd">Week Days Only?</label>
+                <select name="message-repeats-wd" id="message-repeats-wd" data-role="slider">
+                        <option value="off">No</option>
+                        <option value="on">Yes</option>
+                </select>
+
+                <p class="textC">Want your message to only go on week days? Select yes and if your scheduled message falls at the weekend it will be delayed to the next working day.</p>
+            </div>
+        </div> <!-- message-repeats -->
+
+        <div data-role="page" id="purchase">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Purchase Texts</h1>
+                <a href="#" class="back">Back</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <div id="purchase-product-list"></div>
+                <p>Unfortunately it costs us to send your scheduled texts for you, so just like buying a bundle for your phone you'll need to buy a text message bundle to use with our app. Sending messages via our app will not require any of your existing SMS message credits that you have with you network provider.</p>
+                <p>For more information about messages credits please <a href="#" class="messagecredits-button">click here</a>, to purchase your credits click the relevant bundle and enter your Apple ID.</p>
+            </div>
+        </div> <!-- reminder -->
+
+        <div data-role="page" id="settings">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Settings</h1>
+                <a href="#" class="back">Back</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <p id="settings-number-bar">Logged in as: <span id="settings-full-number"></span></p>
+
+                <div data-role="fieldcontain">
+                    <ul data-role="listview">
+                        <li id="settings-account-link"><a href="#">My Account</a></li>
+                        <li id="settings-help-link"><a href="#">Help</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <a href="#" data-role="button" class="reset-password-link">Reset Password</a>
+                    <a href="#" data-role="button" class="logout-link">Logout</a>
+                </div>
+
+                <div class="ui-dialog" id="logout-confirm">
+                    <div data-role="content">
+                        <a href="#" data-role="button" data-theme="e" class="ok">Logout</a>       
+                        <a href="#" data-role="button" data-theme="a" class="cancel">Cancel</a>    
+                    </div>
+                </div>
+                <div class="ui-dialog" id="reset-password-confirm">
+                    <div data-role="content">
+                        <a href="#" data-role="button" data-theme="e" class="ok">Reset Password</a>       
+                        <a href="#" data-role="button" data-theme="a" class="cancel">Cancel</a>    
+                    </div>
+                </div>
+                <div class="dialog-overlay"></div>
+            </div>
+        </div> <!-- settings -->
+
+        <div data-role="page" id="account">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Settings</h1>
+                <a href="#" class="back">Settings</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <p id="account-title">My Account</p>
+
+                <div data-role="fieldcontain">
+                    <ul data-role="listview">
+                        <li id="account-balance">
+                            <div class="floatL inner-txt">
+                                <b>Credit - Balance</b>
+                                <p class="faded">Credit you have purchased but haven't used</p>
+                            </div>
+                            <p class="account-creds" id="account-creds-balance">0.0</p>
+                            <span class="clear"></span>
+                        </li>
+                        <li id="account-allocated">
+                            <div class="floatL inner-txt">
+                                <b>Credit - Allocated</b>
+                                <p class="faded">Credit used by messages you've scheduled to send</p>
+                            </div>
+                            <p class="account-creds" id="account-creds-allocated">0.0</p>
+                            <span class="clear"></span>
+                        </li>
+                        <li id="account-remaining">
+                            <div class="floatL inner-txt">
+                                <b>Remaining Credit</b>
+                            </div>
+                            <p class="account-creds" id="account-creds-remaining">0.0</p>
+                            <span class="clear"></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <a href="#" class="purchase-link" data-role="button" id="account-purchase-btn">Purchase credit</a>
+                </div>
+            </div>
+        </div> <!-- account -->
+
+        <div data-role="page" id="help">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Help</h1>
+                <a href="#" class="back">Settings</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <p>If you want to contact us to report a problem, provide feedback or suggest a new feature or app simply hit Contact AutoText. For our quick guide to this app hit Guide to AutoText.</p>
+                <div>
+                    <a href="#help-1" data-role="button">Guide to AutoText</a>
+                    <a href="https://autotext.zendesk.com/anonymous_requests/new" data-role="button" class="external-link">Contact AutoText</a>
+                    <a href="#" data-role="button" class="terms">Terms of Use</a>
+                    <a href="https://autotext.co/support" data-role="button" class="external-link">FAQ</a>
+                    <a href="#" data-role="button" class="messagecredits-button">Message Credits</a>
+                </div>
+            </div>
+        </div> <!-- help -->
+
+        <div data-role="page" id="help-1">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Welcome</h1>
+                <a href="#" class="back">Help with AutoText</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <div class="help-overlay">
+                    <p>Welcome to AutoText - the ultimate app to schedule text messages - to yourself, friends or groups. AutoText allows you compose your text and them simply schedule it for when you would like it to be sent - this message will then be sent for you regardless of whether your phone has signal, or is even switched on!</p>
+                    <p>Before you get started we'd just like to take you through the key features of AutoText.</p>
+                    <p><a href="#help-2" data-role="button">Next</a></p>
+                </div>
+            </div>
+        </div> <!-- help-1 -->
+
+        <div data-role="page" id="help-2">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Scheduled</h1>
+                <a href="#" class="back">Welcome</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <div class="help-overlay">
+                    <p>Here you can see your scheduled text messages screen - it's the home screen of the app - it shows you all your scheduled texts, including their status - anything that is green is all set, red or amber require your attention. To edit any aspect of the text or understand what the status means simply click on the message.</p>
+                    <p><a href="#help-3" data-role="button">Next</a></p>
+                </div>
+            </div>
+        </div> <!-- help-2 -->
+
+        <div data-role="page" id="help-3">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>History</h1>
+                <a href="#" class="back">Scheduled</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <div class="help-overlay">
+                    <p>This is your history screen, it shows you all your sent messages - just like your scheduled texts screen simply click on any message to see further information or re-schedule.</p>
+                    <p><a href="#help-4" data-role="button">Next</a></p>
+                </div>
+            </div>
+        </div> <!-- help-3 -->
+
+        <div data-role="page" id="help-4">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>New Message</h1>
+                <a href="#" class="back">History</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <div class="help-overlay">
+                    <p>When you want to compose a new message it works just like your normal messaging app - simply add receipents at the top, write your message text at the bottom, then hit schedule to set scheduling options.</p>
+                    <p><a href="#help-5" data-role="button">Next</a></p>
+                </div>
+            </div>
+        </div> <!-- help-4 -->
+
+        <div data-role="page" id="help-5">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Contact Groups</h1>
+                <a href="#" class="back">New Message</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <div class="help-overlay">
+                    <p>Here you can see any groups you've set up to send messages to - groups are an easier way of scheduling a message to lots of contacts you often send the same messages to, like a team at work or your local sports club.</p>
+                    <p>Simply create the group, add your contacts to it and then in 1 click you can schedule a message to everybody in the group.</p>
+                    <p><a href="#help-6" data-role="button">Next</a></p>
+                </div>
+            </div>
+        </div> <!-- help-5 -->
+
+        <div data-role="page" id="help-6">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>RemindMe</h1>
+                <a href="#" class="back">Contact Groups</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <div class="help-overlay">
+                    <p>Apart from sending text messages to others you can also set yourself a reminder text anytime you want - never forget to do something again!</p>
+                    <p>You simply click the RemindMe button, enter your reminder text and then set when you to be sent the reminder.</p>
+                    <p><a href="#help-7" data-role="button">Next</a></p>
+                </div>
+            </div>
+        </div> <!-- help-6 -->
+
+        <div data-role="page" id="help-7">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Close</h1>
+                <a href="#" class="back">RemindMe</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <div class="help-overlay">
+                    <p>That's our quick guide all done - remember you can get to any of the features we've just been through via the toolbar at the bottom of the page or head to the settings page to replay this guide and access our FAQ guide.</p>
+                    <p><a href="#help" data-role="button">Next</a></p>
+                </div>
+            </div>
+        </div> <!-- help-7 -->
+
+        <div data-role="page" id="messagecredits">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Message Credits</h1>
+                <a href="#" class="back">Back</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <div class="help-overlay">
+                    <p>For your selected home country, <span id="messagecredits-country_name"></span>, it costs <span id="messagecredits-credits"></span> credit(s) to send 1 text message to 1 recipient. For the cost to send 1 message to 1 recipient to any of our supported countries please see below. Just like standard SMS messages, if you send to multiple recipients or send a long message this will require multiple credits.
+                    <p>For each scheduled message we break down for you the number of messages your text requires and the number of recipients. If all the recipients are local numbers then it's simple: Number of messages x number of recipients x credit cost = total credits to send message.</p>
+                    <br>
+                    <ul data-filter="true" data-filter-placeholder="Search" data-role="listview" id="messagecredits-list">
+
+                    </ul>
+                </div>
+            </div>
+        </div> <!-- messagecredits -->
+
+        <div data-role="page" id="groups">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Groups</h1>
+                <a href="#" class="new" data-transition="slideup">New</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <ul data-role="listview" id="groups-list">
+                    <li id="groups-group-template" style="display: none;" data-id="" data-icon="false"><a href="#" class="view-group">
+                        <h3><b class="group-name"></b></h3>
+                        <p class="group-contacts"></p>
+                        <p class="ui-li-aside">
+                            <span data-role="button" class="groups-schedule-link">Schedule</span>
+                        </p>
+                    </a></li>
+                </ul>
+            </div>
+
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-id="footer-nav">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#" data-icon="custom" class="new-link">New</a></li>
+                        <li><a href="#" data-icon="custom" class="schedule-link">Scheduled</a></li>
+                        <li><a href="#" data-icon="custom" class="history-link">History</a></li>
+                        <li><a href="#" data-icon="custom" class="groups-link ui-btn-active ui-state-persist">Groups</a></li>
+                        <li><a href="#" data-icon="custom" class="reminder-link">RemindMe</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div> <!-- groups -->
+
+         <div data-role="page" id="newgroup">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Add Group</h1>
+                <a href="#" class="back">Groups</a>
+                <a href="#" class="save">Save</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden">
+                <input type="hidden" name="id" value="" class="edit-id" />
+
+                <label for="newgroup-name" class="ui-hidden-accessible">Name</label>
+                <input type="text" name="newgroup-name" id="newgroup-name" placeholder="Name" />
+
+                <p>Total Members: <span id="newgroup-total"></span></p>
+
+                <a href="#" class="add-from-contact" data-role="button" data-transition="slideup">Add From Contacts</a>
+                <a href="#" id="add-from-number" data-role="button" data-transition="slideup">Add Number</a>
+
+                <div>
+                    <h2 id="newgroup-members-title">Members</h2>
+
+                    <ul data-role="listview" id="newgroup-contacts-list">
+                        <li id="newgroup-contact-template" style="display: none;"><div class="group-contact">
+                            <h3><b class="contact-name"></b></h3>
+                            <p class="ui-li-aside account-creds">
+                                <span class="contact-number"></span>
+                            </p>
+                        </div></li>
+                    </ul>
+                </div>
+            </div>
+        </div> <!-- newgroup -->
+
+         <div data-role="page" id="addcontactfromnumber">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Add to Group</h1>
+                <a href="#" class="back">Back</a>
+                <a href="#" class="save">Save</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden">
+                <label for="addcontactfromnumber-name" class="ui-hidden-accessible">Name</label>
+                <input type="text" name="addcontactfromnumber-name" id="addcontactfromnumber-name" placeholder="Name" />
+
+                <label for="addcontactfromnumber-number" class="ui-hidden-accessible">Phone Number</label>
+                <input type="tel" name="addcontactfromnumber-number" id="addcontactfromnumber-number" placeholder="Phone Number" />                
+            </div>
+        </div> <!-- addcontactfromnumber -->
+        
+        <script type="text/javascript" src="cordova-2.4.0.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery-migrate-1.1.0.min.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.mobile-1.2.0.min.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.preload.css.images.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.cookie.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.swipeButton.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.progressbar.min.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.autogrow.js"></script>
+        <script type="text/javascript" src="js/mobiscroll/mobiscroll.custom-2.4.4.min.js"></script>
+        <script type="text/javascript" src="js/moment/moment.min.js"></script>
+        <script type="text/javascript" src="js/fastclick/fastclick.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+            window.addEventListener('load', function() {
+                new FastClick(document.body);
+                $.preloadCssImages();
+            }, false);
+            document.addEventListener('deviceready', app.initialize(), false);
+        </script>
+    </body>
+</html>

@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+   RewriteEngine on
+   RewriteRule    ^$ app/webroot/    [L]
+   RewriteRule    (.*) app/webroot/$1 [L]
+</IfModule>
+
+AuthType Basic
+AuthName "Auto Text"
+AuthUserFile C:/Users/Arron/Dropbox/SkyDrive/Business/Internal/www/text-scheduler/admin/.htpasswd
+Require valid-user
