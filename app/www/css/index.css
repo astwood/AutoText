@@ -865,6 +865,7 @@ input.ui-disabled {
 }
 #new-content {
     background: #fff !important;
+    padding:0;
 }
 [data-id="footer-nav"] {
     bottom: -1px;
