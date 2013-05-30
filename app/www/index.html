@@ -319,7 +319,7 @@
                     <div class="arrow"></div>
                 </div>
 
-                <div class="bar-link grey-bottom" id="new-date-link">
+                <div class="bar-link link-disabled grey-bottom" id="new-date-link">
                     <span class="floatL">Date</span><span class="floatR" id="new-date-text"></span>
                     <span class="clear"></span>
                     <div class="arrow"></div>
@@ -330,6 +330,9 @@
                     <span class="clear"></span>
                     <div class="arrow"></div>
                 </div>
+
+                <label for="new-date" class="ui-hidden-accessible">Date/time</label>
+                <input type="text" name="new-date" id="new-date" />
 
                 <div id="delete-to-draft">
                     <p>Want to stop scheduling this message but keep its content? Simply hit Delete to Draft below and your message content will be saved but in draft mode so no messages are sent. Please note if your message repeats this will stop future scheduled messages as well.</p>
@@ -370,21 +373,6 @@
                 <input type="text" name="new-name" id="new-name" placeholder="Message Name" />
             </div>
         </div> <!-- message-name -->
-
-        <div data-role="page" id="message-date">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
-                <h1>Schedule Date</h1>
-                <a href="#" class="back">Schedule Options</a>
-            </div>
-            <div class="error">
-                <div class="inner">Something went wrong, please try again.</div>
-            </div>
-
-            <div data-role="content" class="vHidden">
-                <label for="new-date" class="ui-hidden-accessible">Date/time</label>
-                <input type="text" name="new-date" id="new-date" />
-            </div>
-        </div> <!-- message-date -->
 
         <div data-role="page" id="message-repeats">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">

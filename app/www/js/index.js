@@ -69,7 +69,6 @@ var app = {
         $('#scheduled').live('pagebeforeshow', function() {me.scheduledPage.call(me);});
         $('#history').live('pagebeforeshow', function() {me.historyPage.call(me);});
         $('#schedule-options').live('pagebeforeshow', function() {me.scheduleOptionsPage.call(me);});
-        $('#message-date').live('pagebeforeshow', function() {me.messageDatePage.call(me);});
         $('#message-repeats').live('pagebeforeshow', function() {me.messageRepeatsPage.call(me);});
         $('#view').live('pagebeforeshow', function() {me.viewPage.call(me);});
         $('#status-dialog').live('pagebeforeshow', function() {me.statusDialogPage.call(me);});
@@ -206,9 +205,6 @@ var app = {
                         break;
                     case 'message-name':
                         $('#message-name .back').trigger('click');
-                        break;
-                    case 'message-date':
-                        $('#message-date .back').trigger('click');
                         break;
                     case 'newgroup':
                         $('#newgroup .save').trigger('click');
@@ -689,10 +685,6 @@ var app = {
         $('#new-name-link').live('click', function() {
             if (!$(this).hasClass('link-disabled')) {
                 $.mobile.changePage('#message-name');
-            }
-        $('#new-date-link').live('click', function() {
-            if (!$(this).hasClass('link-disabled')) {
-                $.mobile.changePage('#message-date');
             }
         });
         $('#new-repeats-link').live('click', function() {
@@ -1700,11 +1692,6 @@ var app = {
             case 'message-name':
                 backTxt = 'Schedule SMS';
                 headerTxt = 'Message Name';
-                break;
-            
-            case 'message-date':
-                backTxt = 'Schedule SMS';
-                headerTxt = 'Schedule Date';
                 break;
             
             case 'message-repeats':
