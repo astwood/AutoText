@@ -54,9 +54,15 @@ var app = {
     
     
     
+    /**
+     * Called by page to load JS
+     */
     initialize: function() {
         this.loaded();
     },
+    /**
+     * Binds events for page changes so that we can run our code before/after they show
+     */
     loaded: function() {
         var me = this;
         $.mobile.loader.prototype.options.text = 'Loading...';
@@ -92,6 +98,9 @@ var app = {
     
     
     
+    /**
+     * Loads the available countries and sets the select list options
+     */
     loadCountries: function() {
         var me = this;
         $.ajax({
@@ -127,14 +136,23 @@ var app = {
             }
         });
     },
+    /**
+     * Binds user input events (i.e. click, keypres, etc.)
+     */
     doBinds: function() {
         var me = this;
         
+        /**
+         * Opens external links in iOS Safari
+         */
         $('a.external-link').live('click', function(e) {
             e.preventDefault();
             window.open($(e.currentTarget).attr('href'), '_system');
         });
         
+        /**
+         * Binds main nav buttons - scheduled, history, groups
+         */
         $('.schedule-link, .history-link, .groups-link').live('click', function() {
             var left = false;
             var nextPg = '';
@@ -168,18 +186,30 @@ var app = {
             if (nextPg.length > 0) $.mobile.changePage('#'+nextPg, {reverse: left});
         });
         
+        /**
+         * Binds purchase link
+         */
         $('.purchase-link').live('click', function() {
             me.lastPageBeforePurchase = $.mobile.activePage.attr('id');
             $.mobile.changePage('#purchase');
         });
         
+        /**
+         * Binds settings account link
+         */
         $('#settings-account-link').live('click', function() {
             $.mobile.changePage('#account');
         });
+        /**
+         * Binds settings help link
+         */
         $('#settings-help-link').live('click', function() {
             $.mobile.changePage('#help');
         });
         
+        /**
+         * Submits user entered data when enter/return (in desktop) or done (in iOS) is pressed
+         */
         $('input').live('keyup', function(e) {
             var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
             if (key == 13) {
@@ -216,22 +246,37 @@ var app = {
             }
         });
         
+        /**
+         * Remove default textarea auto grow behaviour and activate third party plugin
+         */
         $('textarea').off('keyup').autoGrowTextArea();
         
+        /**
+         * Bind settings link
+         */
         $('.settings').live('click', function() {
             $.mobile.changePage('#settings');
         });
         
+        /**
+         * Binds terms link
+         */
         $('.terms').live('click', function() {
             me.lastPageBeforeTerms = $.mobile.activePage.attr('id');
             $.mobile.changePage('#terms');
         });
         
+        /**
+         * Bind product purchase button
+         */
         $('.product-btn').live('click', function() {
             var id = $(this).attr('id').replace('product-btn-', '');
             console.log(id);
         });
         
+        /**
+         * Bind change event on login and forgotten page country selects. Retrieves and stores exit code for selected country (used for later API calls)
+         */
         $('#login-country, #forgotten-country').live('change', function() {
             if (!me.stopCountryChange) {
                 $.ajax({
@@ -261,11 +306,17 @@ var app = {
             }
         });
         
+        /**
+         * Bind message credits button
+         */
         $('.messagecredits-button').live('click', function() {
             me.lastPageBeforeMessageCredits = $.mobile.activePage.attr('id');
             $.mobile.changePage('#messagecredits');
         });
         
+        /**
+         * Bind login submit button
+         */
         $('#login-submit-button').live('click', function(){
             var country = $('#login-country').val();
             var phoneNumber = $('#login-phone_number').val();
@@ -313,6 +364,9 @@ var app = {
             });
         });
         
+        /**
+         * Bind register submit button
+         */
         $('#register-submit-button').live('click', function(){
             var country = $('#register-country').val();
             var phoneNumber = $('#register-phone_number').val();
@@ -362,8 +416,14 @@ var app = {
             });
         });
         
+        /**
+         * Bind forgotten submit button to call forgottenSubmit function
+         */
         $('#forgotten-submit-button').live('click', function() {me.forgottenSubmit.call(me);});
         
+        /**
+         * Bind verification page invalid number format link
+         */
         $('#verification-invalid-format').live('click', function() {
             $.ajax({
                 url: me.protocol+me.url+'/users/formatting',
@@ -388,6 +448,9 @@ var app = {
             });
         });
         
+        /**
+         * Bind verification submit button
+         */
         $('#verification-submit-button').live('click', function(){
             var verificationCode = $('#verification-pin').val();
             var dataStr = 'country='+me.country+'&phone_number='+me.phoneNumber+'&pin='+verificationCode;
@@ -458,6 +521,9 @@ var app = {
             });
         });
         
+        /**
+         * Bind scheduled page message row link
+         */
         $('#scheduled-message-list a.edit-message').live('click', function(e) {
             e.preventDefault();
             if ($('.aSwipeBtn').length > 0) {
@@ -485,6 +551,9 @@ var app = {
                 $.mobile.changePage('#new', {transition: 'slideup'});
             }
         });
+        /**
+         * Bind delete repeated message confirmation cancel button
+         */
         $('#delete-repeats-confirm .cancel').live('click', function() {
             $('div.aSwipeBtn, .' + $.fn.swipeOptions.btnClass).animate({ width: 'toggle' }, 200, function(e) {
                 $(this).parents('li').find('.ui-li-aside, .ui-icon-arrow-r').show();
@@ -492,11 +561,17 @@ var app = {
             });
             $('#scheduled .dialog-overlay, #delete-repeats-confirm').hide();
         });
+        /**
+         * Bind delete repeated message confirmation all messages button
+         */
         $('#delete-repeats-confirm .all').live('click', function() {
             $.fn.swipeDeleteType = 'all';
             $.fn.swipeDoDelete.call(me);
             $('#scheduled .dialog-overlay, #delete-repeats-confirm').hide();
         });
+        /**
+         * Bind delete repeated message confirmation single message button
+         */
         $('#delete-repeats-confirm .single').live('click', function() {
             $.fn.swipeDeleteType = 'single';
             $.fn.swipeDoDelete.call(me);
@@ -505,17 +580,26 @@ var app = {
         $('#delete-to-draft-repeats-confirm .cancel').live('click', function() {
             $('#schedule-options .dialog-overlay, #delete-to-draft-repeats-confirm').hide();
         });
+        /**
+         * Bind delete to draft repeated message confirmation all messages button
+         */
         $('#delete-to-draft-repeats-confirm .all').live('click', function() {
             me.draftDeleteType = 'all';
             me.doDraftDelete.call(me);
             $('#schedule-options .dialog-overlay, #delete-to-draft-repeats-confirm').hide();
         });
+        /**
+         * Bind delete to draft repeated message confirmation single message button
+         */
         $('#delete-to-draft-repeats-confirm .single').live('click', function() {
             me.draftDeleteType = 'single';
             me.doDraftDelete.call(me);
             $('#schedule-options .dialog-overlay, #delete-to-draft-repeats-confirm').hide();
         });
         
+        /**
+         * Bind history page message row link
+         */
         $('#history-message-list a.view-message').live('click', function(e) {
             e.preventDefault();
             me.viewing = true;
@@ -527,6 +611,9 @@ var app = {
             $.mobile.changePage('#new', {transition: 'slideup'});
         });
         
+        /**
+         * Bind message edit page save button
+         */
         $('#new .save').live('click', function() {
             if ($(this).hasClass('cancel-state')) {
                 $.mobile.changePage('#'+me.lastPageBeforeNew, {reverse: true, transition:'slideup'});
@@ -542,6 +629,9 @@ var app = {
                 me.saveNew.call(me);
             }
         });
+        /**
+         * Bind message recipient and content fields to enable/disable submit/save buttons. Also saves draft
+         */
         $('#new-recipient, #new-content').live('keyup', function() {
             var anyEmpty = false;
             $('#new-recipient, #new-content').each(function() {
@@ -569,6 +659,9 @@ var app = {
                 me.stopDraftAddEdit = false;
             }
         });
+        /**
+         * Bind message name and content fields to change page title
+         */
         $('#new-name, #new-content').live('keyup', function() {
             if (!me.reminding) {
                 var title = $('#new-name').val();
@@ -583,6 +676,9 @@ var app = {
                 $('#new .page-title').text(title);
             }
         });
+        /**
+         * Bind new message submit button
+         */
         $('#new-submit-button').live('click', function(e) {
             if (!me.viewing) {
                 var phoneNumbers = $('#new-recipient').val();
@@ -651,6 +747,9 @@ var app = {
             }
         });
         
+        /**
+         * Bind message schedule options save button
+         */
         $('#schedule-options .save').live('click', function() {
             if (!me.viewing) {
                 if ($(this).hasClass('cancel-state')) {
@@ -672,6 +771,9 @@ var app = {
                 $.mobile.changePage('#history');
             }
         });
+        /**
+         * Bind message schedule options back button
+         */
         $('#schedule-options .back').live('click', function() {
             var sendTime = $('#new-date').val().length > 0 ? new Date($('#new-date').val()).getTime() : new Date().getTime();
             sendTime = sendTime / 1000;
@@ -682,16 +784,25 @@ var app = {
             $.extend(me.editData, data);
             $.mobile.changePage('#new', {reverse: true});
         });
+        /**
+         * Bind message name link
+         */
         $('#new-name-link').live('click', function() {
             if (!$(this).hasClass('link-disabled')) {
                 $.mobile.changePage('#message-name');
             }
         });
+        /**
+         * Bind repeat options link
+         */
         $('#new-repeats-link').live('click', function() {
             if (!$(this).hasClass('link-disabled')) {
                 $.mobile.changePage('#message-repeats');
             }
         });
+        /**
+         * Bind delete to draft button
+         */
         $('#delete-to-draft-btn').live('click', function() {
             if (me.repeats) {
                 $('#schedule-options .dialog-overlay, #delete-to-draft-repeats-confirm').show();
@@ -700,6 +811,9 @@ var app = {
             }
         });
         
+        /**
+         * Bind message date change to save draft
+         */
         $('#new-date').live('change', function() {
             if ($('#new-date-text').text().length > 0) $('#new-date-text, #new-scheduled').text(moment($(this).val()).format('ddd, D MMM YYYY, hh:mm a'));
             $('#new .save, #schedule-options .save').removeClass('cancel-state').find('.ui-btn-text').text('Save');
@@ -713,6 +827,9 @@ var app = {
             }
         });
         
+        /**
+         * Bind message name page back button to save draft
+         */
         $('#message-name .back').live('click', function(e) {
             e.preventDefault();
             if (!me.viewing) {
@@ -756,6 +873,9 @@ var app = {
                 $.mobile.changePage('#schedule-options', {reverse: true});
             }
         });
+        /**
+         * Bind message name field to save draft
+         */
         $('#new-name').live('keyup', function() {
             $('#new .save, #schedule-options .save').removeClass('cancel-state').find('.ui-btn-text').text('Save');
             
@@ -765,20 +885,32 @@ var app = {
             me.updateDrafts('view', me.draftId);
             me.updateDrafts('edit', me.draftId);
         });
+        /**
+         * Bind edit repeating message confirmation single message button
+         */
         $('.edit-repeats .single').live('click', function() {
             me.editType = 'single';
             $('.dialog-overlay, .edit-repeats').hide();
             me.newActualSave.call(me);
         });
+        /**
+         * Bind edit repeating message confirmation all messages button
+         */
         $('.edit-repeats .all').live('click', function() {
             me.editType = 'all';
             $('.dialog-overlay, .edit-repeats').hide();
             me.newActualSave.call(me);
         });
+        /**
+         * Bind edit repeating message confirmation cancel button
+         */
         $('.edit-repeats .cancel').live('click', function() {
             $('.dialog-overlay, .edit-repeats').hide();
         });
         
+        /**
+         * Bind message repeat options Weekly option to disable the Week Days Only option. Also saves draft
+         */
         $('#message-repeats-w').live('change', function() {
             if (!me.stopDraftAddEdit && me.draftId == null) {
                 me.draftId = me.generateUUID();
@@ -791,6 +923,9 @@ var app = {
             $('#message-repeats-wd option[value="off"]').attr('selected', 'selected');
             $('#message-repeats-wd').slider('refresh').slider('disable');
         });
+        /**
+         * Bind all message repeat options other than Weekly option to enable the Week Days Only option. Also saves draft
+         */
         $('#message-repeats-none, #message-repeats-d, #message-repeats-m, #message-repeats-y').live('change', function() {
             if (!me.stopDraftAddEdit && me.draftId == null) {
                 me.draftId = me.generateUUID();
@@ -801,6 +936,9 @@ var app = {
             $('#new .save, #schedule-options .save').removeClass('cancel-state').find('.ui-btn-text').text('Save');
             $('#message-repeats-wd').slider('enable');
         });
+        /**
+         * Bind message repeat options Weekly Days Only option to save draft
+         */
         $('#message-repeats-wd').live('change', function() {
             if (!me.stopDraftAddEdit && me.draftId == null) {
                 me.draftId = me.generateUUID();
@@ -810,6 +948,9 @@ var app = {
             
             $('#new .save, #schedule-options .save').removeClass('cancel-state').find('.ui-btn-text').text('Save');
         });
+        /**
+         * Bind message repeat options back button
+         */
         $('#message-repeats .back').live('click', function(e) {
             if (!me.viewing) {
                 e.preventDefault();
@@ -866,6 +1007,9 @@ var app = {
             }
         });
         
+        /**
+         * Bind main nav new message button
+         */
         $('.new-link').live('click', function(e) {
             e.preventDefault();
             me.editData = {};
@@ -875,6 +1019,9 @@ var app = {
             $.mobile.changePage('#new', {transition: 'slideup'});
         });
         
+        /**
+         * Bind main nav reminder button
+         */
         $('.reminder-link').live('click', function(e) {
             e.preventDefault();
             me.reminding = true;
@@ -883,10 +1030,16 @@ var app = {
             $.mobile.changePage('#new', {transition: 'slideup'});
         });
         
+        /**
+         * Bind main nav groups button
+         */
         $('#groups .new').live('click', function() {
             $('#newgroup').removeClass('just-loaded');
             $.mobile.changePage('#newgroup');
         });
+        /**
+         * Bind groups page group row link
+         */
         $('#groups-list .view-group').live('click', function(e) {
             e.preventDefault();
             if ($('.aSwipeBtn').length > 0) {
@@ -902,6 +1055,9 @@ var app = {
                 $.mobile.changePage('#newgroup');
             }
         });
+        /**
+         * Bind groups schedule buttons
+         */
         $('#groups-list .view-group .groups-schedule-link').live('click', function(e) {
             var id = $(this).parents('li').attr('data-id');
             $.ajax({
@@ -940,6 +1096,9 @@ var app = {
             });
             return false;
         });
+        /**
+         * Bind group contacts list to hide delete buttons if any are shown
+         */
         $('#newgroup-contacts-list li').live('click', function() {
             var $li = $(this);
             if ($('.aSwipeBtn').css('overflow') == 'visible' && $('.aSwipeBtn').length > 0) {
@@ -951,9 +1110,15 @@ var app = {
             }
         });
         
+        /**
+         * Bind settings page reset password link
+         */
         $('#settings .reset-password-link').live('click', function() {
             $('#settings .dialog-overlay, #reset-password-confirm').show();
         });
+        /**
+         * Bind reset password confirmation ok button
+         */
         $('#reset-password-confirm .ok').live('click', function() {
             $.removeCookie('logins');
             $('#forgotten-country option').removeAttr('selected');
@@ -962,13 +1127,22 @@ var app = {
             $('#settings .dialog-overlay, #reset-password-confirm').hide();
             me.forgottenSubmit.call(me);
         });
+        /**
+         * Bind reset password confirmation cancel button
+         */
         $('#reset-password-confirm .cancel').live('click', function() {
             $('#settings .dialog-overlay, #reset-password-confirm').hide();
         });
         
+        /**
+         * Bind settings page logout link
+         */
         $('#settings .logout-link').live('click', function() {
             $('#settings .dialog-overlay, #logout-confirm').show();
         });
+        /**
+         * Bind logout confirmation ok button
+         */
         $('#logout-confirm .ok').live('click', function() {
             $.removeCookie('logins');
             $.removeCookie('noCreditShown');
@@ -982,10 +1156,16 @@ var app = {
             $('.ui-page, .ui-mobile-viewport').removeClass('ui-page-bg-light');
             $.mobile.changePage('#login');
         });
+        /**
+         * Bind logout confirmation cancel button
+         */
         $('#logout-confirm .cancel').live('click', function() {
             $('#settings .dialog-overlay, #logout-confirm').hide();
         });
         
+        /**
+         * Bind schedule options link
+         */
         $('#edit-schedule-options-link').live('click', function() {
             var data = {
                 'recipient': $('#new-recipient').val(),
@@ -997,6 +1177,9 @@ var app = {
             $.mobile.changePage('#schedule-options');
         });
         
+        /**
+         * Bind group save button
+         */
         $('#newgroup .save').live('click', function() {
             me.groupData['name'] = $('#newgroup-name').val();
             $.ajax({
@@ -1026,6 +1209,9 @@ var app = {
             });
         });
         
+        /**
+         * Bind groups page add from contact button
+         */
         $('.add-from-contact').live('click', function() {
             if (typeof navigator.contacts != 'undefined') {
                 navigator.contacts.chooseContact(function(id, data) {
@@ -1035,10 +1221,16 @@ var app = {
                 });
             }
         });
+        /**
+         * Bind groups page add number button
+         */
         $('#add-from-number').live('click', function() {
             me.groupData['name'] = $('#newgroup-name').val();
             $.mobile.changePage('#addcontactfromnumber');
         });
+        /**
+         * Bind groups page add number save button
+         */
         $('#addcontactfromnumber .save').live('click', function() {
             var phoneNumber = $('#addcontactfromnumber-number').val();
             if (phoneNumber.substr(0, 1) == '+') {
@@ -1083,6 +1275,9 @@ var app = {
             });
         });
         
+        /**
+         * Bind back buttons throughout app
+         */
         $('#new .back, #register .back, #forgotten .back, #verification .back, #terms .back, #status-dialog .back, #purchase .back, #settings .back, #account .back, #help .back, #help-1 .back, #help-2 .back, #help-3 .back, #help-4 .back, #help-5 .back, #help-6 .back, #help-7 .back, #messagecredits .back, #newgroup .back, #addcontactfromnumber .back').live('click', function() {
             var currId = $.mobile.activePage.attr('id');
             var prevId = '';
@@ -1158,6 +1353,9 @@ var app = {
             }
         });
     },
+    /**
+     * Show edit repeating message confirmation if necessary and then call newActualSave function
+     */
     saveNew: function() {
         var me = this;
         
@@ -1173,6 +1371,9 @@ var app = {
             me.newActualSave.call(me);
         }
     },
+    /**
+     * Schedule/edit message
+     */
     newActualSave: function() {
         var me = this;
         
@@ -1285,6 +1486,9 @@ var app = {
             $.mobile.changePage('#scheduled');
         }
     },
+    /**
+     * Submit forgotten page fields
+     */
     forgottenSubmit: function() {
         var me = this;
         
@@ -1324,6 +1528,9 @@ var app = {
             }
         });
     },
+    /**
+     * Refresh scheduled/history page message lists every 60 seconds
+     */
     refreshList: function(pageId) {
         var me = this;
         setTimeout(function() {
@@ -1333,6 +1540,9 @@ var app = {
             }
         }, 60000);
     },
+    /**
+     * Load content for message credits cost page
+     */
     messageCreditsPage: function() {
         var me = this;
         $('#messagecredits .ui-input-search .ui-input-text').val('');
@@ -1373,6 +1583,9 @@ var app = {
             }
         });
     },
+    /**
+     * Load content for groups listing
+     */
     groupsPage: function() {
         var me = this;
         me.groupEditing = false;
@@ -1419,6 +1632,9 @@ var app = {
         $('[data-role="footer"] li a').removeClass('ui-btn-active');
         $('[data-role="footer"] .groups-link').addClass('ui-btn-active');
     },
+    /**
+     * Submit delete group request
+     */
     groupDelete: function(e) {
         var me = this;
         e.preventDefault();
@@ -1457,6 +1673,9 @@ var app = {
             }
         });
     },
+    /**
+     * Load content for new/edit group pages
+     */
     newGroupPage: function() {
         var me = this;
         
@@ -1501,6 +1720,9 @@ var app = {
             $('#newgroup').addClass('just-loaded');
         }
     },
+    /**
+     * Update edit group page fields with data
+     */
     updateNewGroupPage: function() {
         var me = this;
         $('#newgroup-name').val(me.groupData['name']);
@@ -1524,6 +1746,9 @@ var app = {
             }
         });
     },
+    /**
+     * Submit delete group contact request
+     */
     groupContactDelete: function(e) {
         var me = this;
         e.preventDefault();
@@ -1572,6 +1797,9 @@ var app = {
     
     
     
+    /**
+     * Attempt to auto login during splash page
+     */
     splashPageShow: function() {
         var me = this;
         me.clearTimeouts();
@@ -1621,11 +1849,17 @@ var app = {
             $.mobile.changePage('#login', {transition: 'fade'});
         }
     },
+    /**
+     * Show page content once it has fully loaded for the first time
+     */
     globalPageShow: function() {
         var me = this;
         $('[data-role="page"] .ui-content').addClass('vHidden');
         $('#'+$.mobile.activePage.attr('id')+' .vHidden').removeClass('vHidden');
     },
+    /**
+     * Update page title and back button text. Also has code for message schedule options and new/edit message pages
+     */
     globalPage: function() {
         var me = this;
         $('body').attr('id', $.mobile.activePage.attr('id')+'-body');
@@ -1991,10 +2225,16 @@ var app = {
         $('.back .ui-btn-text').text(backTxt);
         $('[data-role="header"] .ui-title').html(headerTxt);
     },
+    /**
+     * Allows country list change event to fire and run our code
+     */
     loginPage: function() {
         var me = this;
         me.stopCountryChange = false;
     },
+    /**
+     * Load content for verification page
+     */
     verificationPage: function() {
         var me = this;
         me.clearTimeouts();
@@ -2014,6 +2254,9 @@ var app = {
             $('#verification-firstline').text('You will shortly receive your verification code via text message. Simply enter the code in the box below and hit Verify.');
         }
     },
+    /**
+     * Load content for terms page
+     */
     termsPage: function() {
         var me = this;
         
@@ -2047,6 +2290,9 @@ var app = {
             }
         });
     },
+    /**
+     * Load content for scheduled page
+     */
     scheduledPage: function() {
         var me = this;
         me.repeats = false;
@@ -2178,6 +2424,9 @@ var app = {
         $('[data-role="footer"] li a').removeClass('ui-btn-active');
         $('[data-role="footer"] .schedule-link').addClass('ui-btn-active');
     },
+    /**
+     * Once scheduled page shows start automatic refreshing of the list and attempt to process unsynced messages
+     */
     scheduledPageShow: function() {
         var me = this;
         $.each(me.listUpdateTimers, function(timeout) {
@@ -2197,6 +2446,9 @@ var app = {
             $.fn.swipeDoDelete.call(me);
         }
     },
+    /**
+     * Load history page content
+     */
     historyPage: function() {
         var me = this;
         me.viewing = false;
@@ -2265,6 +2517,9 @@ var app = {
         $('[data-role="footer"] li a').removeClass('ui-btn-active');
         $('[data-role="footer"] .history-link').addClass('ui-btn-active');
     },
+    /**
+     * Once history page shows start automatic refreshing of the list
+     */
     historyPageShow: function() {
         var me = this;
         $.each(me.listUpdateTimers, function(timeout) {
@@ -2273,6 +2528,9 @@ var app = {
         
         me.refreshList('history');
     },
+    /**
+     * Sets new/edit message pages fields back to their default state
+     */
     newPageResetFields: function() {
         var me = this;
         if (me.canResetNewPage) {
@@ -2310,6 +2568,9 @@ var app = {
             $('#new-date-text').text('');
         }
     },
+    /**
+     * Update message name and repeat options data on client device
+     */
     newSmsSetData: function() {
         var me = this;
         var data = {
@@ -2340,6 +2601,9 @@ var app = {
         $.extend(me.newData, data);
         $.extend(me.editData, data);
     },
+    /**
+     * Load content for message schedule options page
+     */
     scheduleOptionsPage: function() {
         var me = this;
         var scrollEl = $('#new-date');
@@ -2396,6 +2660,9 @@ var app = {
             $('#schedule-options .bar-link .arrow').show();
         }
     },
+    /**
+     * Load content for message repeat options page
+     */
     messageRepeatsPage: function() {
         var me = this;
         if ($('#message-repeats input[name="message-repeats"]:checked').length < 1) {
@@ -2410,6 +2677,9 @@ var app = {
             $('#message-repeats-wd').slider('enable');
         }
     },
+    /**
+     * Load content for message status page
+     */
     statusDialogPage: function() {
         var me = this;
         if (me.editViewStatus != 'unsynced') {
@@ -2441,6 +2711,9 @@ var app = {
             $('#status-dialog-content').html('We can\'t sync this message with our system. Please connect to a mobile network or internet connection.');
         }
     },
+    /**
+     * Load content for purchase credits page
+     */
     purchasePage: function() {
         var me = this;
         $.ajax({
@@ -2473,10 +2746,16 @@ var app = {
             }
         });
     },
+    /**
+     * Load content for settings page
+     */
     settingsPage: function() {
         var me = this;
         $('#settings-full-number').text('+'+me.fullPhoneNumber);
     },
+    /**
+     * Load content for account page
+     */
     accountPage: function() {
         var me = this;
         $.ajax({
@@ -2509,6 +2788,9 @@ var app = {
     
     
     
+    /**
+     * Submit draft message delete request
+     */
     doDraftDelete: function() {
         var me = this;
 
@@ -2539,6 +2821,9 @@ var app = {
             }
         });
     },
+    /**
+     * Update edit message fields
+     */
     updateSmsFields: function(data) {
         var me = this;
         me.stopDraftAddEdit = true;
@@ -2722,6 +3007,9 @@ var app = {
         $('[data-role="header"] .ui-title').html(headerTxt);
         me.justSetEditOpts = true;
     },
+    /**
+     * Save a message on the local device, flag as unsynced and attempt to process unsynced messages in 60 seconds
+     */
     saveAsUnsynced: function() {
         var me = this;
         me.unsyncEdit = true;
@@ -2733,6 +3021,9 @@ var app = {
             }, 60000);
         }
     },
+    /**
+     * Process unsynced messages
+     */
     processUnsynced: function() {
         var me = this;
         var messages = me.updateDrafts('unsynced');
@@ -2796,6 +3087,9 @@ var app = {
             me.unsyncedTimer = null;
         }
     },
+    /**
+     * Function used to add, edit and retrieve draft/unsynced messages to/from the local device
+     */
     updateDrafts: function(action, id, data, unsynced) {
         var me = this;
         if (typeof action != 'string') return false;
@@ -2941,17 +3235,26 @@ var app = {
         
         return true;
     },
+    /**
+     * Sort an array but leave keys intact
+     */
     asort: function(times) {
         return times.sort(function(a, b) {
             return a - b;
         });
     },
+    /**
+     * Generate a UUID (used for draft/unsynced messages)
+     */
     generateUUID: function() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
             return v.toString(16);
         });
     },
+    /**
+     * Initiate page title progress bar on new/edit message page
+     */
     doProgressBar: function() {
         if ($('#'+$.mobile.activePage.attr('id')+' .progressbar:visible').length < 1) {
             $('#'+$.mobile.activePage.attr('id')+' h1 .page-title').hide();
@@ -2970,6 +3273,9 @@ var app = {
                 .init();
         }
     },
+    /**
+     * Format numbers from user's address book so their names show rather than numbers (needs re-working)
+     */
     formatNumbersWithContactNames: function(numbers, el, button) {
         if (typeof button == 'undefined') button = false;
         
@@ -3012,6 +3318,9 @@ var app = {
 //            }
 //        }
     },
+    /**
+     * Format timestamp in to day/month/year
+     */
     formatDate: function(time) {
         var day = ''+parseInt(time.getDate());
         var month = ''+parseInt(time.getMonth()+1);
@@ -3020,6 +3329,9 @@ var app = {
         month = month > 9 ? month : '0'+month;
         return day+'/'+month+'/'+year;
     },
+    /**
+     * Format timestamp in to hours:minutes
+     */
     formatTime: function(time, twelveHr) {
         if (typeof twelveHr == 'undefined') twelveHr = false;
         var hours = ''+time.getHours();
@@ -3028,12 +3340,18 @@ var app = {
         minutes = minutes > 9 ? minutes : '0'+minutes;
         return hours+':'+minutes;
     },
+    /**
+     * Clear timeouts that run before loading graphic is shown
+     */
     clearTimeouts: function() {
         var me = this;
         $.each(me.loadingTimers, function(timeout) {
             clearTimeout(me.loadingTimers[timeout]);
         });
     },
+    /**
+     * Show notice message in the white header bar
+     */
     ajaxAlert: function(page, text, callback) {
         var me = this;
         var err = $('#'+page+' .error');
