@@ -793,6 +793,14 @@ var app = {
             }
         });
         /**
+         * Bind message date link
+         */
+        $('#new-date-link').live('click', function() {
+            if (!$(this).hasClass('link-disabled')) {
+                $.mobile.changePage('#message-date');
+            }
+        });
+        /**
          * Bind repeat options link
          */
         $('#new-repeats-link').live('click', function() {
@@ -1005,6 +1013,13 @@ var app = {
             } else {
                 $.mobile.changePage('#schedule-options', {reverse: true});
             }
+        });
+
+        /**
+         * Bind message date options back button
+         */
+        $('#message-date .back').live('click', function() {
+            $.mobile.changePage('#schedule-options', {reverse: true});
         });
         
         /**
@@ -1926,6 +1941,11 @@ var app = {
             case 'message-name':
                 backTxt = 'Schedule SMS';
                 headerTxt = 'Message Name';
+                break;
+
+            case 'message-date':
+                backTxt = 'Schedule SMS';
+                headerTxt = 'Message Date';
                 break;
             
             case 'message-repeats':

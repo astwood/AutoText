@@ -482,7 +482,7 @@ form {
     font-weight: normal;
     margin-bottom: 1.5em;
 }
-#settings, #groups, #scheduled, #history, #account, #account, #newgroup, #messagecredits, #help, #terms.bg-light, #help-1, #help-2, #help-3, #help-4, #help-5, #help-6, #help-7, #addcontactfromnumber, #new, #status-dialog, #message-name, #message-repeats, #schedule-options, #purchase {
+#settings, #groups, #scheduled, #history, #account, #account, #newgroup, #messagecredits, #help, #terms.bg-light, #help-1, #help-2, #help-3, #help-4, #help-5, #help-6, #help-7, #addcontactfromnumber, #new, #status-dialog, #message-name, #message-repeats,#message-date, #schedule-options, #purchase {
     background: url('../img/bg_default_light.png') repeat-y !important;
 }
 #settings .ui-content, #account .ui-content {
