@@ -1931,10 +1931,10 @@ var app = {
                 }
 
                 if (me.viewing) {
-                    $('#new-name-link, #new-repeats-link').addClass('link-disabled');
+                    $('#new-name-link, #new-repeats-link, #new-date-link').addClass('link-disabled');
                     $('.save').hide();
                 } else {
-                    $('#new-name-link, #new-repeats-link').removeClass('link-disabled');
+                    $('#new-name-link, #new-repeats-link, #new-date-link').removeClass('link-disabled');
                     $('.save').show();
                 }
                 break;
