@@ -181,12 +181,14 @@ h1 {
 }
 .progressbar {
     display: none;
-    width: 8.8em;
+    width: 6.5em;
+    margin-left:2em;
+    margin-top:-2px;
 }
 .progressbar-status {
     font-size: .8em;
     display: none;
-    margin-top: -6px;
+    margin-top: -3px;
 }
 .bar-link {
     cursor: pointer;
