@@ -696,19 +696,23 @@ form {
     border-radius: 13px !important;
     box-shadow: inset 0px 1px 3px 1px rgba(0, 0, 0, .4);
     margin-right: .4em;
+    margin-bottom: .6em;
 }
 #new-submit-button .ui-btn-inner {
     padding: .2em .7em;
+    margin-bottom: .15em;
 }
 #new-submit-button .ui-btn-text {
-    color: #fff;
-    font-size: 18px;
-    text-shadow: 0 -1px 0 rgba(0,0,0,.3);
+    font-size: 24px;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0);
     font-weight: bold !important;
     color: rgba(255,255,255,.7) !important;
+
+
 }
 #new-submit-button.ui-disabled .ui-btn-text {
     color: #efa8d1;
+    text-shadow: 0 -1px 0 rgba(0,0,0,.3);
 }
 #new .bar-link .floatR, #schedule-options .bar-link .floatR {
     color: #000;
