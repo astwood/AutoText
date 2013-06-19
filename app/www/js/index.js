@@ -250,9 +250,36 @@ var app = {
          * Remove default textarea auto grow behaviour and activate third party plugin
          */
         $('textarea').off('keyup').autoGrowTextArea();
-        $('textarea').live('pagebeforeshow').autoGrowTextArea();
 
+
+        /**
+        Binds below make sure that the textarea is default size when page is clicked - previous text/autogrow may have made wrong height
+
+        * Makes sure textarea is at correct height for compose sms
+        */
+
+        $('.new-link').live('click', function() {
+            $('#new-content').height(28);
+        });
+
+        /**
+        * Makes sure textarea is at correct height for remind me
+        */
+
+        $('.reminder-link').live('click', function() {
+            $('#new-content').height(28);
+        });
         
+        /**
+        * Makes sure textarea is at correct height for accessing scheduled message
+        */
+
+        $('.edit-message').live('click', function() {
+            $('#new-content').height(250);
+        });
+        
+
+
         /**
          * Bind settings link
          */
