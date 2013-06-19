@@ -651,7 +651,7 @@ form {
 }
 #new-to-bottom {
     bottom: 0;
-    position: absolute;
+    position: fixed;
     width: 98%;
     left: 0;
     padding-left: .3em;

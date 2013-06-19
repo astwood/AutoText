@@ -250,6 +250,8 @@ var app = {
          * Remove default textarea auto grow behaviour and activate third party plugin
          */
         $('textarea').off('keyup').autoGrowTextArea();
+        $('textarea').live('pagebeforeshow').autoGrowTextArea();
+
         
         /**
          * Bind settings link
