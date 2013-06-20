@@ -888,6 +888,10 @@ input.ui-disabled {
     font-size: 18px;
 }
 
+#purchase .ui-link {
+   color: rgb(0,0,0) !important;
+}
+
 /*Media Query for iPhone 4/4g (3g is default values)*/
 
 @media (device-height: 480px) and (-webkit-min-device-pixel-ratio: 2) {
