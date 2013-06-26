@@ -894,22 +894,22 @@ input.ui-disabled {
 
 /*Media Query for iPhone 4/4g (3g is default values)*/
 
-@media (device-height: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+@media screen (device-height: 480px) and (-webkit-min-device-pixel-ratio: 2) {
 
     #splash {
-        background: url('../img/bg_splash.png') repeat-y !important;
+        background: url('../img/bg_splash_4.png') repeat-y !important;
     }
     .form-pg {
-        background: url('../img/bg_default.png') repeat-y !important;
+        background: url('../img/bg_default_4.png') repeat-y !important;
     }
     #login {
-        background: url('../img/bg_login.png') repeat-y !important;
+        background: url('../img/bg_login_4.png') repeat-y !important;
     }
     #settings, #groups, #scheduled, #history, #account, #account, #newgroup, #messagecredits, #help, #terms.bg-light, #help-1, #help-2, #help-3, #help-4, #help-5, #help-6, #help-7, #addcontactfromnumber, #new, #status-dialog, #message-name, #message-repeats,#message-date, #schedule-options, #purchase {
-        background: url('../img/bg_default_light.png') repeat-y !important;
+        background: url('../img/bg_default_light_4.png') repeat-y !important;
     }
     .ui-page-bg-light {
-        background: url('../img/bg_default_light.png') repeat-y !important;
+        background: url('../img/bg_default_light_4.png') repeat-y !important;
     }
 
 }
@@ -917,22 +917,22 @@ input.ui-disabled {
 
 /*Media Query for iPhone 5 (3g is default values)*/
 
-@media (device-height: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+@media screen (device-height: 568px) and (-webkit-min-device-pixel-ratio: 2) {
 
     #splash {
-        background: url('../img/bg_splash.png') repeat-y !important;
+        background: url('../img/bg_splash_5.png') repeat-y !important;
     }
     .form-pg {
-        background: url('../img/bg_default.png') repeat-y !important;
+        background: url('../img/bg_default_5.png') repeat-y !important;
     }
     #login {
-        background: url('../img/bg_login.png') repeat-y !important;
+        background: url('../img/bg_login_5.png') repeat-y !important;
     }
     #settings, #groups, #scheduled, #history, #account, #account, #newgroup, #messagecredits, #help, #terms.bg-light, #help-1, #help-2, #help-3, #help-4, #help-5, #help-6, #help-7, #addcontactfromnumber, #new, #status-dialog, #message-name, #message-repeats,#message-date, #schedule-options, #purchase {
-        background: url('../img/bg_default_light.png') repeat-y !important;
+        background: url('../img/bg_default_light_5.png') repeat-y !important;
     }
     .ui-page-bg-light {
-        background: url('../img/bg_default_light.png') repeat-y !important;
+        background: url('../img/bg_default_light_5.png') repeat-y !important;
     }
 
 }
