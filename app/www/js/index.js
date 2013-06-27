@@ -69,6 +69,8 @@ var app = {
         $.mobile.defaultPageTransition = 'slide';
         $('[data-role="page"]').live('pageshow', function() {me.globalPageShow.call(me);});
         $('[data-role="page"]').live('pagebeforeshow', function() {me.globalPage.call(me);});
+        $('[data-role="page"]').live('pagebeforehide', function() {me.ContentHide.call(me);});
+        $('[data-role="page"]').live('pageshow', function() {me.ContentShow.call(me);});
         $('#login').live('pagebeforeshow', function() {me.loginPage.call(me);});
         $('#verification').live('pagebeforeshow', function() {me.verificationPage.call(me);});
         $('#terms').live('pagebeforeshow', function() {me.termsPage.call(me);});
@@ -2274,6 +2276,21 @@ var app = {
         $('.back .ui-btn-text').text(backTxt);
         $('[data-role="header"] .ui-title').html(headerTxt);
     },
+   
+    /**
+     * Hides/Shows page header to stop flickering and movement, now shows, then updates
+     */
+    ContentHide: function(){
+        $('h1 .page-title').css({"visibility":"hidden"});
+        $('.ui-header .ui-title').css({"visibility":"hidden"});
+    },
+    
+    ContentShow: function (){
+        $(' h1 .page-title').css({"visibility":"visible"});
+        $('.ui-header .ui-title').css({"visibility":"visible"});
+    },
+
+
     /**
      * Allows country list change event to fire and run our code
      */
