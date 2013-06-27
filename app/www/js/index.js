@@ -1060,7 +1060,7 @@ var app = {
             me.newPageResetFields();
             me.lastPageBeforeNew = $.mobile.activePage.attr('id');
             me.newDraft = true;
-            $.mobile.changePage('#new', {transition: 'slideup'});
+            $.mobile.changePage('#new', {transition: 'slide'});
         });
         
         /**
@@ -1071,7 +1071,7 @@ var app = {
             me.reminding = true;
             me.newPageResetFields();
             me.lastPageBeforeNew = $.mobile.activePage.attr('id');
-            $.mobile.changePage('#new', {transition: 'slideup'});
+            $.mobile.changePage('#new', {transition: 'slide'});
         });
         
         /**
