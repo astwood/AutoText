@@ -579,7 +579,7 @@ var app = {
                 }
                 $('#new .edit-id').val(smsId+'&'+scheduleId);
                 me.lastPageBeforeNew = $.mobile.activePage.attr('id');
-                $.mobile.changePage('#new', {transition: 'slideup'});
+                $.mobile.changePage('#new');
             }
         });
         /**
@@ -639,7 +639,7 @@ var app = {
             var scheduleId = $(this).parents('li').attr('data-schedule-id');
             $('#new .edit-id').val(smsId+'&'+scheduleId);
             me.lastPageBeforeNew = $.mobile.activePage.attr('id');
-            $.mobile.changePage('#new', {transition: 'slideup'});
+            $.mobile.changePage('#new');
         });
         
         /**
@@ -772,8 +772,7 @@ var app = {
                 me.viewing = false;
                 me.copying = true;
                 $.mobile.changePage('#new', {
-                    allowSamePageTransition: true,
-                    transition: 'slideup'
+                    allowSamePageTransition: true
                 });
             }
         });
@@ -1131,7 +1130,7 @@ var app = {
                         me.lastPageBeforeNew = 'groups';
                         me.newDraft = true;
                         $('#new-recipient').val(tmp.join(','));
-                        $.mobile.changePage('#new', {transition:'slideup'});
+                        $.mobile.changePage('#new');
                     } else {
                         me.ajaxAlert('groups');
                     }
