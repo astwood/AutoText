@@ -894,7 +894,7 @@ input.ui-disabled {
 
 /*Media Query for iPhone 4/4g (3g is default values)*/
 
-@media screen (device-height: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+@media screen and (min-height: 475px) and (-webkit-min-device-pixel-ratio: 2) {
 
     #splash {
         background: url('../img/bg_splash_4.png') repeat-y !important;
@@ -917,7 +917,7 @@ input.ui-disabled {
 
 /*Media Query for iPhone 5 (3g is default values)*/
 
-@media screen (device-height: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+@media screen and (min-height: 560px) and (-webkit-min-device-pixel-ratio: 2) {
 
     #splash {
         background: url('../img/bg_splash_5.png') repeat-y !important;
