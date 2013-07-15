@@ -17,21 +17,23 @@
  under the License.
  */
 
-#import "CDVDebugConsole.h"
+#import <UIKit/UIKit.h>
 
-@implementation CDVDebugConsole
-
-- (void)log:(CDVInvokedUrlCommand*)command
-{
-    NSString* message = [command.arguments objectAtIndex:0];
-    NSDictionary* options = [command.arguments objectAtIndex:1];
-    NSString* log_level = @"INFO";
-
-    if ([options objectForKey:@"logLevel"]) {
-        log_level = [options objectForKey:@"logLevel"];
-    }
-
-    NSLog(@"[%@] %@", log_level, message);
+/**
+ * Distinguishes top-level navigations from sub-frame navigations.
+ * shouldStartLoadWithRequest is called for every request, but didStartLoad
+ * and didFinishLoad is called only for top-level navigations.
+ * Relevant bug: CB-2389
+ */
+@interface CDVWebViewDelegate : NSObject <UIWebViewDelegate>{
+    __weak NSObject <UIWebViewDelegate>* _delegate;
+    NSInteger _loadCount;
+    NSInteger _state;
+    NSInteger _curLoadToken;
+    NSInteger _loadStartPollCount;
 }
+
+- (id)initWithDelegate:(NSObject <UIWebViewDelegate>*)delegate;
+- (BOOL)request:(NSURLRequest*)newRequest isFragmentIdentifierToRequest:(NSURLRequest*)originalRequest;
 
 @end
