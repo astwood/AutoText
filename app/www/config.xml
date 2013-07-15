@@ -21,6 +21,7 @@
         The 'device' permission is required for the 'deviceready' event.
     -->
     <feature name="http://api.phonegap.com/1.0/device" />
+    <feature name="http://api.phonegap.com/1.0/contacts" />
 
     <!--
         If you do not want any permissions to be added to your app, add the
@@ -30,7 +31,7 @@
     <preference name="permissions"                value="none"/>
 
     <!-- Customize your app and platform with the preference element. -->
-    <preference name="phonegap-version"           value="2.2.0" />          <!-- all: current version of PhoneGap -->
+    <preference name="phonegap-version"           value="2.9.0" />          <!-- all: current version of PhoneGap -->
     <preference name="orientation"                value="portrait" />        <!-- all: possible values handset, tablet, or universal -->
     <preference name="target-device"              value="handset" />      <!-- all: hides the status bar at the top of the screen -->
     <preference name="webviewbounce"              value="true" />           <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
@@ -43,7 +44,9 @@
         <gap:plugin name="Example" />
         A list of available plugins are available at https://build.phonegap.com/docs/plugins
     -->
-    <plugin name="InAppBrowser" value="CDVInAppBrowser" />
+    <feature name="InAppBrowser">
+        <param name="ios-package" value="CDVInAppBrowser" />
+    </feature>
 
     <!-- Define app icon for each platform. -->
     <icon src="res/icon/ios/icon.png"            gap:platform="ios"        width="57" height="57" />
