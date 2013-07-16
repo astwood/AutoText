@@ -1292,7 +1292,10 @@ var app = {
                 if (null !== contact.phoneNumbers && contact.phoneNumbers.length > 0) {
                     phoneNumber = contact.phoneNumbers[index].value;
                     phoneType = contact.phoneNumbers[index].type;
-                    contactWrapper = jQuery('<a class="contact-list-item" ></a>').attr('id',phoneNumber);
+                    contactWrapper = jQuery('<a></a>').attr({
+                        id: phoneNumber,
+                        class: 'contact-list-item'
+                        });
                     listItem.append(contactWrapper);
                 }
                 // Add name
@@ -1332,7 +1335,8 @@ var app = {
 
         /** Bind add contact page row click (add contact to group)
          */
-        $('#contact-list li a.contact-list-item').live('click', function() {
+        $('#contact-list a.contact-list-item').live('click', function() {
+            console.log('The event listener is working');
             e.preventDefault();
             var phoneNumber = $(this).children('a').attr('id').val();
             if (phoneNumber.substr(0, 1) == '+') {
