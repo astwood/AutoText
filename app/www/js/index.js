@@ -1277,33 +1277,42 @@ var app = {
 
         contacts.sort(contactSort);
 
+        //Build list and loop for each contact
         jQuery.each(contacts, function (index, contact) {
-        var listItem = jQuery('<li></li>');
 
-        // ContactWrapper around each list item
-        var contactWrapper = listItem;
+            //Loop for each number within each contact and add as new row
+            jQuery.each(contact.phoneNumbers, function (index, phoneNumbers) {
 
-        var phoneNumber = null;
-        if (null !== contact.phoneNumbers && contact.phoneNumbers.length > 0) {
-            phoneNumber = contact.phoneNumbers[0].value;
-            contactWrapper = jQuery('<a></a>').attr('href', 'tel:' + phoneNumber);
-            listItem.append(contactWrapper);
-        }
-        // Add name
-        contactWrapper.append(jQuery('<h3></h3>').text(contact.name.formatted));
-        // Add Phonenumber to wrapper
-        if (null !== phoneNumber) {
-            contactWrapper.append(jQuery('<p></p>').text(phoneNumber));
-        }
-        // Add ListItem to list
-        contactList.append(listItem);
+                var listItem = jQuery('<li></li>');
+
+                // ContactWrapper around each list item
+                var contactWrapper = listItem;
+
+                var phoneNumber = null;
+                if (null !== contact.phoneNumbers && contact.phoneNumbers.length > 0) {
+                    phoneNumber = contact.phoneNumbers[index].value;
+                    contactWrapper = jQuery('<a></a>').attr('href', 'tel:' + phoneNumber);
+                    listItem.append(contactWrapper);
+                }
+                // Add name
+                contactWrapper.append(jQuery('<h3></h3>').text(contact.name.formatted));
+                // Add Phonenumber to wrapper
+                if (null !== phoneNumber) {
+                    contactWrapper.append(jQuery('<p></p>').text(phoneNumber));
+                }
+                // Add ListItem to list
+                contactList.append(listItem);
+
+                
+            });
+
         });
         // Refresh listview to enable jQuery Mobile functionality
         contactList.listview('refresh');
         }
 
         function onError(err) {
-            me.ajaxAlert('addcontactfromcontact', 'Your phone book is unavaiable at present please trying reaccessing.');;
+            me.ajaxAlert('addcontactfromcontact', 'Your phone book seems unavaiable at present please trying reaccessing.');;
         }
 
         function contactSort(a,b) {
@@ -1378,7 +1387,7 @@ var app = {
         /**
          * Bind back buttons throughout app
          */
-        $('#new .back, #register .back, #forgotten .back, #verification .back, #terms .back, #status-dialog .back, #purchase .back, #settings .back, #account .back, #help .back, #help-1 .back, #help-2 .back, #help-3 .back, #help-4 .back, #help-5 .back, #help-6 .back, #help-7 .back, #messagecredits .back, #newgroup .back, #addcontactfromnumber .back').live('click', function() {
+        $('#new .back, #register .back, #forgotten .back, #verification .back, #terms .back, #status-dialog .back, #purchase .back, #settings .back, #account .back, #help .back, #help-1 .back, #help-2 .back, #help-3 .back, #help-4 .back, #help-5 .back, #help-6 .back, #help-7 .back, #messagecredits .back, #newgroup .back, #addcontactfromnumber .back, #addcontactfromcontact .back').live('click', function() {
             var currId = $.mobile.activePage.attr('id');
             var prevId = '';
             var prevTransition = $.mobile.defaultPageTransition;
@@ -1444,6 +1453,9 @@ var app = {
                 case 'addcontactfromnumber':
                     prevId = 'newgroup';
                     break;
+                case 'addcontactfromcontact':
+                prevId = 'newgroup';
+                break;
                 default:
                     me.ajaxAlert(currId);
                     break;
