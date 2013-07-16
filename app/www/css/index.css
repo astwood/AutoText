@@ -892,6 +892,10 @@ input.ui-disabled {
    color: rgb(0,0,0) !important;
 }
 
+p.capitalize {
+    text-transform: capitalize;
+}
+
 /*Media Query for iPhone 4/4g (3g is default values)*/
 
 @media screen and (min-height: 475px) and (-webkit-min-device-pixel-ratio: 2) {

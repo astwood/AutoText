@@ -1291,14 +1291,15 @@ var app = {
                 var phoneNumber = null;
                 if (null !== contact.phoneNumbers && contact.phoneNumbers.length > 0) {
                     phoneNumber = contact.phoneNumbers[index].value;
-                    contactWrapper = jQuery('<a></a>').attr('href', 'tel:' + phoneNumber);
+                    phoneType = contact.phoneNumbers[index].type;
+                    contactWrapper = jQuery('<a></a>').attr('href','tel:' + phoneNumber);
                     listItem.append(contactWrapper);
                 }
                 // Add name
                 contactWrapper.append(jQuery('<h3></h3>').text(contact.name.formatted));
                 // Add Phonenumber to wrapper
                 if (null !== phoneNumber) {
-                    contactWrapper.append(jQuery('<p></p>').text(phoneNumber));
+                    contactWrapper.append(jQuery('<p class = "capitalize"></p>').text(phoneType + ": " + phoneNumber));
                 }
                 // Add ListItem to list
                 contactList.append(listItem);
