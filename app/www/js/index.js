@@ -2334,8 +2334,12 @@ var app = {
                 break;
                 
             case 'addcontactfromnumber':
-                backTxt = $('#newgroup [data-role="header"] .ui-title').text();
-                headerTxt = 'Add to Group';
+                backTxt = 'Back';
+                headerTxt = 'Add a Number';
+                break;
+            case 'addcontactfromcontact':
+                backTxt = 'Back';
+                headerTxt = 'Add a Contact';
                 break;
         }
         
