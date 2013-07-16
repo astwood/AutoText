@@ -279,8 +279,6 @@ var app = {
         $('.edit-message').live('click', function() {
             $('#new-content').height(250);
         });
-        
-
 
         /**
          * Bind settings link
@@ -646,9 +644,7 @@ var app = {
          * Bind message edit page save button
          */
         $('#new .save').live('click', function() {
-            if ($(this).hasClass('cancel-state')) {
-                $.mobile.changePage('#'+me.lastPageBeforeNew, {reverse: true, transition:'slideup'});
-            } else {
+
                 var data = {
                     'recipient': $('#new-recipient').val(),
                     'content': $('#new-content').val(),
@@ -658,7 +654,6 @@ var app = {
                 $.extend(me.newData, data);
                 $.extend(me.editData, data);
                 me.saveNew.call(me);
-            }
         });
         /**
          * Bind message recipient and content fields to enable/disable submit/save buttons. Also saves draft
@@ -1337,7 +1332,7 @@ var app = {
         /** Bind add from contact page row click (add contact to group)
          */
 
-         $("#contact-list").on("click", "a", function(event){
+            $("#contact-list").on("click", "a", function(event){
             event.preventDefault();
             var me = this;
             console.log('The event listener is working');
@@ -1661,6 +1656,7 @@ var app = {
             $.mobile.changePage('#scheduled');
         }
     },
+
     /**
      * Submit forgotten page fields
      */
@@ -2051,14 +2047,7 @@ var app = {
                 headerTxt = '<span class="page-title">Schedule SMS</span><span class="progressbar-status">Scheduling...</span><span class="progressbar"></span>';
                 
                 if (me.editing) {
-                    if (!$('.save').hasClass('cancel-state')) {
                         $('.save').removeClass('cancel-state').find('.ui-btn-text').text('Save');
-                    } else {
-                        $('.save').addClass('cancel-state').find('.ui-btn-text').text('Cancel');
-                    }
-                    $('.save').show();
-                } else {
-                    $('.save').removeClass('cancel-state');
                 }
 
                 if (me.viewing) {
@@ -2350,9 +2339,7 @@ var app = {
 
                 if (me.editing && me.draftEdit) {
                     $('#new .save, #schedule-options .save').removeClass('cancel-state').find('.ui-btn-text').text('Save');
-                } else if (me.editing) {
-                    $('#new .save, #schedule-options .save').addClass('cancel-state').find('.ui-btn-text').text('Cancel');
-                }
+                } 
 
                 if (me.copying) {
                     $('#new-date').val('');
@@ -2500,7 +2487,7 @@ var app = {
         me.draftEdit = false;
         me.unsyncEdit = false;
         me.lastPageBeforeNew = me.lastPageBeforeSettings = 'scheduled';
-        $('#new .save, #schedule-options .save').addClass('cancel-state').find('.ui-btn-text').text('Cancel');
+
         $.ajax({
             url: me.protocol+me.url+'/sms/index/scheduled?u='+me.fullPhoneNumber+'&p='+me.password,
             type: 'GET',
