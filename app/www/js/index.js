@@ -1257,15 +1257,41 @@ var app = {
         /**
          * Bind groups page add from contact button
          */
-        $('.add-from-contact').live('click', function() {
-            if (typeof navigator.contacts != 'undefined') {
-                navigator.contacts.chooseContact(function(id, data) {
-                    console.log(data);
-                }, {
-                    fields: ['name.formatted', 'phoneNumbers']
-                });
-            }
+        $('#add-from-contact').live('click', function() {
+            me.groupData['name'] = $('#newgroup-name').val();
+            $.mobile.changePage('#addcontactfromcontact');
         });
+
+        /**
+         * Generates list of contacts on add contact from contact page
+         */
+        $('#add-from-contact').live('click', function() {          
+
+            var options = new ContactFindOptions ();
+            var fields = ['name', 'phoneNumbers'];
+            options.multiple = true;
+            options.filter = "";
+            navigator.contacts.find(fields, onSuccess, onError, options);
+        });
+
+        function onSuccess (contacts){
+            var contactlist = $('#contactslist');
+            var newRow = $('#contactslist').clone();
+            contacts.sort(contactSort);
+            for ( var i = 0; i < contacts.length; i++) {
+                    for ( var j = 0; j < contacts[i].phoneNumbers.length; j++) {
+                        name = contacts[i].displayName;
+                        number = contacts[i].phoneNumbers[j].value;
+                        newRow.find('.contact-name').text(name);
+                        newRow.find('.contact-number').value(number);
+            }};
+        };
+
+        function onError(){
+             me.ajaxAlert('addcontactfromcontact', 'Contacts currently unavailable, please hit back and retry');
+        };
+        
+
         /**
          * Bind groups page add number button
          */

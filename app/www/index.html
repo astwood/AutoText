@@ -746,7 +746,7 @@
 
                 <p>Total Members: <span id="newgroup-total"></span></p>
 
-                <a href="#" class="add-from-contact" data-role="button" data-transition="slideup">Add From Contacts</a>
+                <a href="#" id="add-from-contact" data-role="button" data-transition="slideup">Add From Contacts</a>
                 <a href="#" id="add-from-number" data-role="button" data-transition="slideup">Add Number</a>
 
                 <div>
@@ -766,7 +766,7 @@
 
          <div data-role="page" id="addcontactfromnumber">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
-                <h1>Add to Group</h1>
+                <h1>Add a Number</h1>
                 <a href="#" class="back">Back</a>
                 <a href="#" class="save">Save</a>
             </div>
@@ -782,6 +782,27 @@
                 <input type="tel" name="addcontactfromnumber-number" id="addcontactfromnumber-number" placeholder="Phone Number" />                
             </div>
         </div> <!-- addcontactfromnumber -->
+
+        <div data-role="page" id="addcontactfromcontact">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Add From Contacts</h1>
+                <a href="#" class="back">Back</a>
+                <a href="#" class="save">Save</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden"> 
+                <ul data-filter="true" data-filter-placeholder="Search" data-role="listview" id="contactslist">
+                    <li id="contacts-list-template" style="display: none;" data-id=""><a href="#" class="edit-message">
+                        <h3><b class="contact-name"></b></h3>
+                        <p class="contact-number"></p>
+                    </a></li>
+                </ul>
+            </div>
+
+        </div> <!-- addcontactfromcontact -->
         
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/jquery/jquery-1.9.1.min.js"></script>
