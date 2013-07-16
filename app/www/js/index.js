@@ -1265,32 +1265,61 @@ var app = {
         /**
          * Generates list of contacts on add contact from contact page
          */
-        $('#add-from-contact').live('click', function() {          
+        function ContactsReady() {
+        var options = new ContactFindOptions();
+        var fields = ['name', 'phoneNumbers'];
+        options.multiple = true;
+        navigator.contacts.find(fields, onSuccess, onError, options);
+        }
 
-            var options = new ContactFindOptions ();
-            var fields = ['name', 'phoneNumbers'];
-            options.multiple = true;
-            options.filter = "";
-            navigator.contacts.find(fields, onSuccess, onError, options);
+        function onSuccess(contacts) {
+        var contactList = jQuery('#contact-list');
+
+        contacts.sort(contactSort);
+
+        jQuery.each(contacts, function (index, contact) {
+        var listItem = jQuery('<li></li>');
+
+        // ContactWrapper around each list item
+        var contactWrapper = listItem;
+
+        var phoneNumber = null;
+        if (null !== contact.phoneNumbers && contact.phoneNumbers.length > 0) {
+            phoneNumber = contact.phoneNumbers[0].value;
+            contactWrapper = jQuery('<a></a>').attr('href', 'tel:' + phoneNumber);
+            listItem.append(contactWrapper);
+        }
+        // Add name
+        contactWrapper.append(jQuery('<h3></h3>').text(contact.name.formatted));
+        // Add Phonenumber to wrapper
+        if (null !== phoneNumber) {
+            contactWrapper.append(jQuery('<p></p>').text(phoneNumber));
+        }
+        // Add ListItem to list
+        contactList.append(listItem);
         });
+        // Refresh listview to enable jQuery Mobile functionality
+        contactList.listview('refresh');
+        }
 
-        function onSuccess (contacts){
-            var newRow = $('#contacts-list-template').clone();
-            contacts.sort(contactSort);
-            for ( var i = 0; i < contacts.length; i++) {
-                    for ( var j = 0; j < contacts[i].phoneNumbers.length; j++) {
-                        name = contacts[i].displayName;
-                        number = contacts[i].phoneNumbers[j].value;
-                        newRow.find('.contact-name').text(name);
-                        newRow.find('.contact-number').value(number);
-                        $('#contactslist').append(newRow);
-            }};
-        };
+        function onError(err) {
+            me.ajaxAlert('addcontactfromcontact', 'Your phone book is unavaiable at present please trying reaccessing.');;
+        }
 
-        function onError(){
-             me.ajaxAlert('addcontactfromcontact', 'Contacts currently unavailable, please hit back and retry');
-        };
-        
+        function contactSort(a,b) {
+            var a_name = null !== a.name.familyName ? a.name.familyName : a.name.formatted,
+                b_name = null !== b.name.familyName ? b.name.familyName : b.name.formatted
+
+            if (a_name != b_name) {
+                a_name = a.name.formatted;
+                b_name = b.name.formatted;
+            }
+
+            return a_name > b_name ? 1 : -1;
+        }
+
+        document.addEventListener("deviceready", ContactsReady, false);
+
 
         /**
          * Bind groups page add number button
