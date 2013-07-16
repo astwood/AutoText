@@ -1275,8 +1275,7 @@ var app = {
         });
 
         function onSuccess (contacts){
-            var contactlist = $('#contactslist');
-            var newRow = $('#contactslist').clone();
+            var newRow = $('#contacts-list-template').clone();
             contacts.sort(contactSort);
             for ( var i = 0; i < contacts.length; i++) {
                     for ( var j = 0; j < contacts[i].phoneNumbers.length; j++) {
@@ -1284,6 +1283,7 @@ var app = {
                         number = contacts[i].phoneNumbers[j].value;
                         newRow.find('.contact-name').text(name);
                         newRow.find('.contact-number').value(number);
+                        $('#contactslist').append(newRow);
             }};
         };
 
