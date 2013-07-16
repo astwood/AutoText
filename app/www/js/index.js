@@ -1283,7 +1283,7 @@ var app = {
             //Loop for each number within each contact and add as new row
             jQuery.each(contact.phoneNumbers, function (index, phoneNumbers) {
 
-                var listItem = jQuery('<li></li>');
+                var listItem = jQuery('<li data-icon="plus"></li>');
 
                 // ContactWrapper around each list item
                 var contactWrapper = listItem;
@@ -1292,7 +1292,7 @@ var app = {
                 if (null !== contact.phoneNumbers && contact.phoneNumbers.length > 0) {
                     phoneNumber = contact.phoneNumbers[index].value;
                     phoneType = contact.phoneNumbers[index].type;
-                    contactWrapper = jQuery('<a></a>').attr('href','tel:' + phoneNumber);
+                    contactWrapper = jQuery('<a class="contact-list-item" ></a>').attr('id',phoneNumber);
                     listItem.append(contactWrapper);
                 }
                 // Add name
@@ -1329,6 +1329,53 @@ var app = {
         }
 
         document.addEventListener("deviceready", ContactsReady, false);
+
+        /** Bind add contact page row click (add contact to group)
+         */
+        $('#contact-list li a.contact-list-item').live('click', function() {
+            e.preventDefault();
+            var phoneNumber = $(this).children('a').attr('id').val();
+            if (phoneNumber.substr(0, 1) == '+') {
+                phoneNumber = me.userExitCode + phoneNumber.substr(1);
+            }
+            phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
+            
+            var data = {
+                'name': $(this).children('h3').val(),
+                'phone_number': phoneNumber,
+                'part': 'contact'
+            };
+            $.ajax({
+                url: me.protocol+me.url+'/groups/validates?u='+me.fullPhoneNumber+'&p='+me.password,
+                type: 'POST',
+                data: $.param(data),
+                beforeSend: function() {
+                    me.loadingTimers.push(setTimeout(function() {
+                        $.mobile.loading('show');
+                    }, 1000));
+                },
+                complete: function() {
+                    me.clearTimeouts();
+                    $.mobile.loading('hide');
+                },
+                success: function(resp) {
+                    resp = JSON.parse(resp);
+                    if (resp.status == 'OK') {
+                        data['phone_number_user'] = data['phone_number'];
+                        me.groupData['contacts'].push(data);
+                        me.updateNewGroupPage.call(me);
+                        $.mobile.changePage('#newgroup', {reverse: false});
+                    } else {
+                        me.ajaxAlert('addcontactfromcontact', 'Please ensure that you have entered your contact\'s name and phone number are saved correctly then try again.');
+                    }
+                },
+                error: function() {
+                    me.ajaxAlert('addcontactfromcontact');
+                }
+            });
+        });
+
+
 
 
         /**
@@ -1374,7 +1421,7 @@ var app = {
                         me.groupData['contacts'].push(data);
                         me.updateNewGroupPage.call(me);
                         $('#addcontactfromnumber-name, #addcontactfromnumber-number').val('');
-                        $.mobile.changePage('#newgroup', {reverse: true});
+                        $.mobile.changePage('#newgroup', {reverse: false});
                     } else {
                         me.ajaxAlert('addcontactfromnumber', 'Please ensure that you have entered your contact\'s name and phone number correctly then try again.');
                     }
