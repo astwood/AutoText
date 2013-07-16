@@ -1285,8 +1285,8 @@ var app = {
 
                 var listItem = jQuery('<li data-icon="plus"></li>');
 
-                // ContactWrapper around each list item
-                var contactWrapper = listItem;
+                // ContactWrapper to go around each list item
+                var contactWrapper = '';
 
                 var phoneNumber = null;
                 if (null !== contact.phoneNumbers && contact.phoneNumbers.length > 0) {
@@ -1294,7 +1294,8 @@ var app = {
                     phoneType = contact.phoneNumbers[index].type;
                     contactWrapper = jQuery('<a></a>').attr({
                         id: phoneNumber,
-                        class: 'contact-list-item'
+                        class: 'contact-list-item',
+                        href: '#'
                         });
                     listItem.append(contactWrapper);
                 }
@@ -1333,22 +1334,28 @@ var app = {
 
         document.addEventListener("deviceready", ContactsReady, false);
 
-        /** Bind add contact page row click (add contact to group)
+        /** Bind add from contact page row click (add contact to group)
          */
-        $('#contact-list a.contact-list-item').live('click', function() {
+
+         $("#contact-list").on("click", "a", function(event){
+            event.preventDefault();
+            var me = this;
             console.log('The event listener is working');
-            e.preventDefault();
-            var phoneNumber = $(this).children('a').attr('id').val();
+            
+            var phoneNumber = me.attr('id').text();
+            console.log('phoneNumber is being sent');
             if (phoneNumber.substr(0, 1) == '+') {
                 phoneNumber = me.userExitCode + phoneNumber.substr(1);
             }
             phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
             
             var data = {
-                'name': $(this).children('h3').val(),
+                'name': me.children('h3').val(),
                 'phone_number': phoneNumber,
                 'part': 'contact'
             };
+            
+            console.log('setting data OK');
             $.ajax({
                 url: me.protocol+me.url+'/groups/validates?u='+me.fullPhoneNumber+'&p='+me.password,
                 type: 'POST',
@@ -1357,10 +1364,12 @@ var app = {
                     me.loadingTimers.push(setTimeout(function() {
                         $.mobile.loading('show');
                     }, 1000));
+                    console.log('beforesend OK');
                 },
                 complete: function() {
                     me.clearTimeouts();
                     $.mobile.loading('hide');
+                    console.log('complete OK')
                 },
                 success: function(resp) {
                     resp = JSON.parse(resp);
@@ -1371,10 +1380,12 @@ var app = {
                         $.mobile.changePage('#newgroup', {reverse: false});
                     } else {
                         me.ajaxAlert('addcontactfromcontact', 'Please ensure that you have entered your contact\'s name and phone number are saved correctly then try again.');
+                        console.log('success for error response');
                     }
                 },
                 error: function() {
                     me.ajaxAlert('addcontactfromcontact');
+                    console.log('error returned');
                 }
             });
         });

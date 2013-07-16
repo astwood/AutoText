@@ -800,6 +800,11 @@
 
         </div> <!-- addcontactfromcontact -->
         
+        <script type="text/javascript">
+            window.onerror = function(message, url, lineNumber) {
+            console.log("Error: "+message+" in "+url+" at line "+lineNumber);
+            }
+        </script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/jquery/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="js/jquery/jquery-migrate-1.1.0.min.js"></script>
