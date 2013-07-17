@@ -1315,6 +1315,7 @@ var app = {
             me.ajaxAlert('addcontactfromcontact', 'Your phone book seems unavaiable at present please trying reaccessing.');;
         }
 
+        //Sorts contacts by first name
         function contactSort(a,b) {
             var a_name = null !== a.name.familyName ? a.name.familyName : a.name.formatted,
                 b_name = null !== b.name.familyName ? b.name.familyName : b.name.formatted
@@ -1334,24 +1335,24 @@ var app = {
 
             $("#contact-list").on("click", "a", function(event){
             event.preventDefault();
-            var me = this;
+            
             console.log('The event listener is working');
             
-            var phoneNumber = me.attr('id').text();
-            console.log('phoneNumber is being sent');
+            var phoneNumber = $(this).attr('id');
+            console.log('phoneNumber is being set');
             if (phoneNumber.substr(0, 1) == '+') {
                 phoneNumber = me.userExitCode + phoneNumber.substr(1);
             }
             phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
             
             var data = {
-                'name': me.children('h3').val(),
+                'name': $(this).children('h3').val(),
                 'phone_number': phoneNumber,
                 'part': 'contact'
             };
             
             console.log('setting data OK');
-            $.ajax({
+                $.ajax({
                 url: me.protocol+me.url+'/groups/validates?u='+me.fullPhoneNumber+'&p='+me.password,
                 type: 'POST',
                 data: $.param(data),
@@ -1359,12 +1360,10 @@ var app = {
                     me.loadingTimers.push(setTimeout(function() {
                         $.mobile.loading('show');
                     }, 1000));
-                    console.log('beforesend OK');
                 },
                 complete: function() {
                     me.clearTimeouts();
                     $.mobile.loading('hide');
-                    console.log('complete OK')
                 },
                 success: function(resp) {
                     resp = JSON.parse(resp);
@@ -1372,15 +1371,14 @@ var app = {
                         data['phone_number_user'] = data['phone_number'];
                         me.groupData['contacts'].push(data);
                         me.updateNewGroupPage.call(me);
+                        $('#addcontactfromnumber-name, #addcontactfromnumber-number').val('');
                         $.mobile.changePage('#newgroup', {reverse: false});
                     } else {
-                        me.ajaxAlert('addcontactfromcontact', 'Please ensure that you have entered your contact\'s name and phone number are saved correctly then try again.');
-                        console.log('success for error response');
+                        me.ajaxAlert('addcontactfromnumber', 'Please ensure that you have entered your contact\'s name and phone number correctly then try again.');
                     }
                 },
                 error: function() {
-                    me.ajaxAlert('addcontactfromcontact');
-                    console.log('error returned');
+                    me.ajaxAlert('addcontactfromnumber');
                 }
             });
         });
