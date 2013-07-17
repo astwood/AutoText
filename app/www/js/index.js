@@ -1250,20 +1250,23 @@ var app = {
         });
         
         /**
-         * Bind groups page add from contact button
+         * Bind groups page add from contact to button click
          */
         $('#add-from-contact').live('click', function() {
             me.groupData['name'] = $('#newgroup-name').val();
             $.mobile.changePage('#addcontactfromcontact');
         });
+       
 
         /**
          * Generates list of contacts on add contact from contact page
          */
         function ContactsReady() {
-        var options = new ContactFindOptions();
-        var fields = ['name', 'phoneNumbers'];
-        options.multiple = true;
+        var options = {
+            filter: "",
+            multiple: true,
+        };
+        var fields = ['*'];
         navigator.contacts.find(fields, onSuccess, onError, options);
         }
 
@@ -1329,6 +1332,7 @@ var app = {
         }
 
         document.addEventListener("deviceready", ContactsReady, false);
+
 
         /** Bind add from contact page row click (add contact to group)
          */
