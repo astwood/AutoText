@@ -30,11 +30,13 @@
     -->
     <preference name="permissions"                value="none"/>
 
+    <!-- Note many prefrences, splash, icons etc set here work with build.phonegap.com not once you build in X-Code-->
+
     <!-- Customize your app and platform with the preference element. -->
     <preference name="phonegap-version"           value="2.9.0" />          <!-- all: current version of PhoneGap -->
     <preference name="orientation"                value="portrait" />        <!-- all: possible values handset, tablet, or universal -->
-    <preference name="target-device"              value="handset" />      <!-- all: hides the status bar at the top of the screen -->
-    <preference name="webviewbounce"              value="true" />           <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
+    <preference name="target-device"              value="handset" />      <!-- ios: device to run on -->
+    <preference name="webviewbounce"              value="false" />           <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
     <preference name="show-splash-screen-spinner" value="false" />
     <preference name="load-url-timeout"           value="30000" />
     <preference name="splash-screen-duration"     value="1" />
