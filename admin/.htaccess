@@ -6,5 +6,5 @@
 
 AuthType Basic
 AuthName "Auto Text"
-AuthUserFile C:/Users/Arron/Dropbox/SkyDrive/Business/Internal/www/text-scheduler/admin/.htpasswd
+AuthUserFile D:/www-autotext/app/admin/.htpasswd
 Require valid-user
