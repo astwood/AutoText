@@ -12,6 +12,7 @@
         <link rel="stylesheet" type="text/css" href="css/jquery/jquery.progressbar.min.css" />
         <link rel="stylesheet" type="text/css" href="css/mobiscroll/mobiscroll.custom-2.4.4.min.css" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" type="text/css" href="css/fix.css" />
         <title>AutoText</title>
     </head>
     <body style="display: none;">
@@ -246,7 +247,10 @@
                     <label for="new-recipient">To:</label>
                     <input name="new-recipient" id="new-recipient" />
                 </div>
-
+                <div>
+                    <a href="#" data-role="button" class="btn-add-contact" data-theme="b" data-transition="slideup" id="addTo-from-contacts">Add</a>    
+                </div>
+                
                 <div class="bar-link" id="new-status">
                     <a href="#status-dialog" data-transition="slideup">
                         <span class="floatL">Status:</span><span class="floatR" id="new-status-text"></span>
@@ -261,7 +265,7 @@
                         <div class="arrow"></div>
                     </a>
                 </div>
-
+                
                 <div class="bubble" id="new-content-bubble"></div>
 
                 <div id="new-to-bottom">
@@ -281,7 +285,29 @@
                 <div class="dialog-overlay"></div>
             </div>
         </div> <!-- new -->
+        
+        <div data-role="page" id="addcontactsfromdevise">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Add From Contacts</h1>
+                <a href="#" class="back">Back</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
 
+            <div data-role="content">
+                
+                <ul data-role="listview" data-divider-theme="b" data-inset="false" id="devise-contacts" data-filter-placeholder="Search Your Contacts or Add Number" data-filter="true" data-clear-btn="true">
+                    
+                </ul>
+                <div id="customNumberWrap" class="hidden">
+                    <a href="#" data-role="button" id="btn-add-custom-number" data-theme="b" data-transition="slideup">Add Number</a>    
+                </div>
+            </div>
+            
+
+        </div> <!-- addcontactsfromdevise -->
+        
         <div data-role="page" id="status-dialog">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
                 <h1>Message Status</h1>
@@ -753,22 +779,25 @@
                     <h2 id="newgroup-members-title">Members</h2>
 
                     <ul data-role="listview" id="newgroup-contacts-list">
-                        <li id="newgroup-contact-template" style="display: none;"><div class="group-contact">
-                            <h3><b class="contact-name"></b></h3>
-                            <p class="ui-li-aside account-creds">
-                                <span class="contact-number"></span>
-                            </p>
-                        </div></li>
+                        <li id="newgroup-contact-template" style="display: none;">
+                            <div class="group-contact">
+                                <h3><b class="contact-name"></b></h3>
+                                <p class="ui-li-aside account-creds">
+                                    <span class="contact-number"></span>
+                                </p>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div> <!-- newgroup -->
 
          <div data-role="page" id="addcontactfromnumber">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
-                <h1>Add a Number</h1>
+             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav" class="page-header">
+                <h1>
+                    <span class="page-title">Add a Number</span>
+                </h1>
                 <a href="#" class="back">Back</a>
-                <a href="#" class="save">Save</a>
             </div>
             <div class="error">
                 <div class="inner">Something went wrong, please try again.</div>
@@ -795,9 +824,10 @@
 
             <div data-role="content">
                 <ul data-role="listview" data-divider-theme="b" data-inset="false" id="contact-list" data-filter-placeholder="Search..." data-filter="true">
+                    <li><a href="#">&nbsp;</a></li>
                 </ul>
             </div>
-
+            
         </div> <!-- addcontactfromcontact -->
 
         <!--Top script is just a debug script that outputs any js bugs to the console-->
@@ -807,6 +837,7 @@
             }
         </script>
         <script type="text/javascript" src="cordova.js"></script>
+        <!--<script type="text/javascript" src="cordova.mock.js"></script>-->
         <script type="text/javascript" src="js/jquery/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="js/jquery/jquery-migrate-1.1.0.min.js"></script>
         <script type="text/javascript" src="js/jquery/jquery.mobile-1.2.0.min.js"></script>
@@ -818,6 +849,7 @@
         <script type="text/javascript" src="js/mobiscroll/mobiscroll.custom-2.4.4.min.js"></script>
         <script type="text/javascript" src="js/moment/moment.min.js"></script>
         <script type="text/javascript" src="js/fastclick/fastclick.js"></script>
+        <script type="text/javascript" src="js/autotext.services.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
             window.addEventListener('load', function() {

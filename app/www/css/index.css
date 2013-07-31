@@ -418,7 +418,13 @@ form {
     color: #000 !important;
     text-shadow: none !important;
 }
-.ui-content .groups-schedule-link, .ui-content .groups-schedule-link:hover, .ui-content .reset-password-link, .ui-content .reset-password-link:hover, .ui-content .logout-link, .ui-content .logout-link:hover, .ui-content #account-purchase-btn, .ui-content #account-purchase-btn:hover, #newgroup .ui-content .ui-btn, #help .ui-content .ui-btn, #help-1 .ui-content .ui-btn, #help-2 .ui-content .ui-btn, #help-3 .ui-content .ui-btn, #help-4 .ui-content .ui-btn, #help-5 .ui-content .ui-btn, #help-6 .ui-content .ui-btn, #help-7 .ui-content .ui-btn, #message-repeats .ui-content .ui-btn, #schedule-options .ui-content .ui-btn, #purchase .ui-content .ui-btn {
+.ui-content .groups-schedule-link, .ui-content .groups-schedule-link:hover, .ui-content .reset-password-link, .ui-content .reset-password-link:hover, 
+.ui-content .logout-link,
+.ui-content .btn-add-contact,
+.ui-content .logout-link:hover,
+.ui-content .btn-add-contact:hover,
+#btn-add-custom-number,
+.ui-content #account-purchase-btn, .ui-content #account-purchase-btn:hover, #newgroup .ui-content .ui-btn, #help .ui-content .ui-btn, #help-1 .ui-content .ui-btn, #help-2 .ui-content .ui-btn, #help-3 .ui-content .ui-btn, #help-4 .ui-content .ui-btn, #help-5 .ui-content .ui-btn, #help-6 .ui-content .ui-btn, #help-7 .ui-content .ui-btn, #message-repeats .ui-content .ui-btn, #schedule-options .ui-content .ui-btn, #purchase .ui-content .ui-btn {
     border-color: #1b353f !important;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -521,7 +527,9 @@ form {
 #settings li .ui-btn-text, #account li .ui-btn-text {
     padding-left: 1em;
 }
-#settings .reset-password-link, #settings .logout-link, #account-purchase-btn {
+#settings .reset-password-link, #settings .logout-link, #account-purchase-btn,
+#new .btn-add-contact,
+#new #btn-add-custom-number {
     width: 85%;
     margin: 0 auto;
 }
@@ -894,6 +902,39 @@ input.ui-disabled {
 
 p.capitalize {
     text-transform: capitalize;
+}
+#addcontactsfromdevise li.ui-btn span.ui-icon-arrow-r {
+    display: none;
+}
+div.contact-item-check {
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    width: 18px;
+}
+.contact-item-check .ui-icon {
+    display: block;
+}
+.contact-item-name {
+    font-size: 20px;
+    font-weight: bold;
+    padding-top: 5px;
+}
+.contact-item-number {
+    color: #606060;
+    padding-bottom: 10px;
+}
+.contact-number-custom div.ui-btn-text a.ui-link-inherit {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px 15px 15px;
+}
+.contact-number-custom span.ui-icon-delete {
+    position: absolute;
+    top: 10px;
+}
+.hidden {
+    display: none;
 }
 
 /*Media Query for iPhone 4/4g (3g is default values)*/

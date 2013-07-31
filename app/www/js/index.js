@@ -1,3 +1,8 @@
+/// <reference path="autotext.services.js" />
+
+window.devSettings = {
+    isDebug: false
+};
 var app = {
     protocol: 'https://',
     url: 'app.autotext.co/api',
@@ -123,11 +128,22 @@ var app = {
                     $('#forgotten-country option, #login-country option, #register-country option').remove();
                     var i = 0;
                     $.each(resp.data, function(row) {
-                       $('#forgotten-country, #login-country, #register-country').append('<option value="'+row+'"'+(i++ < 1 ? ' selected="selected"' : '')+'>'+resp.data[row]+'</option>') 
+                        var selectedStr = "";
+                        if (devSettings.isDebug) {
+                            if (row == "GB") {
+                                selectedStr = ' selected="selected"';
+                            }
+                        } else if (i++ < 1) {
+                            selectedStr = ' selected="selected"';
+                        }
+                        $('#forgotten-country, #login-country, #register-country').append('<option value="' + row + '"' + selectedStr + '>' + resp.data[row] + '</option>');
                     });
+
                     try {
-                        $('#forgotten-country, #login-country, #register-country').selectmenu('refresh');
-                    } catch (e) { }
+                        $('#forgotten-country, #login-country, #register-country').selectmenu().selectmenu('refresh');
+                    } catch (e) {
+                        alert(e);
+                    }
                     $('#login-country').trigger('change');
                 } else {
                     me.ajaxAlert($.mobile.activePage.attr('id'));
@@ -144,6 +160,11 @@ var app = {
     doBinds: function() {
         var me = this;
         
+        if(devSettings.isDebug) {
+            $("#login-phone_number").val("07960270356");
+            $("#login-password").val("autotext");
+        }
+
         /**
          * Opens external links in iOS Safari
          */
@@ -300,7 +321,9 @@ var app = {
          */
         $('.product-btn').live('click', function() {
             var id = $(this).attr('id').replace('product-btn-', '');
-            console.log(id);
+            var credits = $(this).attr('data-value') * 1;
+            console.log(id + ':' + credits);
+            
         });
         
         /**
@@ -644,16 +667,16 @@ var app = {
          * Bind message edit page save button
          */
         $('#new .save').live('click', function() {
-
-                var data = {
-                    'recipient': $('#new-recipient').val(),
-                    'content': $('#new-content').val(),
-                    'reminder': me.reminding ? '1' : '0',
-                    'part': 'recipient_content'
-                };
-                $.extend(me.newData, data);
-                $.extend(me.editData, data);
-                me.saveNew.call(me);
+            //todo: edit bug
+            var data = {
+                'recipient': $('#new-recipient').val(),
+                'content': $('#new-content').val(),
+                'reminder': me.reminding ? '1' : '0',
+                'part': 'recipient_content'
+            };
+            $.extend(me.newData, data);
+            $.extend(me.editData, data);
+            me.saveNew.call(me);
         });
         /**
          * Bind message recipient and content fields to enable/disable submit/save buttons. Also saves draft
@@ -770,6 +793,54 @@ var app = {
                     allowSamePageTransition: true
                 });
             }
+        });
+
+        $('#new #addTo-from-contacts').live('click', function (e) {
+            if (!$(this).hasClass('link-disabled')) {
+                me.contactsPage.call(me);
+                $.mobile.changePage('#addcontactsfromdevise');
+            }
+        });
+        /**
+         * Bind contacts back button
+         */
+        $('#addcontactsfromdevise .back').live('click', function() {
+            var selectedNumbers = [];
+            $('#devise-contacts li.contact-number-custom').each(function() {
+                selectedNumbers.push($.trim($(this).find(".ui-btn-text>a").text()));
+            });
+            $('#devise-contacts li.contact-number-phone').each(function() {
+                if ($(this).find("span.ui-icon-checkbox-on").length > 0) {
+                    selectedNumbers.push($(this).find(".contact-item-number").text());
+                }
+            });
+            $("#new-recipient").val(selectedNumbers.join(','));
+            $.mobile.changePage('#new');
+        });
+        
+
+        $('#addcontactsfromdevise input[data-type="search"]').live("keyup", function() {
+            var $listview = $('#devise-contacts');
+            if ($listview.children(':visible').length === 0) {
+                $('#customNumberWrap').show();
+            } else {
+                $('#customNumberWrap').hide();
+            }
+        });
+        
+        $("#addcontactsfromdevise a#btn-add-custom-number").live("click", function () {
+            var $dom = $("#addcontactsfromdevise").find('input[data-type="search"]');
+            var number = $dom.val();
+            var item = '<li class="contact-number-custom ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-btn-up-c" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c">\
+                        <div class="ui-btn-inner ui-li">\
+                            <div class="ui-btn-text">\
+                                <a href="#" class="ui-link-inherit">'+number+'\
+                            <span class="ui-icon ui-icon-delete ui-icon-shadow">&nbsp;</span></a>\
+                            </div>\
+                        </div>\
+                    </li>';
+            $('#devise-contacts').prepend(item);
+            $dom.val("").trigger("keyup");
         });
         
         /**
@@ -1189,7 +1260,7 @@ var app = {
             $('#login-country option:selected').removeAttr('selected');
             $('#login-country option:first').attr('selected', 'selected');
             try {
-                $('#login-country').selectmenu('refresh');
+                $('#login-country').selectmenu().selectmenu('refresh');
             } catch (e) { }
             $('#login-phone_number, #login-password').val('');
             $('#settings .dialog-overlay, #logout-confirm').hide();
@@ -1254,89 +1325,25 @@ var app = {
          */
         $('#add-from-contact').live('click', function() {
             me.groupData['name'] = $('#newgroup-name').val();
+            me.addFromContactPage.call(me);
             $.mobile.changePage('#addcontactfromcontact');
         });
-       
 
-        /**
-         * Generates list of contacts on add contact from contact page
-         */
-        function ContactsReady() {
-        var options = {
-            filter: "",
-            multiple: true,
-        };
-        var fields = ['*'];
-        navigator.contacts.find(fields, onSuccess, onError, options);
-        }
-
-        function onSuccess(contacts) {
-        var contactList = jQuery('#contact-list');
-
-        contacts.sort(contactSort);
-
-        //Build list and loop for each contact
-        jQuery.each(contacts, function (index, contact) {
-
-            //Loop for each number within each contact and add as new row
-            jQuery.each(contact.phoneNumbers, function (index, phoneNumbers) {
-
-                var listItem = jQuery('<li data-icon="plus"></li>');
-
-                // ContactWrapper to go around each list item
-                var contactWrapper = '';
-
-                var phoneNumber = null;
-                if (null !== contact.phoneNumbers && contact.phoneNumbers.length > 0) {
-                    phoneNumber = contact.phoneNumbers[index].value;
-                    phoneType = contact.phoneNumbers[index].type;
-                    contactWrapper = jQuery('<a></a>').attr({
-                        id: phoneNumber,
-                        class: 'contact-list-item',
-                        href: '#'
-                        });
-                    listItem.append(contactWrapper);
-                }
-                // Add name
-                contactWrapper.append(jQuery('<h3></h3>').text(contact.name.formatted));
-                // Add Phonenumber to wrapper
-                if (null !== phoneNumber) {
-                    contactWrapper.append(jQuery('<p class = "capitalize"></p>').text(phoneType + ": " + phoneNumber));
-                }
-                // Add ListItem to list
-                contactList.append(listItem);
-
-                
-            });
-
-        });
-        // Refresh listview to enable jQuery Mobile functionality
-        contactList.listview('refresh');
-        }
-
-        function onError(err) {
-            me.ajaxAlert('addcontactfromcontact', 'Your phone book seems unavaiable at present please trying reaccessing.');;
-        }
-
-        //Sorts contacts by first name
-        function contactSort(a,b) {
-            var a_name = null !== a.name.familyName ? a.name.familyName : a.name.formatted,
-                b_name = null !== b.name.familyName ? b.name.familyName : b.name.formatted
-
-            if (a_name != b_name) {
-                a_name = a.name.formatted;
-                b_name = b.name.formatted;
+        $("ul#devise-contacts li.contact-number-phone").live("click", function() {
+            var $check = $(this).find(".contact-item-check span");
+            if($check.hasClass("ui-icon-checkbox-off")) {
+                $check.removeClass("ui-icon-checkbox-off").addClass("ui-icon-checkbox-on");
+                $('#addcontactsfromdevise input[data-type="search"]').val('');
             }
+            else {
+                $check.removeClass("ui-icon-checkbox-on").addClass("ui-icon-checkbox-off");
+            }
+        });
+        $("ul#devise-contacts li.contact-number-custom span.ui-icon-delete").live("click", function() {
+            $(this).closest("li.contact-number-custom").remove();
+        });
 
-            return a_name > b_name ? 1 : -1;
-        }
-
-        document.addEventListener("deviceready", ContactsReady, false);
-
-
-        /** Bind add from contact page row click (add contact to group)
-         */
-
+        
         $("#contact-list").on("click", "a", function(event){
             event.preventDefault();
             
@@ -1440,7 +1447,7 @@ var app = {
                 }
             });
         });
-        
+
         /**
          * Bind back buttons throughout app
          */
@@ -1540,6 +1547,152 @@ var app = {
             me.newActualSave.call(me);
         }
     },
+    
+    addFromContactPage:function () {
+        var me = this;
+        var options = {
+            filter: "",
+            multiple: true,
+        };
+        var fields = ['*'];
+        navigator.contacts.find(fields, onSuccess, onError, options);
+        
+        function onSuccess(contacts) {
+            var contactList = jQuery('#contact-list');
+            contactList.empty();
+            contacts.sort(contactSort);
+
+            //Build list and loop for each contact
+            jQuery.each(contacts, function (index, contact) {
+                if (contact.phoneNumbers != undefined && contact.phoneNumbers != null && contact.phoneNumbers.length > 0) {
+                    //Loop for each number within each contact and add as new row
+                    jQuery.each(contact.phoneNumbers, function(index, phoneNumbers) {
+                        try {
+                            var listItem = jQuery('<li data-icon="plus"></li>');
+
+                            // ContactWrapper to go around each list item
+                            var contactWrapper = '';
+
+                            var phoneNumber = null;
+                            if (null !== contact.phoneNumbers && contact.phoneNumbers.length > 0) {
+                                phoneNumber = contact.phoneNumbers[index].value;
+                                phoneType = contact.phoneNumbers[index].type;
+                                contactWrapper = jQuery('<a></a>').attr({
+                                    id: phoneNumber,
+                                    cssclass: 'contact-list-item',
+                                    href: '#'
+                                });
+                                listItem.append(contactWrapper);
+                            }
+                            // Add name
+                            contactWrapper.append(jQuery('<h3></h3>').text(contact.name.formatted));
+                            // Add Phonenumber to wrapper
+                            if (null !== phoneNumber) {
+                                contactWrapper.append(jQuery('<p class = "capitalize"></p>').text(phoneType + ": " + phoneNumber));
+                            }
+                            // Add ListItem to list
+                            contactList.append(listItem);
+                        }
+                        catch(ex) {
+                            console.log("add from contact error: " + ex);
+                        }
+                    });
+                }
+            });
+            try {
+                // Refresh listview to enable jQuery Mobile functionality
+                contactList.listview('refresh');
+            }
+            catch(exlistview) {
+                console.log("refresh listview error: " + exlistview);
+            }
+        }
+
+        function onError(err) {
+            me.ajaxAlert('addcontactfromcontact', 'Your phone book seems unavaiable at present please trying reaccessing.');;
+        }
+        
+        function contactSort(a, b) {
+            if (a.name == undefined || b.name == undefined) {
+                return 1;
+            }
+            var a_name = null !== a.name.familyName ? a.name.familyName : a.name.formatted,
+                b_name = null !== b.name.familyName ? b.name.familyName : b.name.formatted;
+
+            if (a_name != b_name) {
+                a_name = a.name.formatted;
+                b_name = b.name.formatted;
+            }
+
+            return a_name > b_name ? 1 : -1;
+        }
+    },
+
+    /**
+     * Load content for contacts listing
+     */
+    contactsPage: function () {
+        var me = this;
+        var existingNumbers = $("#new #new-recipient").val().split(',');
+        
+        function render(contactItems) {
+            var html = "";
+            for (var i = 0; i < contactItems.length; i++) {
+                var item = contactItems[i];
+                if (item.number == "") {
+                    continue;
+                }
+                var checkedclass = item.checked ? "ui-icon-checkbox-on" : "ui-icon-checkbox-off";
+                
+                if (item.isCustom()) {
+                    html += '<li class="contact-number-custom">\
+                    <a href="#">\
+                        ' + item.number + '<span class="ui-icon ui-icon-delete ui-icon-shadow">&nbsp;</span>\
+                    </a>\
+                </li>';
+                } else {
+                    html += '<li class="contact-number-phone">\
+                        <a class="li-contact-item" href="#">\
+                            <div class="contact-item-name">'+item.name+'</div>\
+                            <div class="contact-item-number">'+item.number+'</div>\
+                            <div class="contact-item-check">\
+                                <span class="ui-icon '+checkedclass+' ui-icon-shadow">&nbsp;</span>\
+                            </div>\
+                        </a>\
+                    </li>';
+                }
+            }
+            $("#devise-contacts").html(html);
+            try {
+                $("#devise-contacts").listview("refresh");
+            }
+            catch (er) { }
+            $("ul#devise-contacts li.contact-number-custom span.ui-icon").removeClass("ui-icon-arrow-r").addClass("ui-icon-delete");
+        }
+
+        try {
+            var xxoptions = {
+                filter: "",
+                multiple: true,
+            };
+            var xxfields = ['*'];
+            navigator.contacts.find(xxfields, function (phoneContacts) {
+                try {
+                    var contactItems = autotext.services.contacts.parseContactItems(existingNumbers, phoneContacts);
+                    render(contactItems);
+                }
+                catch(ex) {
+                    alert("error: " + ex);
+                }
+            }, function(er) {
+                me.ajaxAlert('error: ' + er);
+            }, xxoptions);
+        }
+        catch(errContacts) {
+            alert(errContacts);
+        }
+    },
+
     /**
      * Schedule/edit message
      */
@@ -1585,16 +1738,16 @@ var app = {
         
         var data = me.editing ? me.editData : me.newData;
         if (data.recipient.length > 0) {
-            var tmp = [];
+            var tmpRecipients = [];
             var dataSplit = data.recipient.split(',');
             $.each(dataSplit, function(i) {
                 var phoneNumber = dataSplit[i];
                 if (phoneNumber.substr(0, 1) == '+') {
                     phoneNumber = me.userExitCode + phoneNumber.substr(1);
                 }
-                tmp.push(phoneNumber.replace(/[^0-9]/g, ''));
+                tmpRecipients.push(phoneNumber.replace(/[^0-9]/g, ''));
             });
-            data.recipient = tmp.join(',');
+            data.recipient = tmpRecipients.join(',');
             $('#new-recipient').val(data.recipient);
         }
         
@@ -2371,7 +2524,11 @@ var app = {
                     headerTxt = name;
                 }
                 break;
-                
+            case 'addcontactsfromdevise':
+                backTxt = 'Back';
+                headerTxt = 'Add From Contacts';
+                break;
+            
             case 'messagecredits':
                 backTxt = 'Help';
                 if (me.lastPageBeforeMessageCredits == 'status-dialog') {
@@ -2918,7 +3075,8 @@ var app = {
                 if (resp.status == 'OK') {
                     $('#purchase-product-list').html('');
                     $.each(resp.data, function(i) {
-                        var newRow = $('<a href="#" class="product-btn" data-role="button" id="product-btn-'+i+'">Purchase '+resp.data[i]+' credits for <span class="price-value"></span></a>');
+                        var value = resp.data[i];
+                        var newRow = $('<a href="#" class="product-btn" data-role="button" id="product-btn-' + i + '" data-value="' + value + '">Purchase ' + value + ' credits for <span class="price-value"></span></a>');
                         $('#purchase-product-list').append(newRow);
                     });
                     $('#purchase-product-list .product-btn').button();
@@ -3278,7 +3436,7 @@ var app = {
     updateDrafts: function(action, id, data, unsynced) {
         var me = this;
         if (typeof action != 'string') return false;
-        
+        //todo: a bug with $.cookie('drafts')
         var drafts = JSON.parse($.cookie('drafts'));
         switch (action) {
             default:
