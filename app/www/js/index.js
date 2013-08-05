@@ -1,7 +1,28 @@
 /// <reference path="autotext.services.js" />
 
 window.devSettings = {
-    isDebug: false
+    isDebug: true
+};
+
+function initPurchaseManager() {
+ try{
+     window.purchaseManager = window.plugins.inAppPurchaseManager;
+     purchaseManager.onPurchased = function(transactionIdentifier, productId, transactionReceipt) {
+        alert('purchased: ' + productId + ', raw:' + transactionIdentifier + ',' + transactionReceipt);
+        /* Give coins, enable subscriptions etc */
+    };
+     
+    purchaseManager.onRestored = function(transactionIdentifier, productId, transactionReceipt) {
+        alert('restored: ' + productId + ", raw: " + transactionIdentifier + ", " + transactionReceipt);
+        /* See the developer guide for details of what to do with this */
+    };
+    purchaseManager.onFailed = function(errno, errtext) {
+        alert('failed: ' + errtext + ", raw: " + errno);
+     };
+ }
+ catch(exini){
+ alert('init plugin err: '+exini);
+ }
 };
 var app = {
     protocol: 'https://',
@@ -98,6 +119,9 @@ var app = {
         $.ajaxSetup({
             timeout: 20000
         });
+        $(document).bind('inappPurchaseLoaded', function(){
+                         initPurchaseManager();
+                         });
         me.doBinds.call(me);
         me.loadCountries.call(me);
         $('body').show();
@@ -164,6 +188,8 @@ var app = {
             $("#login-phone_number").val("07960270356");
             $("#login-password").val("autotext");
         }
+
+        
 
         /**
          * Opens external links in iOS Safari
@@ -322,8 +348,19 @@ var app = {
         $('.product-btn').live('click', function() {
             var id = $(this).attr('id').replace('product-btn-', '');
             var credits = $(this).attr('data-value') * 1;
-            console.log(id + ':' + credits);
-            
+            alert(id + ':' + credits);
+            try {
+                               
+                    purchaseManager.requestProductData("novaaoo20130801", function(productId, title, description, price) {
+                    //alert("productId: " + productId + " title: " + title + " description: " + description + " price: " + price);
+                    purchaseManager.makePurchase(productId, 1);
+                }, function(errr) {
+                    alert("purchange callback error: " + errr);
+                });
+                }
+            catch (expurchange) {
+                alert("purchange error: " + expurchange);
+            }
         });
         
         /**
