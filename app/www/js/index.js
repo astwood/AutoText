@@ -1472,9 +1472,9 @@ var app = {
             $.mobile.changePage('#addcontactfromnumber');
         });
         /**
-         * Bind groups page add number save on back click button
+         * Bind groups page add number save button
          */
-        $('#addcontactfromnumber .back').live('click', function() {
+        $('#addcontactfromnumber .save').live('click', function() {
             var phoneNumber = $('#addcontactfromnumber-number').val();
             if (phoneNumber.substr(0, 1) == '+') {
                 phoneNumber = me.userExitCode + phoneNumber.substr(1);
@@ -1517,6 +1517,14 @@ var app = {
                 }
             });
         });
+
+        /** Bind groups add from number page back button to clear fields **/
+
+
+        $('#addcontactfromnumber .back').live('click', function() {
+            $('#addcontactfromnumber-name').val("");
+            $('#addcontactfromnumber-number').val("");
+            });
 
         /**
          * Bind back buttons throughout app
