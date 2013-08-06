@@ -4,21 +4,53 @@ window.devSettings = {
     isDebug: true
 };
 
+window.logger = {
+actions:[],
+log:function(msg){
+    this.actions.push(msg);
+    if(this.actions.length<=1){
+        this._log();
+    }
+},
+_log:function(){
+    var me = this;
+    if(this.actions.length>0)
+    {
+        var firstItem = this.actions[0];
+        $("#log").html(firstItem);
+        this.actions.splice(0,1);
+    }
+    if(this.actions.length > 0){
+    setTimeout(function()
+              {
+                me._log();
+              },5000);
+    }
+    }
+};
+
 function initPurchaseManager() {
  try{
      window.purchaseManager = window.plugins.inAppPurchaseManager;
-     purchaseManager.onPurchased = function(transactionIdentifier, productId, transactionReceipt) {
-        alert('purchased: ' + productId + ', raw:' + transactionIdentifier + ',' + transactionReceipt);
-        /* Give coins, enable subscriptions etc */
-    };
+     window.plugins.inAppPurchaseManager.onPurchased = function(transactionIdentifier, productId, transactionReceipt) {
+         logger.log('purchased: ' + productId);
+         
+         // If failed a receipt validation on server, you can restore transaction this payment.
+         // window.plugins.inAppPurchaseManager.restoreCompletedTransactions();
+     }
      
-    purchaseManager.onRestored = function(transactionIdentifier, productId, transactionReceipt) {
-        alert('restored: ' + productId + ", raw: " + transactionIdentifier + ", " + transactionReceipt);
-        /* See the developer guide for details of what to do with this */
-    };
-    purchaseManager.onFailed = function(errno, errtext) {
-        alert('failed: ' + errtext + ", raw: " + errno);
-     };
+     // Perhaps It did rollback a transaction
+     window.plugins.inAppPurchaseManager.onRestored = function(transactionIdentifier, productId, transactionReceipt) {
+         logger.log('restored: ' + productId);
+         /* See the developer guide for details of what to do with this */
+     }
+     
+     // Failed to purchase an item
+     window.plugins.inAppPurchaseManager.onFailed = function(errno, errtext) {
+         logger.log('error: '+errtext);
+     }
+     logger.log('purchase inited.');
+     purchaseManager.restoreCompletedTransactions();
  }
  catch(exini){
  alert('init plugin err: '+exini);
@@ -119,9 +151,10 @@ var app = {
         $.ajaxSetup({
             timeout: 20000
         });
-        $(document).bind('inappPurchaseLoaded', function(){
+        $(document).bind('purchaseManagerLoaded', function(){
                          initPurchaseManager();
                          });
+        
         me.doBinds.call(me);
         me.loadCountries.call(me);
         $('body').show();
@@ -348,12 +381,12 @@ var app = {
         $('.product-btn').live('click', function() {
             var id = $(this).attr('id').replace('product-btn-', '');
             var credits = $(this).attr('data-value') * 1;
-            alert(id + ':' + credits);
+            logger.log(id + ':' + credits);
             try {
                                
-                    purchaseManager.requestProductData("novaaoo20130801", function(productId, title, description, price) {
-                    //alert("productId: " + productId + " title: " + title + " description: " + description + " price: " + price);
-                    purchaseManager.makePurchase(productId, 1);
+                    purchaseManager.requestProductData("com.software.novaapp03", function(result) {
+                    alert("productId: " + result.id + " title: " + result.title + " description: " + result.description + " price: " + result.price);
+                    purchaseManager.makePurchase(result.id, 1);
                 }, function(errr) {
                     alert("purchange callback error: " + errr);
                 });

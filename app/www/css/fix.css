@@ -27,3 +27,4 @@
 #no-results {
     display : none;
 }
+#log{ position:fixed; width:100%; bottom:0px; z-index:9999; background-color:#aaaaaa; padding:5px;}
