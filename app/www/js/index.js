@@ -1472,7 +1472,7 @@ var app = {
             $.mobile.changePage('#addcontactfromnumber');
         });
         /**
-         * Bind groups page add number save button
+         * Bind groups page add number save on back click button
          */
         $('#addcontactfromnumber .back').live('click', function() {
             var phoneNumber = $('#addcontactfromnumber-number').val();
