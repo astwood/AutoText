@@ -1474,7 +1474,7 @@ var app = {
         /**
          * Bind groups page add number save button
          */
-        $('#addcontactfromnumber .save').live('click', function() {
+        $('#addcontactfromnumber .back').live('click', function() {
             var phoneNumber = $('#addcontactfromnumber-number').val();
             if (phoneNumber.substr(0, 1) == '+') {
                 phoneNumber = me.userExitCode + phoneNumber.substr(1);
