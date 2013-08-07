@@ -2418,7 +2418,7 @@ var app = {
                     $('#new .edit-id').val('');
 
                     if (me.reminding) {
-                        $('#new-status, #new-schedule').hide();
+                        $('#new-status, #new-schedule, #addTo-from-contacts, #addTo-from-contacts-wrapper').hide();
                         $('#new-recipient').parents('.fieldcontain').hide();
                         $('#new .ui-content').addClass('no-to');
                         $('#new-content').removeClass('bigger-max-height biggest-no-to-max-height');

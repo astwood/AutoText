@@ -36,3 +36,24 @@
      padding:5px;
     display: none;
 }
+
+/* Adjust log display property if want to see log output when running app */
+
+#addTo-from-contacts-wrapper{
+    background: #fff;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 43px;
+    border-bottom: 1px solid #de8ebc;
+    height: 40px;
+    padding-top:4px;
+    padding-bottom:3px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#addTo-from-contacts {
+    margin-right: auto;
+    margin-left: auto;
+}
