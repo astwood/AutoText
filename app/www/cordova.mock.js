@@ -20,6 +20,10 @@ navigator.contacts = {
             },
             {
                 displayName: "Leo",
+                name: {
+                    familyName: 'Cai',
+                    formatted:'Leo Cai'
+                },
                 phoneNumbers: [
                     {
                         type: "string",

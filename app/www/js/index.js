@@ -752,21 +752,25 @@ var app = {
          * Bind message recipient and content fields to enable/disable submit/save buttons. Also saves draft
          */
         $('#new-recipient, #new-content').live('keyup', function() {
+            saveNewToDraft();
+        });
+        
+        function saveNewToDraft() {
             var anyEmpty = false;
-            $('#new-recipient, #new-content').each(function() {
+            $('#new-recipient, #new-content').each(function () {
                 if ($(this).val().length < 1) anyEmpty = true;
             });
-            
+
             if (!anyEmpty) {
                 $('#new-submit-button').removeClass('ui-disabled');
             } else {
                 $('#new-submit-button').addClass('ui-disabled');
             }
-            
+
             if (me.editing && $('#new .save').text() != 'Save' && !me.stopDraftAddEdit) {
                 $('#new .save, #schedule-options .save').removeClass('cancel-state').find('.ui-btn-text').text('Save');
             }
-            
+
             if (!me.stopDraftAddEdit && (me.draftId == null || me.newDraft)) {
                 me.draftId = me.generateUUID();
                 me.newDraft = false;
@@ -777,7 +781,8 @@ var app = {
             } else {
                 me.stopDraftAddEdit = false;
             }
-        });
+        }
+
         /**
          * Bind message name and content fields to change page title
          */
@@ -884,7 +889,10 @@ var app = {
                     selectedNumbers.push($(this).find(".contact-item-number").text());
                 }
             });
+            
             $("#new-recipient").val(selectedNumbers.join(','));
+            me.stopDraftAddEdit = false;
+            saveNewToDraft();
             $.mobile.changePage('#new');
         });
         
@@ -1427,7 +1435,7 @@ var app = {
             phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
             
             var data = {
-                'name': $(this).children('h3').val(),
+                'name': $.trim($(this).children('h3').text()),
                 'phone_number': phoneNumber,
                 'part': 'contact'
                 };
@@ -1630,7 +1638,7 @@ var app = {
         function onSuccess(contacts) {
             var contactList = jQuery('#contact-list');
             contactList.empty();
-            contacts.sort(contactSort);
+            autotext.services.contacts.sort(contacts);
 
             //Build list and loop for each contact
             jQuery.each(contacts, function (index, contact) {
@@ -1680,21 +1688,6 @@ var app = {
 
         function onError(err) {
             me.ajaxAlert('addcontactfromcontact', 'Your phone book seems unavaiable at present please trying reaccessing.');;
-        }
-        
-        function contactSort(a, b) {
-            if (a.name == undefined || b.name == undefined) {
-                return 1;
-            }
-            var a_name = null !== a.name.familyName ? a.name.familyName : a.name.formatted,
-                b_name = null !== b.name.familyName ? b.name.familyName : b.name.formatted;
-
-            if (a_name != b_name) {
-                a_name = a.name.formatted;
-                b_name = b.name.formatted;
-            }
-
-            return a_name > b_name ? 1 : -1;
         }
     },
 
@@ -1748,6 +1741,7 @@ var app = {
             var xxfields = ['*'];
             navigator.contacts.find(xxfields, function (phoneContacts) {
                 try {
+                    autotext.services.contacts.sort(phoneContacts);
                     var contactItems = autotext.services.contacts.parseContactItems(existingNumbers, phoneContacts);
                     render(contactItems);
                 }
