@@ -2410,6 +2410,12 @@ var app = {
                 backTxt = 'Scheduled';
                 if (me.lastPageBeforeNew == 'history') backTxt = 'History';
                 if (me.lastPageBeforeNew == 'groups') backTxt = 'Groups';
+
+
+                if (me.reminding) {$('#addTo-from-contacts, #addTo-from-contacts-wrapper').hide()
+                } else {$('#addTo-from-contacts, #addTo-from-contacts-wrapper').show();
+                };
+
                 
                 me.canResetNewPage = true;
                 var data = $('#new .edit-id').val().split('&');
@@ -2418,7 +2424,7 @@ var app = {
                     $('#new .edit-id').val('');
 
                     if (me.reminding) {
-                        $('#new-status, #new-schedule, #addTo-from-contacts, #addTo-from-contacts-wrapper').hide();
+                        $('#new-status, #new-schedule').hide();
                         $('#new-recipient').parents('.fieldcontain').hide();
                         $('#new .ui-content').addClass('no-to');
                         $('#new-content').removeClass('bigger-max-height biggest-no-to-max-height');
