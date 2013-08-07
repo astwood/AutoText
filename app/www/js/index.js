@@ -1526,6 +1526,14 @@ var app = {
             });
         });
 
+        /** Bind groups add from number page back button to clear fields **/
+
+
+        $('#addcontactfromnumber .back').live('click', function() {
+            $('#addcontactfromnumber-name').val("");
+            $('#addcontactfromnumber-number').val("");
+            });
+
         /**
          * Bind back buttons throughout app
          */
