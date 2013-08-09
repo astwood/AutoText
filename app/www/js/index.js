@@ -30,32 +30,34 @@ _log:function(){
 };
 
 function initPurchaseManager() {
- try{
-     window.purchaseManager = window.plugins.inAppPurchaseManager;
-     window.plugins.inAppPurchaseManager.onPurchased = function(transactionIdentifier, productId, transactionReceipt) {
-         logger.log('purchased: ' + productId);
-         
-         // If failed a receipt validation on server, you can restore transaction this payment.
-         // window.plugins.inAppPurchaseManager.restoreCompletedTransactions();
-     }
-     
-     // Perhaps It did rollback a transaction
-     window.plugins.inAppPurchaseManager.onRestored = function(transactionIdentifier, productId, transactionReceipt) {
-         logger.log('restored: ' + productId);
-         /* See the developer guide for details of what to do with this */
-     }
-     
-     // Failed to purchase an item
-     window.plugins.inAppPurchaseManager.onFailed = function(errno, errtext) {
-         logger.log('error: '+errtext);
-     }
-     logger.log('purchase inited.');
-     purchaseManager.restoreCompletedTransactions();
- }
- catch(exini){
- alert('init plugin err: '+exini);
- }
-};
+    try {
+        window.purchaseManager = window.plugins.inAppPurchaseManager;
+        window.plugins.inAppPurchaseManager.onPurchased = function(transactionIdentifier, productId, transactionReceipt) {
+            logger.log('purchased: ' + productId);
+
+            // If failed a receipt validation on server, you can restore transaction this payment.
+            // window.plugins.inAppPurchaseManager.restoreCompletedTransactions();
+        };
+
+        // Perhaps It did rollback a transaction
+        window.plugins.inAppPurchaseManager.onRestored = function(transactionIdentifier, productId, transactionReceipt) {
+            logger.log('restored: ' + productId);
+            /* See the developer guide for details of what to do with this */
+        };
+
+        // Failed to purchase an item
+        window.plugins.inAppPurchaseManager.onFailed = function(errno, errtext) {
+            logger.log('error: ' + errtext);
+        };
+        logger.log('purchase inited.');
+        purchaseManager.restoreCompletedTransactions();
+    }
+    catch (exini) {
+        alert('init plugin err: ' + exini);
+    }
+}
+
+
 var app = {
     protocol: 'https://',
     url: 'app.autotext.co/api',
@@ -143,7 +145,7 @@ var app = {
         $('#account').live('pagebeforeshow', function() {me.accountPage.call(me);});
         $('#messagecredits').live('pagebeforeshow', function() {me.messageCreditsPage.call(me);});
         $('#groups').live('pagebeforeshow', function() {me.groupsPage.call(me);});
-        $('#newgroup').live('pagebeforeshow', function() {me.newGroupPage.call(me);});
+        $('#newgroup').live('pagebeforeshow', function () { me.newGroupPage.call(me); });
         $('#splash').live('pageshow', function() {me.splashPageShow.call(me);});
         $('#scheduled').live('pageshow', function() {me.scheduledPageShow.call(me);});
         $('#history').live('pageshow', function() {me.historyPageShow.call(me);});
@@ -156,11 +158,15 @@ var app = {
                          });
         
         me.doBinds.call(me);
+        autotext.services.contacts.init(function() {
+            autotext.pages.contactList.renderContactList();
+            autotext.pages.contactList.init();
+        });
+        autotext.pages.messageRecipients.init();
+        autotext.pages.addNumber.init();
         me.loadCountries.call(me);
         $('body').show();
     },
-    
-    
     
     /**
      * Loads the available countries and sets the select list options
@@ -323,6 +329,9 @@ var app = {
                         break;
                     case 'addcontactfromnumber':
                         $('#addcontactfromnumber .save').trigger('click');
+                        break;
+                    case 'addNumber':
+                        $('#addNumber .back').trigger('click');
                         break;
                 }
             }
@@ -752,36 +761,10 @@ var app = {
          * Bind message recipient and content fields to enable/disable submit/save buttons. Also saves draft
          */
         $('#new-recipient, #new-content').live('keyup', function() {
-            saveNewToDraft();
+            me.saveNewToDraft();
         });
         
-        function saveNewToDraft() {
-            var anyEmpty = false;
-            $('#new-recipient, #new-content').each(function () {
-                if ($(this).val().length < 1) anyEmpty = true;
-            });
-
-            if (!anyEmpty) {
-                $('#new-submit-button').removeClass('ui-disabled');
-            } else {
-                $('#new-submit-button').addClass('ui-disabled');
-            }
-
-            if (me.editing && $('#new .save').text() != 'Save' && !me.stopDraftAddEdit) {
-                $('#new .save, #schedule-options .save').removeClass('cancel-state').find('.ui-btn-text').text('Save');
-            }
-
-            if (!me.stopDraftAddEdit && (me.draftId == null || me.newDraft)) {
-                me.draftId = me.generateUUID();
-                me.newDraft = false;
-            }
-            if (!me.stopDraftAddEdit) {
-                me.updateDrafts('view', me.draftId);
-                me.updateDrafts('edit', me.draftId);
-            } else {
-                me.stopDraftAddEdit = false;
-            }
-        }
+        
 
         /**
          * Bind message name and content fields to change page title
@@ -872,53 +855,9 @@ var app = {
 
         $('#new #addTo-from-contacts').live('click', function (e) {
             if (!$(this).hasClass('link-disabled')) {
-                me.contactsPage.call(me);
-                $.mobile.changePage('#addcontactsfromdevise');
+                autotext.pages.messageRecipients.onLoaded($('#new #new-recipient').val().split(','));
+                $.mobile.changePage('#newMessageRecipients');
             }
-        });
-        /**
-         * Bind contacts back button
-         */
-        $('#addcontactsfromdevise .back').live('click', function() {
-            var selectedNumbers = [];
-            $('#devise-contacts li.contact-number-custom').each(function() {
-                selectedNumbers.push($.trim($(this).find(".ui-btn-text>a").text()));
-            });
-            $('#devise-contacts li.contact-number-phone').each(function() {
-                if ($(this).find("span.ui-icon-checkbox-on").length > 0) {
-                    selectedNumbers.push($(this).find(".contact-item-number").text());
-                }
-            });
-            
-            $("#new-recipient").val(selectedNumbers.join(','));
-            me.stopDraftAddEdit = false;
-            saveNewToDraft();
-            $.mobile.changePage('#new');
-        });
-        
-
-        $('#addcontactsfromdevise input[data-type="search"]').live("keyup", function() {
-            var $listview = $('#devise-contacts');
-            if ($listview.children(':visible').length === 0) {
-                $('#customNumberWrap').show();
-            } else {
-                $('#customNumberWrap').hide();
-            }
-        });
-        
-        $("#addcontactsfromdevise a#btn-add-custom-number").live("click", function () {
-            var $dom = $("#addcontactsfromdevise").find('input[data-type="search"]');
-            var number = $dom.val();
-            var item = '<li class="contact-number-custom ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-btn-up-c" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c">\
-                        <div class="ui-btn-inner ui-li">\
-                            <div class="ui-btn-text">\
-                                <a href="#" class="ui-link-inherit">'+number+'\
-                            <span class="ui-icon ui-icon-delete ui-icon-shadow">&nbsp;</span></a>\
-                            </div>\
-                        </div>\
-                    </li>';
-            $('#devise-contacts').prepend(item);
-            $dom.val("").trigger("keyup");
         });
         
         /**
@@ -1406,6 +1345,7 @@ var app = {
             me.addFromContactPage.call(me);
             $.mobile.changePage('#addcontactfromcontact');
         });
+        
 
         $("ul#devise-contacts li.contact-number-phone").live("click", function() {
             var $check = $(this).find(".contact-item-check span");
@@ -1422,55 +1362,6 @@ var app = {
         });
 
         
-        $("#contact-list").on("click", "a", function(event){
-            event.preventDefault();
-            
-            console.log('The event listener is working');
-            
-            var phoneNumber = $(this).attr('id');
-            console.log('phoneNumber is being set');
-                if (phoneNumber.substr(0, 1) == '+') {
-                    phoneNumber = me.userExitCode + phoneNumber.substr(1);
-                }
-            phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
-            
-            var data = {
-                'name': $.trim($(this).children('h3').text()),
-                'phone_number': phoneNumber,
-                'part': 'contact'
-                };
-        
-            console.log('setting data OK');
-
-            $.ajax({
-            url: me.protocol+me.url+'/groups/validates?u='+me.fullPhoneNumber+'&p='+me.password,
-            type: 'POST',
-            data: $.param(data),
-            beforeSend: function() {
-                me.loadingTimers.push(setTimeout(function() {
-                    $.mobile.loading('show');
-                }, 1000));
-            },
-            complete: function() {
-                me.clearTimeouts();
-                $.mobile.loading('hide');
-            },
-            success: function(resp) {
-                resp = JSON.parse(resp);
-                if (resp.status == 'OK') {
-                    data['phone_number_user'] = data['phone_number'];
-                    me.groupData['contacts'].push(data);
-                    me.updateNewGroupPage.call(me);
-                    $.mobile.changePage('#newgroup', {reverse: false});
-                } else {
-                    me.ajaxAlert('addcontactfromcontact', 'Cannot add from Contacts - please try again');
-                }
-            },
-            error: function() {
-                me.ajaxAlert('addcontactfromcontact');
-            }
-            });
-        });
 
         /**
          * Bind groups page add number button
@@ -1489,11 +1380,12 @@ var app = {
             }
             phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
             $('#addcontactfromnumber-number').val(phoneNumber);
-            
+
             var data = {
                 'name': $('#addcontactfromnumber-name').val(),
                 'phone_number': phoneNumber,
-                'part': 'contact'
+                'part': 'contact',
+                'custom': true
             };
             $.ajax({
                 url: me.protocol+me.url+'/groups/validates?u='+me.fullPhoneNumber+'&p='+me.password,
@@ -1537,7 +1429,7 @@ var app = {
         /**
          * Bind back buttons throughout app
          */
-        $('#new .back, #register .back, #forgotten .back, #verification .back, #terms .back, #status-dialog .back, #purchase .back, #settings .back, #account .back, #help .back, #help-1 .back, #help-2 .back, #help-3 .back, #help-4 .back, #help-5 .back, #help-6 .back, #help-7 .back, #messagecredits .back, #newgroup .back, #addcontactfromnumber .back, #addcontactfromcontact .back').live('click', function() {
+        $('#new .back, #register .back, #forgotten .back, #verification .back, #terms .back, #status-dialog .back, #purchase .back, #settings .back, #account .back, #help .back, #help-1 .back, #help-2 .back, #help-3 .back, #help-4 .back, #help-5 .back, #help-6 .back, #help-7 .back, #messagecredits .back, #newgroup .back, #addcontactfromnumber .back').live('click', function() {
             var currId = $.mobile.activePage.attr('id');
             var prevId = '';
             var prevTransition = $.mobile.defaultPageTransition;
@@ -1574,25 +1466,25 @@ var app = {
                     prevId = 'settings';
                     break;
                 case 'help-1':
-                    prevId = 'help'
+                    prevId = 'help';
                     break;
                 case 'help-2':
-                    prevId = 'help-1'
+                    prevId = 'help-1';
                     break;
                 case 'help-3':
-                    prevId = 'help-2'
+                    prevId = 'help-2';
                     break;
                 case 'help-4':
-                    prevId = 'help-3'
+                    prevId = 'help-3';
                     break;
                 case 'help-5':
-                    prevId = 'help-4'
+                    prevId = 'help-4';
                     break;
                 case 'help-6':
-                    prevId = 'help-5'
+                    prevId = 'help-5';
                     break;
                 case 'help-7':
-                    prevId = 'help-6'
+                    prevId = 'help-6';
                     break;
                 case 'messagecredits':
                     prevId = me.lastPageBeforeMessageCredits; // help, new or purchase
@@ -1603,15 +1495,71 @@ var app = {
                 case 'addcontactfromnumber':
                     prevId = 'newgroup';
                     break;
-                case 'addcontactfromcontact':
-                prevId = 'newgroup';
-                break;
                 default:
                     me.ajaxAlert(currId);
                     break;
             }
             if (prevId.length > 0) {
                 $.mobile.changePage('#'+prevId, {reverse: true, transition: prevTransition});
+            }
+        });
+    },
+    saveNewToDraft: function () {
+        var me = this;
+        var anyEmpty = false;
+        $('#new-recipient, #new-content').each(function() {
+            if ($.trim($(this).val()).length < 1) anyEmpty = true;
+        });
+
+        if (!anyEmpty) {
+            $('#new-submit-button').removeClass('ui-disabled');
+        } else {
+            $('#new-submit-button').addClass('ui-disabled');
+        }
+
+        if (me.editing && $('#new .save').text() != 'Save' && !me.stopDraftAddEdit) {
+            $('#new .save, #schedule-options .save').removeClass('cancel-state').find('.ui-btn-text').text('Save');
+        }
+
+        if (!me.stopDraftAddEdit && (me.draftId == null || me.newDraft)) {
+            me.draftId = me.generateUUID();
+            me.newDraft = false;
+        }
+        if (!me.stopDraftAddEdit) {
+            me.updateDrafts('view', me.draftId);
+            me.updateDrafts('edit', me.draftId);
+        } else {
+            me.stopDraftAddEdit = false;
+        }
+    },
+    ajaxPost:function (url, data, pageId, success, errorMessage, errorCallback) {
+        var me = this;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: $.param(data),
+            beforeSend: function () {
+                me.loadingTimers.push(setTimeout(function () {
+                    $.mobile.loading('show');
+                }, 1000));
+            },
+            complete: function () {
+                me.clearTimeouts();
+                $.mobile.loading('hide');
+            },
+            success: function (resp) {
+                resp = JSON.parse(resp);
+                if (resp.status == 'OK') {
+                    success(resp);
+                } else {
+                    me.ajaxAlert(pageId, errorMessage);
+                }
+            },
+            error: function () {
+                me.ajaxAlert(pageId);
+                if (errorCallback != undefined) {
+                    errorCallback();
+                }
             }
         });
     },
@@ -1635,68 +1583,18 @@ var app = {
     },
     
     addFromContactPage:function () {
-        var me = this;
-        var options = {
-            filter: "",
-            multiple: true,
-        };
-        var fields = ['*'];
-        navigator.contacts.find(fields, onSuccess, onError, options);
-        
-        function onSuccess(contacts) {
-            var contactList = jQuery('#contact-list');
-            contactList.empty();
-            autotext.services.contacts.sort(contacts);
-
-            //Build list and loop for each contact
-            jQuery.each(contacts, function (index, contact) {
-                if (contact.phoneNumbers != undefined && contact.phoneNumbers != null && contact.phoneNumbers.length > 0) {
-                    //Loop for each number within each contact and add as new row
-                    jQuery.each(contact.phoneNumbers, function(index, phoneNumbers) {
-                        try {
-                            var listItem = jQuery('<li data-icon="plus"></li>');
-
-                            // ContactWrapper to go around each list item
-                            var contactWrapper = '';
-
-                            var phoneNumber = null;
-                            if (null !== contact.phoneNumbers && contact.phoneNumbers.length > 0) {
-                                phoneNumber = contact.phoneNumbers[index].value;
-                                phoneType = contact.phoneNumbers[index].type;
-                                contactWrapper = jQuery('<a></a>').attr({
-                                    id: phoneNumber,
-                                    cssclass: 'contact-list-item',
-                                    href: '#'
-                                });
-                                listItem.append(contactWrapper);
-                            }
-                            // Add name
-                            contactWrapper.append(jQuery('<h3></h3>').text(contact.name.formatted));
-                            // Add Phonenumber to wrapper
-                            if (null !== phoneNumber) {
-                                contactWrapper.append(jQuery('<p class = "capitalize"></p>').text(phoneType + ": " + phoneNumber));
-                            }
-                            // Add ListItem to list
-                            contactList.append(listItem);
-                        }
-                        catch(ex) {
-                            console.log("add from contact error: " + ex);
-                        }
-                    });
+        var selectedIds = [];
+        var contacts = app.groupData['contacts'];
+        if (contacts != undefined) {
+            for (var i = 0; i < contacts.length; i++) {
+                var contact = contacts[i];
+                if (contact.custom == false) {
+                    selectedIds.push(contact.id);
                 }
-            });
-            try {
-                // Refresh listview to enable jQuery Mobile functionality
-                contactList.listview('refresh');
-            }
-            catch(exlistview) {
-                console.log("refresh listview error: " + exlistview);
             }
         }
-
-        function onError(err) {
-            me.ajaxAlert('addcontactfromcontact', 'Your phone book seems unavaiable at present please trying reaccessing.');;
-        }
+        autotext.pages.contactList.fromGroup = true;
+        autotext.pages.contactList.onLoaded(selectedIds);
     },
 
     /**
@@ -2149,17 +2047,10 @@ var app = {
         e.preventDefault();
         
         var currentRow = $(e.currentTarget).parents('li');
+        var index = currentRow.prevAll().length - 1;
         currentRow.slideUp(400, function() {
             currentRow.remove();
-            $('#newgroup-contacts-list').listview('refresh');
-            me.groupData.contacts = [];
-            $('#newgroup-contacts-list li:not("#newgroup-contact-template")').each(function() {
-                me.groupData.contacts.push({
-                    'name': $(this).find('.contact-name').text(),
-                    'phone_number': $(this).find('.contact-number').text(),
-                    'phone_number_user': $(this).find('.contact-number').text()
-                });
-            });
+            me.groupData.contacts.splice(index, 1);
             $('#newgroup-total').text(me.groupData.contacts.length);
             
             if (me.groupEditing) {
@@ -2624,6 +2515,14 @@ var app = {
             case 'addcontactfromcontact':
                 backTxt = 'Back';
                 headerTxt = 'Add a Contact';
+                break;
+            case 'addNumber':
+                backTxt = 'OK';
+                headerTxt = 'Add a Number';
+                break;
+            case 'newMessageRecipients':
+                backTxt = 'Back';
+                headerTxt = 'Recipients';
                 break;
         }
         
@@ -3830,3 +3729,5 @@ var app = {
         });
     }
 };
+
+autotext.app = app;

@@ -424,7 +424,12 @@ form {
 .ui-content .logout-link:hover,
 .ui-content .btn-add-contact:hover,
 #btn-add-custom-number,
-.ui-content #account-purchase-btn, .ui-content #account-purchase-btn:hover, #newgroup .ui-content .ui-btn, #help .ui-content .ui-btn, #help-1 .ui-content .ui-btn, #help-2 .ui-content .ui-btn, #help-3 .ui-content .ui-btn, #help-4 .ui-content .ui-btn, #help-5 .ui-content .ui-btn, #help-6 .ui-content .ui-btn, #help-7 .ui-content .ui-btn, #message-repeats .ui-content .ui-btn, #schedule-options .ui-content .ui-btn, #purchase .ui-content .ui-btn {
+.ui-content #account-purchase-btn, .ui-content #account-purchase-btn:hover, #newgroup .ui-content .ui-btn, #help .ui-content .ui-btn, #help-1 .ui-content .ui-btn, #help-2 .ui-content .ui-btn, #help-3 .ui-content .ui-btn, #help-4 .ui-content .ui-btn, #help-5 .ui-content .ui-btn, #help-6 .ui-content .ui-btn, #help-7 .ui-content .ui-btn, #message-repeats .ui-content .ui-btn, #schedule-options .ui-content .ui-btn, #purchase .ui-content .ui-btn
+.ui-content .btn-default,
+.ui-content .btn-default:hover,
+.page-default .ui-btn,
+.page-default .ui-btn:hover
+ {
     border-color: #1b353f !important;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -441,7 +446,9 @@ form {
     background: linear-gradient(top, #3e7a90 0%, #2c5463 100%) !important; /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3e7a90', endColorstr='#2c5463',GradientType=0 ) !important; /* IE6-9 */
 }
-.ui-content .ui-btn-up-e, .ui-content .ui-btn-up-e:hover, #newgroup  .ui-content .aSwipeBtn {
+.ui-content .ui-btn-up-e, .ui-content .ui-btn-up-e:hover, 
+#newgroup  .ui-content .aSwipeBtn,
+#newMessageRecipients  .ui-content .aSwipeBtn {
     background: #e18285 !important;
     background: -moz-linear-gradient(top, #e18285 0%, #d76369 49%, #cd2a27 50%, #bf2321 100%) !important;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e18285), color-stop(49%,#d76369), color-stop(50%,#cd2a27), color-stop(100%,#bf2321)) !important;
@@ -471,7 +478,10 @@ form {
 .ui-li .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li {
     padding: 0 15px;
 }
-#scheduled-message-list li, #scheduled-message-list li .ui-li, #scheduled-message-list li .ui-btn-text, #newgroup-contacts-list li, #messagecredits-list li, #history-message-list li {
+#scheduled-message-list li, #scheduled-message-list li .ui-li, #scheduled-message-list li .ui-btn-text, 
+#newgroup-contacts-list li, 
+#selectedNumbers li, 
+#messagecredits-list li, #history-message-list li {
     height: 56px;
 }
 #groups-list .ui-li-aside {
@@ -484,7 +494,7 @@ form {
 .groups-schedule-link .ui-btn-inner {
     width: 70%;
 }
-#newgroup-members-title {
+#newgroup-members-title,#recipientsTitle {
     text-shadow: none !important;
     font-size: 16px;
     font-weight: normal;
@@ -604,10 +614,15 @@ form {
     position: relative;
     top: .7em;
 }
-#newgroup-contacts-list li {
+#newgroup-contacts-list li,
+#selectedNumbers li {
     padding-right: 0;
 }
-#newgroup .ui-content p, #newgroup .ui-content h2, #newgroup .ui-content label, #messagecredits p, #help p, #terms.bg-light p, #help-1 p, #help-2 p, #help-3 p, #help-4 p, #help-5 p, #help-6 p, #help-7 p, #status-dialog p, #message-name p, #message-repeats p, #message-repeats label, #schedule-options .ui-content, #schedule-options p, #purchase p {
+#newgroup .ui-content p, #newgroup .ui-content h2, #newgroup .ui-content label, 
+#messagecredits p, #help p, #terms.bg-light p, #help-1 p, #help-2 p, #help-3 p, #help-4 p, 
+#help-5 p, #help-6 p, #help-7 p, #status-dialog p, #message-name p, #message-repeats p, 
+#message-repeats label, #schedule-options .ui-content, #schedule-options p, #purchase p,
+#newMessageRecipients {
     color: #000 !important;
 }
 #newgroup .ui-content a, #messagecredits .ui-content a, #help .ui-content a, #terms.bg-light .ui-content a, #help-1 .ui-content a, #help-2 .ui-content a, #help-3 .ui-content a, #help-4 .ui-content a, #help-5 .ui-content a, #help-6 .ui-content a, #help-7 .ui-content a, #status-dialog .ui-content a, #message-name .ui-content a, #message-repeats .ui-content a {
@@ -836,7 +851,8 @@ input.ui-disabled {
 .groups-schedule-link {
     width: 100%;
 }
-#newgroup-contacts-list li:nth-of-type(2) {
+#newgroup-contacts-list li:nth-of-type(2),
+#selectedNumbers li:nth-of-type(2) {
     border-top: 1px solid #de8ebc !important;
 }
 #verification form {
@@ -916,13 +932,13 @@ div.contact-item-check {
     display: block;
 }
 .contact-item-name {
+    color: #000000;
     font-size: 20px;
     font-weight: bold;
-    padding-top: 5px;
 }
 .contact-item-number {
     color: #606060;
-    padding-bottom: 10px;
+    font-size: 14px;
 }
 .contact-number-custom div.ui-btn-text a.ui-link-inherit {
     font-size: 18px;
@@ -935,6 +951,37 @@ div.contact-item-check {
 }
 .hidden {
     display: none;
+}
+ul#contact-list {
+    margin: -15px;
+    padding: 0px;
+}
+ul#contact-list > li.contact-selected {
+    display: none;
+}
+ul#contact-list > li {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #DE8EBC;
+    list-style: none outside none;
+    padding: 9px 15px;
+    cursor: pointer;
+}
+.toast {
+    position: fixed;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    z-index: 100;
+    opacity: 0;
+    padding: 8px 10px;
+    text-shadow: none;
+    font-size: 14px;
+}
+.toast-wrap {
+    padding: 5px 8px;
+}
+.toast.error {
+    background-color: rgba(255, 0, 0, 0.6);
 }
 
 /*Media Query for iPhone 4/4g (3g is default values)*/

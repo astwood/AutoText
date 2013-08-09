@@ -34,7 +34,8 @@
 
                 // remove all currently displayed buttons
                 $('div.aSwipeBtn, .' + $.fn.swipeOptions.btnClass, $parent).animate({ width: 'toggle' }, 200, function(e) {
-                        if ($parent.attr('id') == 'newgroup-contacts-list') {
+                    var parentId = $parent.attr('id');
+                    if (parentId == 'newgroup-contacts-list' || parentId == 'selectedNumbers') {
                             $li.find('.ui-li-heading').css('max-width', '50%');
                         }
                         $li.parents('ul').find('.ui-li-aside, .ui-icon-arrow-r').show();
@@ -58,7 +59,7 @@
                         $div.prependTo($li.find('.edit-message, .view-group, .group-contact'));
                         $swipeBtn.button();
                         $li.find('.aSwipeBtn').hide().animate({ width: 'toggle' }, 200);
-                        if ($parent.attr('id') == 'newgroup-contacts-list') {
+                        if ($parent.attr('id') == 'newgroup-contacts-list' || $parent.attr('id') == 'selectedNumbers') {
                             $li.find('.ui-li-heading').css('max-width', '25%');
                         }
                         

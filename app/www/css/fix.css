@@ -57,5 +57,8 @@
     margin-right: auto;
     margin-left: auto;
 }
-
+body div.page-default .ui-content p,
+body div.page-default .ui-content h2 {
+    color: #000000 !important;
+}
 /* CSS Formatting for new recipients button (gives a background and positions correctly) */

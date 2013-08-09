@@ -286,6 +286,35 @@
             </div>
         </div> <!-- new -->
         
+        <div data-role="page" id="newMessageRecipients" class="page-default">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
+                <h1>Recipients</h1>
+                <a href="#" class="back">Back</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden">
+                <p>Total Members: <span id="totalNumbers">0</span></p>
+
+                <a href="#" id="btn-add-contact-to-recipients" data-role="button" data-transition="slideup">Add From Contacts</a>
+                <a href="#" id="btn-add-custom-to-recipients" data-role="button" data-transition="slideup">Add Number</a>
+
+                <div>
+                    <h2 id="recipientsTitle">Members</h2>
+
+                    <ul data-role="listview" id="selectedNumbers">
+                        <li id="list-template" style="display: none;">
+                            <div class="group-contact">
+                                <h3><b class="contact-number"></b></h3>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <div data-role="page" id="addcontactsfromdevise">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
                 <h1>Add From Contacts</h1>
@@ -811,6 +840,22 @@
                 <label for="addcontactfromnumber-number" class="ui-hidden-accessible">Phone Number</label>
                 <input type="tel" name="addcontactfromnumber-number" id="addcontactfromnumber-number" placeholder="Phone Number" />                
             </div>
+         </div> <!-- addcontactfromnumber -->
+        
+        <div data-role="page" id="addNumber" class="page-default">
+             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav" class="page-header">
+                <h1>
+                    <span class="page-title">Add a Number</span>
+                </h1>
+                <a href="#" class="back">OK</a>
+            </div>
+            <div class="error">
+                <div class="inner">Something went wrong, please try again.</div>
+            </div>
+
+            <div data-role="content" class="vHidden">
+                <input type="tel" name="addcontactfromnumber-number" id="addNumber-number" placeholder="Phone Number" />                
+            </div>
         </div> <!-- addcontactfromnumber -->
 
         <div data-role="page" id="addcontactfromcontact">
@@ -824,8 +869,13 @@
             </div>
 
             <div data-role="content">
-                <ul data-role="listview" data-divider-theme="b" data-inset="false" id="contact-list" data-filter-placeholder="Search..." data-filter="true">
-                    <li><a href="#">&nbsp;</a></li>
+                <form class="ui-listview-filter ui-bar-c">
+                    <div class="ui-input-search ui-shadow-inset ui-btn-corner-all ui-btn-shadow ui-icon-searchfield ui-body-c">
+                        <input id="txtFilterContacts" placeholder="Search..." class="ui-input-text ui-body-c">
+                    </div>
+                </form>
+                <ul id="contact-list">
+                    
                 </ul>
             </div>
             
@@ -839,8 +889,8 @@
         </script>
         <script type="text/javascript" src="js/jquery/jquery-1.9.1.min.js"></script>
         <!--cordova.mock is a dummy package used to run full app in browser testing (inculuding device specific plugins)-->
-        <script type="text/javascript" src="cordova.js"></script>
-        <!--<script type="text/javascript" src="cordova.mock.js"></script>-->
+        <!--<script type="text/javascript" src="cordova.js"></script>-->
+        <script type="text/javascript" src="cordova.mock.js"></script>
         <script type="text/javascript" src="InAppPurchaseManager.js" ></script>
         
         <script type="text/javascript" src="js/jquery/jquery-migrate-1.1.0.min.js"></script>
