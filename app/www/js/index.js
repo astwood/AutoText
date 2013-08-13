@@ -53,10 +53,13 @@ function initPurchaseManager() {
         purchaseManager.restoreCompletedTransactions();
     }
     catch (exini) {
-        alert('init plugin err: ' + exini);
+        console.log('init plugin err: ' + exini);
     }
 }
 
+$(document).bind('purchaseManagerLoaded', function() {
+    initPurchaseManager();
+});
 
 var app = {
     protocol: 'https://',
@@ -153,15 +156,9 @@ var app = {
         $.ajaxSetup({
             timeout: 20000
         });
-        $(document).bind('purchaseManagerLoaded', function(){
-                         initPurchaseManager();
-                         });
         
         me.doBinds.call(me);
-        autotext.services.contacts.init(function() {
-            autotext.pages.contactList.renderContactList();
-            autotext.pages.contactList.init();
-        });
+        
         autotext.pages.messageRecipients.init();
         autotext.pages.addNumber.init();
         me.loadCountries.call(me);
@@ -2115,7 +2112,7 @@ var app = {
                 success: function(resp) {
                     resp = JSON.parse(resp);
                     if (resp.status == 'OK') {
-                        me.fullPhoneNumber = resp.data['phone_number']
+                        me.fullPhoneNumber = resp.data['phone_number'];
                         me.userExitCode = resp.data['exit_code'];
                         me.phoneNumber = loginCookie.phone_number;
                         me.country = loginCookie.country;

@@ -177,9 +177,14 @@ InAppPurchaseManager.prototype.eventQueue = [];
 InAppPurchaseManager.prototype.timer = null;
 
 document.addEventListener("deviceready", function()  {
-      window.plugins = window.plugins || {};
-      window.plugins.inAppPurchaseManager = InAppPurchaseManager.manager = new InAppPurchaseManager();
-      $(document).trigger('purchaseManagerLoaded');
+    window.plugins = window.plugins || {};
+    try {
+        window.plugins.inAppPurchaseManager = InAppPurchaseManager.manager = new InAppPurchaseManager();
+    }
+    catch(ex) {
+        alert('init in-app purchase failed: ' + ex);
+    }
+    $(document).trigger('purchaseManagerLoaded');
       
       
       // requestProductData -> { id, title, description, price }

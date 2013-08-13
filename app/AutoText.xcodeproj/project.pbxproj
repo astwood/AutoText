@@ -504,7 +504,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Astwood Consulting Limited (NXXXZECCW4)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Michael Capewell (NCL5YQ3MW8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Michael Capewell (NCL5YQ3MW8)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -516,7 +517,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = AutoText;
-				PROVISIONING_PROFILE = "140005E0-1DF5-41B6-AE6C-11F44904CE60";
+				PROVISIONING_PROFILE = "8348F538-568E-4CDC-A3F0-0893D437413F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -526,7 +528,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Astwood Consulting Limited (NXXXZECCW4)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Michael Capewell (NCL5YQ3MW8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Michael Capewell (NCL5YQ3MW8)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoText/AutoText-Prefix.pch";
@@ -536,7 +539,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = AutoText;
-				PROVISIONING_PROFILE = "140005E0-1DF5-41B6-AE6C-11F44904CE60";
+				PROVISIONING_PROFILE = "8348F538-568E-4CDC-A3F0-0893D437413F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -549,7 +553,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Astwood Consulting Limited (NXXXZECCW4)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Michael Capewell (NCL5YQ3MW8)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
@@ -578,7 +582,7 @@
 					"${BUILT_PRODUCTS_DIR}/libCordova.a",
 					"-ObjC",
 				);
-				PROVISIONING_PROFILE = "140005E0-1DF5-41B6-AE6C-11F44904CE60";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -593,7 +597,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Astwood Consulting Limited (NXXXZECCW4)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Michael Capewell (NCL5YQ3MW8)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
@@ -622,7 +626,7 @@
 					"${BUILT_PRODUCTS_DIR}/libCordova.a",
 					"-ObjC",
 				);
-				PROVISIONING_PROFILE = "140005E0-1DF5-41B6-AE6C-11F44904CE60";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				USER_HEADER_SEARCH_PATHS = "";

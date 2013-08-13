@@ -19,11 +19,16 @@ autotext.services.contacts.init = function(successCallback) {
     };
     var fields = ['*'];
     navigator.contacts.find(fields, function (phoneContacts) {
-        me.sort(phoneContacts);
-        me.parseContactItems(phoneContacts);
-        successCallback(me.items);
+        try {
+            me.sort(phoneContacts);
+            me.parseContactItems(phoneContacts);
+            successCallback(me.items);
+        }
+        catch(ex) {
+            alert('init contacts error: ' + ex);
+        }
     }, function (er) {
-        autotext.app.ajaxAlert('login', 'Your phone book seems unavaiable at present please trying reaccessing.')
+        autotext.app.ajaxAlert('login', 'Your phone book seems unavaiable at present please trying reaccessing.');
     }, options);
 };
 
@@ -149,6 +154,7 @@ autotext.pages.contactList = {
             });
         });
         $('#addcontactfromcontact a.back').live('click', function () {
+            $('#txtFilterContacts').val('');
             if (me.fromGroup) {
                 for (var i = 0; i < me.tobeAdded.length; i++) {
                     autotext.app.groupData['contacts'].push(me.tobeAdded[i]);

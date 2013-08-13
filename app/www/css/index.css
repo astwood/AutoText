@@ -446,6 +446,13 @@ form {
     background: linear-gradient(top, #3e7a90 0%, #2c5463 100%) !important; /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3e7a90', endColorstr='#2c5463',GradientType=0 ) !important; /* IE6-9 */
 }
+.page-default .back.ui-btn:hover {
+    background: url("../js/jquery/themes/ios/images/backButtonSprite.png") no-repeat scroll 0 0 transparent !important;
+    border: 0 none !important;
+    border-radius: 0 0 0 0 !important;
+    box-shadow: none !important;
+    height: 30px;
+}
 .ui-content .ui-btn-up-e, .ui-content .ui-btn-up-e:hover, 
 #newgroup  .ui-content .aSwipeBtn,
 #newMessageRecipients  .ui-content .aSwipeBtn {
