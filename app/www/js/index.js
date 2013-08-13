@@ -669,6 +669,7 @@ var app = {
                 me.draftEdit = typeof $(this).parents('li').attr('data-draft') == 'string';
                 me.unsyncEdit = typeof $(this).parents('li').attr('data-unsynced') == 'string';
                 me.newPageResetFields();
+                me.newDraft = false;
                 var smsId = me.dataId = $(this).parents('li').attr('data-id');
                 var scheduleId = me.dataScheduleId = $(this).parents('li').attr('data-schedule-id');
                 
@@ -1523,7 +1524,7 @@ var app = {
 
         if (!me.stopDraftAddEdit && (me.draftId == null || me.newDraft)) {
             me.draftId = me.generateUUID();
-            me.newDraft = false;
+            me.newDraft = true;
         }
         if (!me.stopDraftAddEdit) {
             me.updateDrafts('view', me.draftId);
@@ -3502,8 +3503,12 @@ var app = {
                         }
                     };
                     var realId = $('#new .edit-id').val();
-                    if (realId.length > 0) ret.Sms['real_id'] = realId;
-                    me.updateDrafts('add', 0, ret);
+                    if (realId.length > 0) {
+                        ret.Sms['real_id'] = realId;
+                    }
+                    else if ($('#new #new-recipient').val() != '' || $('#new #new-content').val() != '') {
+                        me.updateDrafts('add', 0, ret);
+                    }
                 }
                 return ret;
                 break;
@@ -3576,21 +3581,26 @@ var app = {
      * Initiate page title progress bar on new/edit message page
      */
     doProgressBar: function() {
-        if ($('#'+$.mobile.activePage.attr('id')+' .progressbar:visible').length < 1) {
-            $('#'+$.mobile.activePage.attr('id')+' h1 .page-title').hide();
-            $('#'+$.mobile.activePage.attr('id')+' .progressbar').show();
-            $('#'+$.mobile.activePage.attr('id')+' .progressbar-status').css('display', 'block');
+        try {
+            if ($('#' + $.mobile.activePage.attr('id') + ' .progressbar:visible').length < 1) {
+                $('#' + $.mobile.activePage.attr('id') + ' h1 .page-title').hide();
+                $('#' + $.mobile.activePage.attr('id') + ' .progressbar').show();
+                $('#' + $.mobile.activePage.attr('id') + ' .progressbar-status').css('display', 'block');
 
-            $('#new h1').css('overflow', 'visible');
-            TolitoProgressBar('#'+$.mobile.activePage.attr('id')+' .progressbar')
-                .isMini(true)
-                .showCounter(false)
-                .setInterval(20)
-                .setMax(125)
-                .setOuterTheme('b')
-                .setInnerTheme('c')
-                .build()
-                .init();
+                $('#new h1').css('overflow', 'visible');
+                TolitoProgressBar('#' + $.mobile.activePage.attr('id') + ' .progressbar')
+                    .isMini(true)
+                    .showCounter(false)
+                    .setInterval(20)
+                    .setMax(125)
+                    .setOuterTheme('b')
+                    .setInnerTheme('c')
+                    .build()
+                    .init();
+            }
+        }
+        catch(ex) {
+            console.log('progressbar error: ' + ex);
         }
     },
     /**

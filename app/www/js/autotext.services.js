@@ -159,7 +159,11 @@ autotext.pages.contactList = {
             else {
                 var numbers = autotext.pages.messageRecipients.numbers;
                 for (var i = 0; i < me.tobeAdded.length; i++) {
-                    numbers.push(me.tobeAdded[i].id);
+                    var toAdd = me.tobeAdded[i];
+                    numbers.push({
+                        name: toAdd.name,
+                        number: toAdd.phone_number
+                    });
                 }
                 autotext.pages.messageRecipients.onLoaded(numbers);
                 $.mobile.changePage('#newMessageRecipients', { reverse: false });
@@ -216,9 +220,9 @@ autotext.pages.contactList = {
 };
 
 autotext.pages.messageRecipients = {
-    _initialized:false,
+    _initialized: false,
     numbers: [],
-    init:function () {
+    init: function() {
         var me = this;
         if (this._initialized) {
             return;
@@ -229,16 +233,16 @@ autotext.pages.messageRecipients = {
         });
         $('#btn-add-contact-to-recipients').live('click', function() {
             autotext.pages.contactList.fromGroup = false;
-            autotext.pages.contactList.onLoaded(me.numbers);
+            autotext.pages.contactList.onLoaded(me.getNumericNumbers());
             $.mobile.changePage('#addcontactfromcontact');
         });
         $('#btn-add-custom-to-recipients').live('click', function() {
             $.mobile.changePage('#addNumber');
         });
-        $('#selectedNumbers li').live('click', function () {
+        $('#selectedNumbers li').live('click', function() {
             var $li = $(this);
             if ($('.aSwipeBtn').css('overflow') == 'visible' && $('.aSwipeBtn').length > 0) {
-                $('div.aSwipeBtn, .' + $.fn.swipeOptions.btnClass).animate({ width: 'toggle' }, 200, function (e) {
+                $('div.aSwipeBtn, .' + $.fn.swipeOptions.btnClass).animate({ width: 'toggle' }, 200, function(e) {
                     $li.find('.ui-li-heading').css('max-width', '50%');
                     $(this).parents('li').find('.ui-li-aside, .ui-icon-arrow-r').show();
                     $(this).parents('.delete-btn-container').remove();
@@ -255,45 +259,70 @@ autotext.pages.messageRecipients = {
                 me.numbers.push(num);
             }
         }
+        if (me.numbers.length > 0 && typeof me.numbers[0] != "object") {
+            me.fixNumberNames();
+        }
         $('#totalNumbers').html(me.numbers.length);
         $('#selectedNumbers li').not('#list-template').remove();
-        $.each(me.numbers, function (index, number) {
+        $.each(me.numbers, function(index, number) {
             var newRow = $('#list-template').clone();
-            newRow.find('.contact-number').text(number);
+            var name = number.name == undefined || number.name == '' ? '&lt;No Name&gt;' : number.name;
+            newRow.find('.contact-name').html(name);
+            newRow.find('.contact-number').html(number.number);
             newRow.removeAttr('id');
             newRow.show();
             $('#selectedNumbers').append(newRow);
         });
         try {
             $('#selectedNumbers').listview('refresh');
-        }
-        catch(ex) {
-            
+        } catch(ex) {
+
         }
         $('#selectedNumbers li').swipeDelete({
-            click: function (e) {
+            click: function(e) {
                 me.onDelete(this);
             }
         });
     },
-    onDelete:function (sender) {
+    onDelete: function(sender) {
         var me = this;
         var $li = $(sender).closest('li');
-        $li.slideUp(400, function () {
+        $li.slideUp(400, function() {
             var index = $li.prevAll().length - 1;
             me.numbers.splice(index, 1);
             $li.remove();
             $('#totalNumbers').html(me.numbers.length);
         });
     },
-    onBack: function () {
+    onBack: function() {
         var me = this;
-        $("#new-recipient").val(me.numbers.join(','));
+        $("#new-recipient").val(me.getNumericNumbers());
         if (autotext.app.newDraft == false || autotext.app.draftId == null || me.numbers.length > 0) {
             autotext.app.stopDraftAddEdit = false;
             autotext.app.saveNewToDraft();
         }
         $.mobile.changePage('#new');
+    },
+    getNumericNumbers: function() {
+        var nums = [];
+        for (var i = 0; i < this.numbers.length; i++) {
+            nums.push(this.numbers[i].number);
+        }
+        return nums;
+    },
+    fixNumberNames: function() {
+        var objs = [];
+        for (var i = 0; i < this.numbers.length; i++) {
+            var num = this.numbers[i];
+            var contact = autotext.services.system.getFirstOrDefault(autotext.services.contacts.items, function(x) {
+                return x.number == num;
+            });
+            objs.push({
+                name: contact == null ? '' : contact.name,
+                number: num
+            });
+        }
+        this.numbers = objs;
     }
 };
 
@@ -306,14 +335,17 @@ autotext.pages.addNumber = {
                 $.mobile.changePage('#newMessageRecipients', { reverse: false });
                 return;
             }
-            if(autotext.services.system.isInArray(number, autotext.pages.messageRecipients.numbers)) {
+            if(me.exist(number)) {
                 autotext.services.system.toastError('The number was already added.');
                 return;
             }
             me._validate(number, function() {
                 $('#addNumber-number').val('');
                 var numbers = autotext.pages.messageRecipients.numbers;
-                numbers.push(number);
+                numbers.push({
+                    name: '',
+                    number: number
+                });
                 autotext.pages.messageRecipients.onLoaded(numbers);
                 $.mobile.changePage('#newMessageRecipients', { reverse: false });
             });
@@ -331,6 +363,11 @@ autotext.pages.addNumber = {
         autotext.app.ajaxPost(url, data, 'addNumber', function(resp) {
             success();
         }, 'Please ensure that you have entered your contact\'s name and phone number correctly then try again.');
+    },
+    exist:function (number) {
+        return autotext.services.system.getFirstOrDefault(autotext.pages.messageRecipients.numbers, function(item) {
+            return  item.number == number;
+        }) != null;
     }
 };
 
@@ -412,5 +449,16 @@ autotext.services.system = {
         }
         number = number.replace(/[^0-9]/g, '');
         return number;
+    },
+    getFirstOrDefault: function (array, match) {
+        if (array == null || array.length == 0) {
+            return null;
+        }
+        for (var i = 0; i < array.length; i++) {
+            if (match(array[i])) {
+                return array[i];
+            }
+        }
+        return null;
     }
 };
