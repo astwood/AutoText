@@ -18,16 +18,16 @@
  under the License.
 -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
-        id        = "io.cordova.helloCordova"
-        version   = "2.0.0">
-    <name>Hello Cordova</name>
+        id        = "com.astwood.AutoText"
+        version   = "1.0.0">
+    <name>AutoText</name>
 
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        The Ultimate SMS Scheduling App
     </description>
 
-    <author href="http://cordova.io" email="dev@cordova.apache.org">
-        Apache Cordova Team
+    <author href="http://autotext.co" email="admin@autotext.co">
+            AutoText
     </author>
 
     <access origin="*"/>
@@ -39,7 +39,7 @@
     <preference name="AllowInlineMediaPlayback" value="false" />
     <preference name="AutoHideSplashScreen" value="true" />
     <preference name="BackupWebStorage" value="cloud" />
-    <preference name="DisallowOverscroll" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
     <preference name="EnableLocation" value="false" /><!-- DEPRECATED -->
     <preference name="EnableViewportScale" value="false" />
     <preference name="FadeSplashScreen" value="true" />

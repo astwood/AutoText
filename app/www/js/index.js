@@ -390,7 +390,7 @@ var app = {
             logger.log(id + ':' + credits);
             try {
                                
-                    purchaseManager.requestProductData("com.software.novaapp03", function(result) {
+                    purchaseManager.requestProductData(result.id, function(result) {
                     alert("productId: " + result.id + " title: " + result.title + " description: " + result.description + " price: " + result.price);
                     purchaseManager.makePurchase(result.id, 1);
                 }, function(errr) {
