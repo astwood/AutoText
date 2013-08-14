@@ -34,7 +34,7 @@
      z-index:9999; 
      background-color:#aaaaaa; 
      padding:5px;
-    display: block;
+     display: none;
 }
 
 /* Adjust log display property if want to see log output when running app */

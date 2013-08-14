@@ -744,7 +744,6 @@ var app = {
          * Bind message edit page save button
          */
         $('#new .save').live('click', function() {
-            //todo: edit bug
             var data = {
                 'recipient': $('#new-recipient').val(),
                 'content': $('#new-content').val(),
@@ -758,11 +757,9 @@ var app = {
         /**
          * Bind message recipient and content fields to enable/disable submit/save buttons. Also saves draft
          */
-        $('#new-recipient, #new-content').live('keyup', function() {
+        $('#new-content').live('keyup', function() {
             me.saveNewToDraft();
         });
-        
-        
 
         /**
          * Bind message name and content fields to change page title

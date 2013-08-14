@@ -307,7 +307,7 @@ autotext.pages.messageRecipients = {
             autotext.app.stopDraftAddEdit = false;
             autotext.app.saveNewToDraft();
         }
-        $.mobile.changePage('#new');
+        $.mobile.changePage('#new', { reverse: false });
     },
     getNumericNumbers: function() {
         var nums = [];
