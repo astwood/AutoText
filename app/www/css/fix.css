@@ -1,4 +1,12 @@
-﻿.ui-mobile body>div.ui-page {
+﻿/* CSS Fixes Put in By Nova Software
+*/
+
+/*
+This section commented out as was causing jumping on autologin  process (background appearing multiple times) Once happy no 
+no side effects to comment out remove
+*/
+/*
+.ui-mobile body>div.ui-page {
     background-repeat: repeat;
     background: url("../img/bg_default_light.png") repeat scroll 0 0 transparent !important;
 }
@@ -9,6 +17,7 @@
 #schedule-options, #purchase, #addcontactfromcontact {
     background: url("../img/bg_default_light.png") repeat scroll 0 0 transparent !important;
 }
+*/
 #login-phone_number, #login-password, #register-phone_number, 
 #register-password, #forgotten-phone_number, #new-name, 
 #verification-pin, #verification-password, 
@@ -16,10 +25,11 @@
     padding: 5px 10px;
     height: 40px;
 }
+/*
 #login {
     background: url("../img/bg_login.png") repeat scroll 0 0 transparent !important;
 }
-
+*/
 .contact-name {
     color: black;
 }

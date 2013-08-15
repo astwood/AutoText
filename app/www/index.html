@@ -296,13 +296,13 @@
             </div>
 
             <div data-role="content" class="vHidden">
-                <p>Total Members: <span id="totalNumbers">0</span></p>
+                <p>Total Recipients: <span id="totalNumbers">0</span></p>
 
                 <a href="#" id="btn-add-contact-to-recipients" data-role="button" data-transition="slideup">Add From Contacts</a>
                 <a href="#" id="btn-add-custom-to-recipients" data-role="button" data-transition="slideup">Add Number</a>
 
                 <div>
-                    <h2 id="recipientsTitle">Members</h2>
+                    <h2 id="recipientsTitle">Recipients</h2>
 
                     <ul data-role="listview" id="selectedNumbers">
                         <li id="list-template" style="display: none;">
@@ -316,29 +316,25 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> <!-- message recipients -->
 
-        <div data-role="page" id="addcontactsfromdevise">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
-                <h1>Add From Contacts</h1>
-                <a href="#" class="back">Back</a>
+        <div data-role="page" id="addNumber" class="page-default">
+             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav" class="page-header">
+                <h1>
+                    <span class="page-title">Add a Number</span>
+                </h1>
+                <a href="#" class="back" >OK</a>
             </div>
             <div class="error">
                 <div class="inner">Something went wrong, please try again.</div>
             </div>
 
-            <div data-role="content">
-                
-                <ul data-role="listview" data-divider-theme="b" data-inset="false" id="devise-contacts" data-filter-placeholder="Search Your Contacts or Add Number" data-filter="true" data-clear-btn="true">
-                    
-                </ul>
-                <div id="customNumberWrap" class="hidden">
-                    <a href="#" data-role="button" id="btn-add-custom-number" data-theme="b" data-transition="slideup">Add Number</a>    
-                </div>
+            <div data-role="content" class="vHidden">
+                <input type="tel" name="addcontactfromnumber-number" id="addNumber-number" placeholder="Phone Number" />                
             </div>
-            
+        </div> <!-- addcontactfromnumber -->
 
-        </div> <!-- addcontactsfromdevise -->
+        <!--add from contacts html is down page by groups html-->
         
         <div data-role="page" id="status-dialog">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
@@ -844,22 +840,6 @@
                 <input type="tel" name="addcontactfromnumber-number" id="addcontactfromnumber-number" placeholder="Phone Number" />                
             </div>
          </div> <!-- addcontactfromnumber -->
-        
-        <div data-role="page" id="addNumber" class="page-default">
-             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav" class="page-header">
-                <h1>
-                    <span class="page-title">Add a Number</span>
-                </h1>
-                <a href="#" class="back" >OK</a>
-            </div>
-            <div class="error">
-                <div class="inner">Something went wrong, please try again.</div>
-            </div>
-
-            <div data-role="content" class="vHidden">
-                <input type="tel" name="addcontactfromnumber-number" id="addNumber-number" placeholder="Phone Number" />                
-            </div>
-        </div> <!-- addcontactfromnumber -->
 
         <div data-role="page" id="addcontactfromcontact">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-id="header-nav">
@@ -883,18 +863,22 @@
             </div>
             
         </div> <!-- addcontactfromcontact -->
+
         <div id="log">logs</div>
+        <!-- Log Div set to show at bottom of screen when testing-->
         <!--Top script is just a debug script that outputs any js bugs to the console-->
         <script type="text/javascript">
             window.onerror = function(message, url, lineNumber) {
             console.log("Error: "+message+" in "+url+" at line "+lineNumber);
             }
         </script>
+
         <script type="text/javascript" src="js/jquery/jquery-1.9.1.min.js"></script>
+
         <!--cordova.mock.js (normally cordova.js) is a dummy package used to run full app in browser testing (inculuding device specific plugins)-->
         <script type="text/javascript" src="cordova.js"></script>
+
         <script type="text/javascript" src="InAppPurchaseManager.js" ></script>
-        
         <script type="text/javascript" src="js/jquery/jquery-migrate-1.1.0.min.js"></script>
         <script type="text/javascript" src="js/jquery/jquery.mobile-1.2.0.min.js"></script>
         <script type="text/javascript" src="js/jquery/jquery.preload.css.images.js"></script>

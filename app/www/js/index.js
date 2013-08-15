@@ -1,8 +1,13 @@
+// Nova JS for Error Log and In-App Payments, other js at:
 /// <reference path="autotext.services.js" />
+
+// Dev settings options (auto inserts login details)
 
 window.devSettings = {
     isDebug: true
 };
+
+// Error Log bar - set display settings in fix.css
 
 window.logger = {
 actions:[],
@@ -28,6 +33,8 @@ _log:function(){
     }
     }
 };
+
+// In-App Purchase Manager - handles purchase, error and if need to roll back transaction (failed server verfication)
 
 function initPurchaseManager() {
     try {
@@ -91,6 +98,9 @@ function initPurchaseManager() {
 $(document).bind('purchaseManagerLoaded', function() {
     initPurchaseManager();
 });
+
+
+// Main APP JS - built by AB, tweaked by MC/Nova
 
 var app = {
     protocol: 'https://',
@@ -1375,23 +1385,6 @@ var app = {
             $.mobile.changePage('#addcontactfromcontact');
         });
         
-
-        $("ul#devise-contacts li.contact-number-phone").live("click", function() {
-            var $check = $(this).find(".contact-item-check span");
-            if($check.hasClass("ui-icon-checkbox-off")) {
-                $check.removeClass("ui-icon-checkbox-off").addClass("ui-icon-checkbox-on");
-                $('#addcontactsfromdevise input[data-type="search"]').val('');
-            }
-            else {
-                $check.removeClass("ui-icon-checkbox-on").addClass("ui-icon-checkbox-off");
-            }
-        });
-        $("ul#devise-contacts li.contact-number-custom span.ui-icon-delete").live("click", function() {
-            $(this).closest("li.contact-number-custom").remove();
-        });
-
-        
-
         /**
          * Bind groups page add number button
          */
@@ -2524,10 +2517,6 @@ var app = {
                     if (me.editData.name != undefined && me.editData.name.length > 0) name = me.editData.name+' - '+name;
                     headerTxt = name;
                 }
-                break;
-            case 'addcontactsfromdevise':
-                backTxt = 'Back';
-                headerTxt = 'Add From Contacts';
                 break;
             
             case 'messagecredits':
