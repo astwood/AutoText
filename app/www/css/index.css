@@ -226,7 +226,7 @@ h1 {
 .midpage-header .edit-group {
     float: right;
 }
-#newgroup-contacts-list .view-message {
+#newgroup-contacts-list .view-message #selectedNumbers {
     overflow: visible;
 }
 #splash {
@@ -617,13 +617,14 @@ div.page-default a.back.ui-btn {
 }
 .group-contact .ui-li-heading {
     position: relative;
-    top: 1.2em;
     max-width: 50%;
+    top:0.35em;
 }
 .group-contact .account-creds {
     font-size: 16px !important;
-    position: relative;
-    top: .7em;
+    position: absolute;
+    top:0.90em;
+
 }
 #newgroup-contacts-list li,
 #selectedNumbers li {
@@ -849,7 +850,7 @@ input.ui-disabled {
 #settings li .ui-btn-text {
     font-weight: bold;
 }
-#scheduled .ui-li-heading, #history .ui-li-heading, #newgroup .ui-li-heading {
+#scheduled .ui-li-heading, #history .ui-li-heading, #newgroup .ui-li-heading #newMessageRecipients .ui-li-heading {
     margin-top: 0;
     margin-bottom: .5em;
 }

@@ -1,4 +1,4 @@
-﻿/* CSS Fixes Put in By Nova Software
+﻿/* CSS Fixes Put in By Nova Software/MC
 */
 
 /*
@@ -17,7 +17,7 @@ no side effects to comment out remove
 #schedule-options, #purchase, #addcontactfromcontact {
     background: url("../img/bg_default_light.png") repeat scroll 0 0 transparent !important;
 }
-*/
+
 #login-phone_number, #login-password, #register-phone_number, 
 #register-password, #forgotten-phone_number, #new-name, 
 #verification-pin, #verification-password, 
@@ -25,11 +25,13 @@ no side effects to comment out remove
     padding: 5px 10px;
     height: 40px;
 }
-/*
+
 #login {
     background: url("../img/bg_login.png") repeat scroll 0 0 transparent !important;
 }
+
 */
+
 .contact-name {
     color: black;
 }
@@ -72,3 +74,22 @@ body div.page-default .ui-content h2 {
     color: #000000 !important;
 }
 /* CSS Formatting for new recipients button (gives a background and positions correctly) */
+
+#selectedNumbers li, #newgroup li {
+    height: 50px;
+}
+
+#selectedNumbers .ui-li, #selectedNumbers a.ui-link-inherit, #selectedNumbers .ui-li-static.ui-li, 
+#newgroup .ui-li, #newgroup a.ui-link-inherit, #newgroup .ui-li-static.ui-li {
+    padding:5px 5px 5px 5px;
+}
+
+.group-contact h3 {
+    padding-left: 10px;
+}
+
+#selectedNumbers .aSwipeBtn, #newgroup .aSwipeBtn {
+    top: -5.7px;
+}
+
+/* CSS tweaks adjusting recipients and group member rows to show centrally vertically with a consistent height */
