@@ -151,7 +151,10 @@ var app = {
         $('#newgroup').live('pagebeforeshow', function () { me.newGroupPage.call(me); });
         $('#splash').live('pageshow', function() {me.splashPageShow.call(me);});
         $('#scheduled').live('pageshow', function() {me.scheduledPageShow.call(me);});
-        $('#history').live('pageshow', function() {me.historyPageShow.call(me);});
+        $('#history').live('pageshow', function () { me.historyPageShow.call(me); });
+        $('#new').live('pageshow', function () {
+            me.stopDraftAddEdit = false;
+        });
         
         $.ajaxSetup({
             timeout: 20000
@@ -390,7 +393,7 @@ var app = {
             logger.log(id + ':' + credits);
             try {
                                
-                    purchaseManager.requestProductData(result.id, function(result) {
+                    purchaseManager.requestProductData(id, function(result) {
                     alert("productId: " + result.id + " title: " + result.title + " description: " + result.description + " price: " + result.price);
                     purchaseManager.makePurchase(result.id, 1);
                 }, function(errr) {
@@ -1518,7 +1521,7 @@ var app = {
 
         if (!me.stopDraftAddEdit && (me.draftId == null || me.newDraft)) {
             me.draftId = me.generateUUID();
-            me.newDraft = true;
+            me.newDraft = false;
         }
         if (!me.stopDraftAddEdit) {
             me.updateDrafts('view', me.draftId);
@@ -1548,6 +1551,9 @@ var app = {
                     success(resp);
                 } else {
                     me.ajaxAlert(pageId, errorMessage);
+                    if (errorCallback != undefined) {
+                        errorCallback();
+                    }
                 }
             },
             error: function () {

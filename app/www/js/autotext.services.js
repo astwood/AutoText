@@ -272,7 +272,7 @@ autotext.pages.messageRecipients = {
         $('#selectedNumbers li').not('#list-template').remove();
         $.each(me.numbers, function(index, number) {
             var newRow = $('#list-template').clone();
-            var name = number.name == undefined || number.name == '' ? '&lt;No Name&gt;' : number.name;
+            var name = number.name == undefined || number.name == '' ? '' : number.name;
             newRow.find('.contact-name').html(name);
             newRow.find('.contact-number').html(number.number);
             newRow.removeAttr('id');
