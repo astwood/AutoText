@@ -32,25 +32,56 @@ _log:function(){
 function initPurchaseManager() {
     try {
         window.purchaseManager = window.plugins.inAppPurchaseManager;
-        window.plugins.inAppPurchaseManager.onPurchased = function(transactionIdentifier, productId, transactionReceipt) {
-            logger.log('purchased: ' + productId);
+            window.plugins.inAppPurchaseManager.onPurchased = function(transactionIdentifier, productId, transactionReceipt) {
+                logger.log('purchased: ' + productId);
 
-            // If failed a receipt validation on server, you can restore transaction this payment.
-            // window.plugins.inAppPurchaseManager.restoreCompletedTransactions();
-        };
+                        //Server API call to verify purchase (updates user balance accordingly)
 
-        // Perhaps It did rollback a transaction
-        window.plugins.inAppPurchaseManager.onRestored = function(transactionIdentifier, productId, transactionReceipt) {
-            logger.log('restored: ' + productId);
-            /* See the developer guide for details of what to do with this */
-        };
+                        var me = app;
+                        $.ajax({
+                            url: me.protocol+me.url+'/billing/verify',
+                            type: 'POST',
+                            data: 'receipt='+transactionReceipt,
 
-        // Failed to purchase an item
-        window.plugins.inAppPurchaseManager.onFailed = function(errno, errtext) {
-            logger.log('error: ' + errtext);
-        };
-        logger.log('purchase inited.');
-        purchaseManager.restoreCompletedTransactions();
+                            beforeSend: function() {
+                                me.loadingTimers.push(setTimeout(function() {
+                                    $.mobile.loading('show');
+                                }, 1000));
+                            },
+                            complete: function() {
+                                me.clearTimeouts();
+                                $.mobile.loading('hide');
+                            },
+                            success: function(resp) {
+                                resp = JSON.parse(resp);
+                                if (resp.status == 'OK') {
+                                alert('Thanks your purchase has been completed and balance updated.');
+                                $.mobile.changePage('#account');
+                                } else {
+                                    me.ajaxAlert('purchase');
+                                }
+                            },
+                            error: function() {
+                                me.ajaxAlert('purchase');
+                            }
+                        });
+
+                // If failed a receipt validation on server, you can restore transaction this payment.
+                // window.plugins.inAppPurchaseManager.restoreCompletedTransactions();
+            };
+
+            // Perhaps It did rollback a transaction
+            window.plugins.inAppPurchaseManager.onRestored = function(transactionIdentifier, productId, transactionReceipt) {
+                logger.log('restored: ' + productId);
+                /* See the developer guide for details of what to do with this */
+            };
+
+            // Failed to purchase an item
+            window.plugins.inAppPurchaseManager.onFailed = function(errno, errtext) {
+                logger.log('error: ' + errtext);
+            };
+            logger.log('purchase inited.');
+            purchaseManager.restoreCompletedTransactions();
     }
     catch (exini) {
         console.log('init plugin err: ' + exini);
