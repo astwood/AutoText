@@ -1768,7 +1768,8 @@ var app = {
                     $('#new h1 .progressbar-status, #new h1 .progressbar, #schedule-options h1 .progressbar-status, #schedule-options h1 .progressbar').remove();
                     $('#new h1 .page-title, #schedule-options h1 .page-title').show();
                     $('#new h1, #schedule-options h1').append('<span class="progressbar-status">Scheduling...</span><span class="progressbar"></span>');
-                    TolitoProgressBar('#new h1 .progressbar, #schedule-options h1 .progressbar')
+                    try {
+                        TolitoProgressBar('#new h1 .progressbar, #schedule-options h1 .progressbar')
                         .isMini(true)
                         .showCounter(false)
                         .setInterval(20)
@@ -1776,6 +1777,10 @@ var app = {
                         .setOuterTheme('b')
                         .setInnerTheme('c')
                         .build();
+                    }
+                    catch(exp) {
+                        console.log('progress bar 1782 error: ' + exp);
+                    }
                     $.mobile.loading('hide');
                 },
                 success: function(resp) {
@@ -3151,7 +3156,7 @@ var app = {
             success: function(resp) {
                 resp = JSON.parse(resp);
                 if (resp.status == 'OK') {
-                    me.updateDrafts('view', me.generateUUID());
+                    me.updateDrafts('view', me.generateUUID(), null, null, true);
                     $.mobile.changePage('#scheduled', {transition: 'slideup', reverse: true});
                 } else {
                     me.ajaxAlert('schedule-options');
@@ -3431,7 +3436,7 @@ var app = {
     /**
      * Function used to add, edit and retrieve draft/unsynced messages to/from the local device
      */
-    updateDrafts: function(action, id, data, unsynced) {
+    updateDrafts: function(action, id, data, unsynced, addDraft) {
         var me = this;
         if (typeof action != 'string') return false;
         //todo: a bug with $.cookie('drafts')
@@ -3522,12 +3527,17 @@ var app = {
                             'status_text': tmpUnsynced ? 'Unsynced' : 'Draft'
                         }
                     };
-                    var realId = $('#new .edit-id').val();
-                    if (realId.length > 0) {
-                        ret.Sms['real_id'] = realId;
-                    }
-                    else if ($('#new #new-recipient').val() != '' || $('#new #new-content').val() != '') {
+                    if(addDraft) {
                         me.updateDrafts('add', 0, ret);
+                    }
+                    else {
+                        var realId = $('#new .edit-id').val();
+                        if (realId.length > 0) {
+                            ret.Sms['real_id'] = realId;
+                        }
+                        else if ($('#new #new-recipient').val() != '' || $('#new #new-content').val() != '' || addDraft) {
+                            me.updateDrafts('add', 0, ret);
+                        }
                     }
                 }
                 return ret;
