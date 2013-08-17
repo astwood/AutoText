@@ -316,8 +316,8 @@ form {
     -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.3);
     box-shadow: 0 1px 4px rgba(0,0,0,.3);
 }
-.ui-page, .ui-mobile-viewport {
-    background: url('../img/bg_default.png') repeat-y !important;
+/*.ui-page, .ui-mobile-viewport {
+    background: url('../img/bg_default.png') repeat-y !important; - commented out as caused flickering during login */
 }
 .ui-page-bg-light {
     background: url('../img/bg_default_light.png') repeat-y !important;

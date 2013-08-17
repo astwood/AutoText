@@ -524,7 +524,7 @@ var app = {
                             'phone_number': me.phoneNumber,
                             'password': me.password
                         }), { expires: 7300 });
-                        $('.ui-page, .ui-mobile-viewport').addClass('ui-page-bg-light');
+                        //$('.ui-page, .ui-mobile-viewport').addClass('ui-page-bg-light'); - commented out as caused flickering during login
                         $.mobile.changePage('#scheduled');
                     } else {
                         me.ajaxAlert('login', 'Your login details are wrong - please review.');
@@ -2149,7 +2149,7 @@ var app = {
                         me.phoneNumber = loginCookie.phone_number;
                         me.country = loginCookie.country;
                         me.password = loginCookie.password;
-                        $('.ui-page, .ui-mobile-viewport').addClass('ui-page-bg-light');
+                        //$('.ui-page, .ui-mobile-viewport').addClass('ui-page-bg-light'); - commented out as caused flickering during login
                         $.mobile.changePage('#scheduled');
                     } else {
                         $.removeCookie('logins');
