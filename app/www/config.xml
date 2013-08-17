@@ -47,7 +47,7 @@
     <preference name="webviewbounce"              value="false" />           <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
     <preference name="show-splash-screen-spinner" value="false" />
     <preference name="load-url-timeout"           value="30000" />
-    <preference name="splash-screen-duration"     value="1" />
+    <preference name="splash-screen-duration"     value="0" />
     
     <!-- Plugins can also be added here. -->
     <!--
