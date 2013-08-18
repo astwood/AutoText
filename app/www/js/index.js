@@ -264,6 +264,7 @@ var app = {
     doBinds: function() {
         var me = this;
         
+        /** Sets default login details for testing**/
         if(devSettings.isDebug) {
             $("#login-phone_number").val("07960270356");
             $("#login-password").val("autotext");
@@ -277,6 +278,16 @@ var app = {
             window.open($(e.currentTarget).attr('href'), '_system');
         });
         
+        /**Stops user being able to add recipients to message already sent being viewed in history**/
+
+        $('#addTo-from-contacts').live('click', function() {
+            if (me.viewing) {
+                $('#btn-add-contact-to-recipients, #btn-add-custom-to-recipients').hide();
+            } else {
+                $('#btn-add-contact-to-recipients, #btn-add-custom-to-recipients').show();
+            }
+        });
+
         /**
          * Binds main nav buttons - scheduled, history, groups
          */
