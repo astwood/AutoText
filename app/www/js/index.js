@@ -921,6 +921,7 @@ var app = {
                     var data = {
                         'time': sendTime
                     };
+                    me.editData.schedule_time = sendTime;
                     $.extend(me.newData, data);
                     $.extend(me.editData, data);
                     delete me.newData['part'];
