@@ -1,0 +1,13 @@
+[22-Aug-2013 13:12:26 UTC] PHP Warning:  _cake_core_ cache was unable to write 'cake_dev_' to File cache in /usr/local/lib/php/Cake/Cache/Cache.php on line 310
+[22-Aug-2013 13:12:26 UTC] PHP Warning:  /usr/local/lib/php/Cake/Console/Templates/skel/tmp/cache/persistent/ is not writable in /usr/local/lib/php/Cake/Cache/Engine/FileEngine.php on line 374
+[22-Aug-2013 13:12:26 UTC] PHP Fatal error:  Uncaught exception 'CacheException' with message 'Cache engine _cake_core_ is not properly configured.' in /usr/local/lib/php/Cake/Cache/Cache.php:166
+Stack trace:
+#0 /usr/local/lib/php/Cake/Cache/Cache.php(136): Cache::_buildEngine('_cake_core_')
+#1 /usr/local/lib/php/Cake/Console/Templates/skel/Config/core.php(336): Cache::config('_cake_core_', Array)
+#2 /usr/local/lib/php/Cake/Console/ShellDispatcher.php(135): include_once('/usr/local/lib/...')
+#3 /usr/local/lib/php/Cake/Console/ShellDispatcher.php(100): ShellDispatcher->_bootstrap()
+#4 /usr/local/lib/php/Cake/Console/ShellDispatcher.php(56): ShellDispatcher->_initEnvironment()
+#5 /usr/local/lib/php/Cake/Console/ShellDispatcher.php(67): ShellDispatcher->__construct(Array)
+#6 /usr/local/bin/cake.php(51): ShellDispatcher::run(Array)
+#7 {main}
+  thrown in /usr/local/lib/php/Cake/Cache/Cache.php on line 166

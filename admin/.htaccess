@@ -6,5 +6,5 @@
 
 AuthType Basic
 AuthName "Auto Text"
-AuthUserFile D:/www-autotext/app/admin/.htpasswd
+AuthUserFile /home/astadm1n/public_html/app/admin/.htpasswd
 Require valid-user
