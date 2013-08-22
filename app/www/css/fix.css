@@ -94,3 +94,9 @@ body div.page-default .ui-content h2 {
 }
 
 /* CSS tweaks adjusting recipients and group member rows to show centrally vertically with a consistent height */
+
+#purchase .ui-content .ui-btn-inner {
+background: rgba(87, 134, 152, 1) !important;
+}
+
+/* CSS tweak to fix purchase buttons bug that means they display with no background*/

@@ -271,8 +271,6 @@ var app = {
         $('#new').bind('pageshow', function(e) {
         $(this).addClass('ui-page-active');
         });
-
-
         
         /** Sets default login details for testing**/
         if(devSettings.isDebug) {
@@ -292,9 +290,9 @@ var app = {
 
         $('#addTo-from-contacts').live('click', function() {
             if (me.viewing) {
-                $('#btn-add-contact-to-recipients, #btn-add-custom-to-recipients').hide();
+                $('#btn-add-contact-to-recipients, #btn-add-custom-to-recipients').addClass('ui-disabled');
             } else {
-                $('#btn-add-contact-to-recipients, #btn-add-custom-to-recipients').show();
+                $('#btn-add-contact-to-recipients, #btn-add-custom-to-recipients').removeClass('ui-disabled');;
             }
         });
 
@@ -3100,7 +3098,7 @@ var app = {
                     $('#purchase-product-list').html('');
                     $.each(resp.data, function(i) {
                         var value = resp.data[i];
-                        var newRow = $('<a href="#" class="product-btn" data-role="button" id="product-btn-' + i + '" data-value="' + value + '">Purchase ' + value + ' credits for <span class="price-value"></span></a>');
+                        var newRow = $('<a href="#" class="product-btn" data-role="button" id="product-btn-' + i + '" data-value="' + value + '">Purchase ' + value + ' credits <span class="price-value"></span></a>');
                         $('#purchase-product-list').append(newRow);
                     });
                     $('#purchase-product-list .product-btn').button();
