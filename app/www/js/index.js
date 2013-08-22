@@ -3100,7 +3100,7 @@ var app = {
                     $('#purchase-product-list').html('');
                     $.each(resp.data, function(i) {
                         var value = resp.data[i];
-                        var newRow = $('<a href="#" class="product-btn" data-role="button" id="product-btn-' + i + '" data-value="' + value + '">Purchase ' + value + ' credits <span class="price-value"></span></a>');
+                        var newRow = $('<a href="#" class="product-btn" data-role="button" id="product-btn-' + i + '" data-value="' + value + '">'+ value + ' Credit Bundle <span class="price-value"></span></a>');
                         $('#purchase-product-list').append(newRow);
                     });
                     $('#purchase-product-list .product-btn').button();
