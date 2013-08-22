@@ -257,12 +257,22 @@ var app = {
                 me.ajaxAlert($.mobile.activePage.attr('id'));
             }
         });
-    },
+    },      
+
     /**
      * Binds user input events (i.e. click, keypres, etc.)
      */
     doBinds: function() {
         var me = this;
+
+        /** Fix to allow rescheduled button to work with same page transistion see 
+        http://forum.jquery.com/topic/changepage-allowsamepagetransition-true-displays-blank-page **/
+
+        $('#new').bind('pageshow', function(e) {
+        $(this).addClass('ui-page-active');
+        });
+
+
         
         /** Sets default login details for testing**/
         if(devSettings.isDebug) {
@@ -898,6 +908,7 @@ var app = {
                 $.mobile.changePage('#new', {
                     allowSamePageTransition: true
                 });
+                $('#new-submit-button').removeClass('ui-disabled');
             }
         });
 
