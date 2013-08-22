@@ -2248,7 +2248,9 @@ var app = {
             case 'newgroup':
                 backTxt = 'Groups';
                 headerTxt = 'Add Group';
+                $('.save').show();
                 if (me.groupEditing) headerTxt = 'Edit Group';
+
                 break;
             
             case 'message-name':
