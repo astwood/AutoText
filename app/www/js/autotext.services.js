@@ -160,7 +160,7 @@ autotext.pages.contactList = {
                     autotext.app.groupData['contacts'].push(me.tobeAdded[i]);
                 }
                 autotext.app.updateNewGroupPage.call(autotext.app);
-                $.mobile.changePage('#newgroup', { reverse: false });
+                $.mobile.changePage('#newgroup', { reverse: true });
             }
             else {
                 var numbers = autotext.pages.messageRecipients.numbers;
@@ -172,7 +172,7 @@ autotext.pages.contactList = {
                     });
                 }
                 autotext.pages.messageRecipients.onLoaded(numbers);
-                $.mobile.changePage('#newMessageRecipients', { reverse: false });
+                $.mobile.changePage('#newMessageRecipients', { reverse: true });
             }
         });
     },
@@ -307,7 +307,7 @@ autotext.pages.messageRecipients = {
             autotext.app.stopDraftAddEdit = false;
             autotext.app.saveNewToDraft();
         }
-        $.mobile.changePage('#new', { reverse: false });
+        $.mobile.changePage('#new', { reverse: true });
     },
     getNumericNumbers: function() {
         var nums = [];
@@ -338,7 +338,7 @@ autotext.pages.addNumber = {
         $('#addNumber .back').live('click', function () {
             var number = $('#addNumber-number').val();
             if (number == '') {
-                $.mobile.changePage('#newMessageRecipients', { reverse: false });
+                $.mobile.changePage('#newMessageRecipients', { reverse: true });
                 return;
             }
             if(me.exist(number)) {
@@ -353,7 +353,7 @@ autotext.pages.addNumber = {
                     number: number
                 });
                 autotext.pages.messageRecipients.onLoaded(numbers);
-                $.mobile.changePage('#newMessageRecipients', { reverse: false });
+                $.mobile.changePage('#newMessageRecipients', { reverse: true });
             });
         });
     },

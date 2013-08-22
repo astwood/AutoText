@@ -1384,7 +1384,7 @@ var app = {
                 success: function(resp) {
                     resp = JSON.parse(resp);
                     if (resp.status == 'OK') {
-                        $.mobile.changePage('#groups', {reverse: true});
+                        $.mobile.changePage('#groups', {reverse: false});
                     } else {
                         me.ajaxAlert('newgroup', 'Please ensure that you have entered your group\'s name correctly then try again.');
                     }
