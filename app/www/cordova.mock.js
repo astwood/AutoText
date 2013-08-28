@@ -59,3 +59,4 @@ var ContactFindOptions = function() {
     this.filter = "";
     this.multiple = false;
 };
+

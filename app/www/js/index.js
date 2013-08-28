@@ -41,54 +41,17 @@ function initPurchaseManager() {
         window.purchaseManager = window.plugins.inAppPurchaseManager;
             window.plugins.inAppPurchaseManager.onPurchased = function(transactionIdentifier, productId, transactionReceipt) {
                 logger.log('purchased: ' + productId);
-
-                        //Server API call to verify purchase (updates user balance accordingly)
-
-                        var me = app;
-                        $.ajax({
-                            url: me.protocol+me.url+'/billing/verify',
-                            type: 'POST',
-                            data: 'receipt='+transactionReceipt,
-
-                            beforeSend: function() {
-                                me.loadingTimers.push(setTimeout(function() {
-                                    $.mobile.loading('show');
-                                }, 1000));
-                            },
-                            complete: function() {
-                                me.clearTimeouts();
-                                $.mobile.loading('hide');
-                            },
-                            success: function(resp) {
-                                resp = JSON.parse(resp);
-                                if (resp.status == 'OK') {
-                                alert('Thanks your purchase has been completed and balance updated.');
-                                $.mobile.changePage('#account');
-                                } else {
-                                    me.ajaxAlert('purchase');
-                                }
-                            },
-                            error: function() {
-                                me.ajaxAlert('purchase');
-                            }
-                        });
-
-                // If failed a receipt validation on server, you can restore transaction this payment.
-                // window.plugins.inAppPurchaseManager.restoreCompletedTransactions();
-            };
-
-            // Perhaps It did rollback a transaction
-            window.plugins.inAppPurchaseManager.onRestored = function(transactionIdentifier, productId, transactionReceipt) {
-                logger.log('restored: ' + productId);
-                /* See the developer guide for details of what to do with this */
+                autotext.services.api.handlePurchased(transactionIdentifier, productId, transactionReceipt, function() {
+                    alert('Thanks your purchase has been completed and balance updated.');
+                    $.mobile.changePage('#account');
+                });
             };
 
             // Failed to purchase an item
             window.plugins.inAppPurchaseManager.onFailed = function(errno, errtext) {
                 logger.log('error: ' + errtext);
+                app.ajaxAlert('purchase','The purchase was unsuccessful. Please try again.');
             };
-            logger.log('purchase inited.');
-            purchaseManager.restoreCompletedTransactions();
     }
     catch (exini) {
         console.log('init plugin err: ' + exini);
@@ -450,16 +413,13 @@ var app = {
             var credits = $(this).attr('data-value') * 1;
             logger.log(id + ':' + credits);
             try {
-                               
-                    purchaseManager.requestProductData(id, function(result) {
-                    alert("productId: " + result.id + " title: " + result.title + " description: " + result.description + " price: " + result.price);
+                purchaseManager.requestProductData(id, function(result) {
                     purchaseManager.makePurchase(result.id, 1);
                 }, function(errr) {
-                    alert("purchange callback error: " + errr);
+                    alert("purchase callback error: " + errr);
                 });
-                }
-            catch (expurchange) {
-                alert("purchange error: " + expurchange);
+            } catch(expurchange) {
+                alert("purchase error: " + expurchange);
             }
         });
         

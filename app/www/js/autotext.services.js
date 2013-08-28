@@ -468,3 +468,20 @@ autotext.services.system = {
         return null;
     }
 };
+
+autotext.services.api = {
+    handlePurchased: function (transactionIdentifier, productId, transactionReceipt, successCallback) {
+        var me = autotext.app;
+        var url = me.protocol + me.url + '/billing/verify?u=' + me.fullPhoneNumber + '&p=' + me.password;
+        var data = {
+            productId: productId,
+            transactionReceipt: transactionReceipt,
+            transactionIdentifier: transactionIdentifier
+        };
+
+        var errorMsg = 'Error occurred while processing the purchase. If you are sure you have made the purchase, please contact us.';
+        app.ajaxPost(url, data, 'purchase', successCallback, errorMsg, function() {
+            me.ajaxAlert('purchase', errorMsg);
+        });
+    }
+};
