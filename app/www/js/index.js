@@ -1158,6 +1158,7 @@ var app = {
          */
         $('.new-link').live('click', function(e) {
             e.preventDefault();
+            me.reminding = false;
             me.editData = {};
             me.newPageResetFields();
             me.lastPageBeforeNew = $.mobile.activePage.attr('id');
