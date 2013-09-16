@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" /> 
@@ -889,18 +889,20 @@
         <script type="text/javascript" src="js/mobiscroll/mobiscroll.custom-2.4.4.min.js"></script>
         <script type="text/javascript" src="js/moment/moment.min.js"></script>
         <script type="text/javascript" src="js/fastclick/fastclick.js"></script>
-        <script type="text/javascript" src="js/autotext.services.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/autotext.all.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
                 new FastClick(document.body);
                 $.preloadCssImages();
                 document.addEventListener('deviceready', function () {
-                    autotext.services.contacts.init(function () {
-                        autotext.pages.contactList.renderContactList();
-                        autotext.pages.contactList.init();
+                    var contactService = new app.services.ContactService();
+                    contactService.getAllContacts(function(items) {
+                        app.caches.contacts = items;
+                        app.pages.contactList.renderContactList();
+                        app.pages.contactList.initOnContactsLoaded();
                     });
                 }, false);
+                
             });
             app.initialize();
         </script>

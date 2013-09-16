@@ -995,6 +995,16 @@ ul#contact-list > li {
 .toast.error {
     background-color: rgba(255, 0, 0, 0.6);
 }
+.purchase-link{}
+.edit-message{}
+.product-btn{}
+.save{}
+.cancel-state{}
+.all{}
+.single{}
+.new{}
+.group-name{}
+.group-contactsx{}
 
 /*Media Query for iPhone 4/4g (3g is default values)*/
 
