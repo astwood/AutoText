@@ -1,5 +1,6 @@
 ﻿app.pages.messageRepeats = {    
-    init:function() {
+    _loadedRepeatOptions:'',
+    init: function () {
         var me = this;
         $('#message-repeats').live('pagebeforeshow', function () { app.pages.messageRepeats.onLoaded(); });
         /**
@@ -54,7 +55,7 @@
             $('#message-repeats-none').attr('checked', 'checked');
             $('#message-repeats input[name="message-repeats"]').checkboxradio('refresh');
         }
-
+        this._loadedRepeatOptions = app.editData.repeat_options;
         var repeatOpts = JSON.parse(app.editData['repeat_options']);
         if (repeatOpts.W != undefined && repeatOpts.W == '1') {
             $('#message-repeats-wd').slider('disable');
@@ -81,6 +82,10 @@
                 'repeat_options': JSON.stringify(repeatOptions),
                 'part': 'repeat_options'
             };
+            if (data.repeat_options != this._loadedRepeatOptions) {
+                app.newData.repeatOptionsHasChanged = true;
+                app.editData.repeatOptionsHasChanged = true;
+            }
             $.extend(app.newData, data);
             $.extend(app.editData, data);
             if (!app.unsyncEdit) {

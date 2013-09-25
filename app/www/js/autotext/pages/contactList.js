@@ -76,17 +76,22 @@
         this._busy = false;
         this.tobeAdded = [];
         this._updateSelected(selectedIds);
+        this.filterContacts();
     },
     filterContacts: function () {
-        var key = $('#txtFilterContacts').val();
-        $('#contact-list>li').each(function () {
-            var $li = $(this);
-            if ($li.text().indexOf(key) > -1) {
-                $li.removeClass('hidden');
-            } else {
-                $li.addClass('hidden');
-            }
-        });
+        var key = $('#txtFilterContacts').val().toLowerCase();
+        if (key == '') {
+            $('#contact-list>li').removeClass('hidden');
+        } else {
+            $('#contact-list>li').each(function() {
+                var $li = $(this);
+                if ($li.text().toLowerCase().indexOf(key) > -1) {
+                    $li.removeClass('hidden');
+                } else {
+                    $li.addClass('hidden');
+                }
+            });
+        }
     },
     _updateSelected: function (selectedIds) {
         selectedIds = selectedIds == null ? [] : selectedIds;

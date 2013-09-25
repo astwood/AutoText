@@ -334,7 +334,7 @@ app.doProgressBar = function() {
 app.formatNumbersWithContactNames = function(numbers, el, button) {
     if (typeof button == 'undefined') button = false;
 
-    numbers = numbers.split(',');
+    numbers = numbers == undefined ? [] : numbers.split(',');
     var recipientStr = '';
     for (var i = 0; i < numbers.length; i++) {
         recipientStr += '<span' + (button ? ' data-role="button" data-mini="true"' : '') + ' data-phone_number="' + numbers[i] + '">';

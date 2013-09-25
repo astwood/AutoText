@@ -121,13 +121,15 @@
 
         if (app.editType == 'single') {
             app.editData.oldSchedule = tmp[1];
-            app.editData.repeat_options = JSON.stringify({
-                'D': 0,
-                'W': 0,
-                'M': 0,
-                'Y': 0,
-                'WD': 0
-            });
+            if (app.editData.repeatOptionsHasChanged != true) {
+                app.editData.repeat_options = JSON.stringify({
+                    'D': 0,
+                    'W': 0,
+                    'M': 0,
+                    'Y': 0,
+                    'WD': 0
+                });
+            }
             delete app.editData.id;
         }
 

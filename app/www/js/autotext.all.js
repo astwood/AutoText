@@ -1,4 +1,4 @@
-// last build: 20130917.0515
+// last build: 20130925.1111
 
 window.app = {
     protocol: 'https://',
@@ -265,17 +265,22 @@ app.pages.contactList = {
         this._busy = false;
         this.tobeAdded = [];
         this._updateSelected(selectedIds);
+        this.filterContacts();
     },
     filterContacts: function () {
-        var key = $('#txtFilterContacts').val();
-        $('#contact-list>li').each(function () {
-            var $li = $(this);
-            if ($li.text().indexOf(key) > -1) {
-                $li.removeClass('hidden');
-            } else {
-                $li.addClass('hidden');
-            }
-        });
+        var key = $('#txtFilterContacts').val().toLowerCase();
+        if (key == '') {
+            $('#contact-list>li').removeClass('hidden');
+        } else {
+            $('#contact-list>li').each(function() {
+                var $li = $(this);
+                if ($li.text().toLowerCase().indexOf(key) > -1) {
+                    $li.removeClass('hidden');
+                } else {
+                    $li.addClass('hidden');
+                }
+            });
+        }
     },
     _updateSelected: function (selectedIds) {
         selectedIds = selectedIds == null ? [] : selectedIds;
@@ -1338,7 +1343,8 @@ app.pages.messageRecipients = {
     }
 };
 app.pages.messageRepeats = {    
-    init:function() {
+    _loadedRepeatOptions:'',
+    init: function () {
         var me = this;
         $('#message-repeats').live('pagebeforeshow', function () { app.pages.messageRepeats.onLoaded(); });
         /**
@@ -1393,7 +1399,7 @@ app.pages.messageRepeats = {
             $('#message-repeats-none').attr('checked', 'checked');
             $('#message-repeats input[name="message-repeats"]').checkboxradio('refresh');
         }
-
+        this._loadedRepeatOptions = app.editData.repeat_options;
         var repeatOpts = JSON.parse(app.editData['repeat_options']);
         if (repeatOpts.W != undefined && repeatOpts.W == '1') {
             $('#message-repeats-wd').slider('disable');
@@ -1420,6 +1426,10 @@ app.pages.messageRepeats = {
                 'repeat_options': JSON.stringify(repeatOptions),
                 'part': 'repeat_options'
             };
+            if (data.repeat_options != this._loadedRepeatOptions) {
+                app.newData.repeatOptionsHasChanged = true;
+                app.editData.repeatOptionsHasChanged = true;
+            }
             $.extend(app.newData, data);
             $.extend(app.editData, data);
             if (!app.unsyncEdit) {
@@ -1681,13 +1691,15 @@ app.pages.newMessage = {
 
         if (app.editType == 'single') {
             app.editData.oldSchedule = tmp[1];
-            app.editData.repeat_options = JSON.stringify({
-                'D': 0,
-                'W': 0,
-                'M': 0,
-                'Y': 0,
-                'WD': 0
-            });
+            if (app.editData.repeatOptionsHasChanged != true) {
+                app.editData.repeat_options = JSON.stringify({
+                    'D': 0,
+                    'W': 0,
+                    'M': 0,
+                    'Y': 0,
+                    'WD': 0
+                });
+            }
             delete app.editData.id;
         }
 
@@ -2662,7 +2674,14 @@ app.services.GroupService.prototype.editGroup = function(id) {
 
 app.services.GroupService.prototype.validate = function (data, pageId, errorMessage, successCallback, errorCallback, ajaxErrorCallback) {
     var url = app.protocol + app.url + '/groups/validates?u=' + app.fullPhoneNumber + '&p=' + app.password;
-    app.ajaxPost(url, data, pageId, successCallback, errorMessage, errorCallback, ajaxErrorCallback);
+    app.ajaxPost(url, data, pageId, successCallback, errorMessage, function() {
+        if (errorMessage != null && errorMessage != '') {
+            app.ajaxAlert(pageId, errorMessage);
+        }
+        if (errorCallback != undefined) {
+            errorCallback();
+        }
+    }, ajaxErrorCallback);
 };
 
 app.services.GroupService.prototype.addEdit = function(isEditing,data, successCallback, errorCallback) {
@@ -3495,7 +3514,7 @@ app.doProgressBar = function() {
 app.formatNumbersWithContactNames = function(numbers, el, button) {
     if (typeof button == 'undefined') button = false;
 
-    numbers = numbers.split(',');
+    numbers = numbers == undefined ? [] : numbers.split(',');
     var recipientStr = '';
     for (var i = 0; i < numbers.length; i++) {
         recipientStr += '<span' + (button ? ' data-role="button" data-mini="true"' : '') + ' data-phone_number="' + numbers[i] + '">';

@@ -28,7 +28,14 @@ app.services.GroupService.prototype.editGroup = function(id) {
 
 app.services.GroupService.prototype.validate = function (data, pageId, errorMessage, successCallback, errorCallback, ajaxErrorCallback) {
     var url = app.protocol + app.url + '/groups/validates?u=' + app.fullPhoneNumber + '&p=' + app.password;
-    app.ajaxPost(url, data, pageId, successCallback, errorMessage, errorCallback, ajaxErrorCallback);
+    app.ajaxPost(url, data, pageId, successCallback, errorMessage, function() {
+        if (errorMessage != null && errorMessage != '') {
+            app.ajaxAlert(pageId, errorMessage);
+        }
+        if (errorCallback != undefined) {
+            errorCallback();
+        }
+    }, ajaxErrorCallback);
 };
 
 app.services.GroupService.prototype.addEdit = function(isEditing,data, successCallback, errorCallback) {
