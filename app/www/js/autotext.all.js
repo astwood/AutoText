@@ -1,4 +1,4 @@
-// last build: 20130925.1111
+// last build: 20130929.1009
 
 window.app = {
     protocol: 'https://',
@@ -317,7 +317,7 @@ app.pages.forgotten = {
         phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
         $('#forgotten-phone_number').val(phoneNumber);
         var service = new app.services.AccountService();
-        service.forgotten(country, password, function() {
+        service.forgotten(country, phoneNumber, function () {
             app.country = country;
             app.phoneNumber = phoneNumber;
             app.verificationType = 'forgotten';
