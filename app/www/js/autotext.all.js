@@ -1,4 +1,4 @@
-// last build: 20130929.1009
+// last build: 20130929.1038
 
 window.app = {
     protocol: 'https://',
@@ -2520,6 +2520,9 @@ app.services.BillingService.prototype.verify = function (transactionIdentifier, 
     var errorMsg = 'Error occurred while processing the purchase. If you are sure you have made the purchase, please contact us.';
     app.ajaxPost(url, data, 'purchase', successCallback, errorMsg, function () {
         app.ajaxAlert('purchase', errorMsg);
+    }, function (ajaxError) {
+        var err = app.system.serialize(ajaxError, 'error');
+        app.ajaxAlert('purchase', 'Network error: ' + err + '. If you are sure you have made the purchase, please contact us.');
     });
 };
 app.services.ContactService = function() {
@@ -2793,9 +2796,9 @@ app.ajaxPost = function (url, data, pageId, success, errorMessage, errorCallback
                 }
             }
         },
-        error: function () {
+        error: function (ajaxError) {
             if (ajaxErrorCallback != undefined) {
-                ajaxErrorCallback();
+                ajaxErrorCallback(ajaxError);
             } else {
                 app.ajaxAlert(pageId);
             }
@@ -3591,24 +3594,25 @@ window.logger = {
 app.system = {
     serialize: function (obj, name) {
         var result = "";
-
-        function serializeInternal(o, path) {
-            for (p in o) {
-                var value = o[p];
-                if (typeof value == "object") {
-                    if (p * 1 >= 0) {
-                        serializeInternal(value, path + '[' + p + ']');
-                    } else {
-                        serializeInternal(value, path + '.' + p);
+        try {
+            function serializeInternal(o, path) {
+                for (p in o) {
+                    var value = o[p];
+                    if (typeof value == "object") {
+                        if (p * 1 >= 0) {
+                            serializeInternal(value, path + '[' + p + ']');
+                        } else {
+                            serializeInternal(value, path + '.' + p);
+                        }
+                    } else if (typeof value != "function") {
+                        result += "\n" + path + "." + p + " = " + value;
                     }
                 }
-                else if (typeof value != "function") {
-                    result += "\n" + path + "." + p + " = " + value;
-                }
             }
+            serializeInternal(obj, name);
+        } catch(ex) {
+            
         }
-
-        serializeInternal(obj, name);
         return result;
     },
     isInArray: function (item, arr) {

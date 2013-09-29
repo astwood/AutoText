@@ -1,24 +1,25 @@
 ﻿app.system = {
     serialize: function (obj, name) {
         var result = "";
-
-        function serializeInternal(o, path) {
-            for (p in o) {
-                var value = o[p];
-                if (typeof value == "object") {
-                    if (p * 1 >= 0) {
-                        serializeInternal(value, path + '[' + p + ']');
-                    } else {
-                        serializeInternal(value, path + '.' + p);
+        try {
+            function serializeInternal(o, path) {
+                for (p in o) {
+                    var value = o[p];
+                    if (typeof value == "object") {
+                        if (p * 1 >= 0) {
+                            serializeInternal(value, path + '[' + p + ']');
+                        } else {
+                            serializeInternal(value, path + '.' + p);
+                        }
+                    } else if (typeof value != "function") {
+                        result += "\n" + path + "." + p + " = " + value;
                     }
                 }
-                else if (typeof value != "function") {
-                    result += "\n" + path + "." + p + " = " + value;
-                }
             }
+            serializeInternal(obj, name);
+        } catch(ex) {
+            
         }
-
-        serializeInternal(obj, name);
         return result;
     },
     isInArray: function (item, arr) {

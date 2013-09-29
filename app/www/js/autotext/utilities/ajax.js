@@ -33,9 +33,9 @@
                 }
             }
         },
-        error: function () {
+        error: function (ajaxError) {
             if (ajaxErrorCallback != undefined) {
-                ajaxErrorCallback();
+                ajaxErrorCallback(ajaxError);
             } else {
                 app.ajaxAlert(pageId);
             }
