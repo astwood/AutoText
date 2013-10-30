@@ -688,7 +688,7 @@ div.page-default a.back.ui-btn {
 }
 #new-to-bottom {
     bottom: 0;
-    position: fixed;
+    position: absolute;
     width: 98%;
     left: 0;
     padding-left: .3em;
