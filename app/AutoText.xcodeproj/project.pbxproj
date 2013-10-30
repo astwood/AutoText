@@ -116,6 +116,7 @@
 		5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* AutoText-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AutoText-Info.plist"; path = "../AutoText-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x~iphone.png"; sourceTree = "<group>"; };
+		DB36425B18213BCA00F1BFE6 /* icon@ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@ios7.png"; path = "AutoText/Resources/icons/icon@ios7.png"; sourceTree = "<group>"; };
 		F58E181717AF436C00DA03D6 /* HelloManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloManager.h; sourceTree = "<group>"; };
 		F58E181817AF44D100DA03D6 /* HelloManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloManager.m; sourceTree = "<group>"; };
 		F5D54ADF17AA56DF005BEE77 /* InAppPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchaseManager.h; sourceTree = "<group>"; };
@@ -197,6 +198,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				DB36425B18213BCA00F1BFE6 /* icon@ios7.png */,
 				F840E1F0165FE0F500CFE078 /* config.xml */,
 				301BF56E109A69640062928A /* www */,
 				301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */,
