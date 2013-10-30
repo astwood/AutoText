@@ -1110,6 +1110,8 @@ app.pages.login = {
     },
     onLoaded: function () {
         app.stopCountryChange = false;
+        $("#login-phone_number").val("");
+        $("#login-password").val("");
     }
 };
 app.pages.messageCredits = {
@@ -2450,6 +2452,8 @@ app.pages.verification = {
             $('#verification-password_text').show();
             $('#verification-firstline').text('You will shortly receive your verification code via text message. Simply enter the code in the box below and hit Verify.');
         }
+        $("#verification-password").val("");
+        $("#verification-pin").val("");
     }
 };
 app.services.AccountService = function() {
@@ -3562,7 +3566,7 @@ app.clearTimeouts = function() {
     });
 };
 window.devSettings = {
-    isDebug: true
+    isDebug: false
 };
 
 // Error Log bar - set display settings in fix.css

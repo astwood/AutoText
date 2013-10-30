@@ -31,5 +31,8 @@
     },
     onLoaded: function () {
         app.stopCountryChange = false;
+        $("#login-phone_number").val("");
+        $("#login-password").val("");
+
     }
 };

@@ -1,5 +1,5 @@
 ﻿window.devSettings = {
-    isDebug: true
+    isDebug: false
 };
 
 // Error Log bar - set display settings in fix.css

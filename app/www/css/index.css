@@ -1006,6 +1006,10 @@ ul#contact-list > li {
 .group-name{}
 .group-contactsx{}
 
+    #verification {
+        background: url('../img/bg_default.png') repeat-y !important;
+    }
+
 /*Media Query for iPhone 4/4g (3g is default values)*/
 
 @media screen and (min-height: 455px) and (-webkit-min-device-pixel-ratio: 2) {
@@ -1019,6 +1023,9 @@ ul#contact-list > li {
     #login {
         background: url('../img/bg_login_4.png') repeat-y !important;
 
+    }
+        #verification {
+        background: url('../img/bg_default_4.png') repeat-y !important;
     }
     #settings, #groups, #scheduled, #history, #account, #account, #newgroup, #messagecredits, #help, #terms.bg-light,
  #help-1, #help-2, #help-3, #help-4, #help-5, #help-6, #help-7, #addcontactfromnumber, #new, #status-dialog,
@@ -1046,6 +1053,9 @@ ul#contact-list > li {
     }
     #login {
         background: url('../img/bg_login_5.png') repeat-y !important;
+    }
+    #verification {
+        background: url('../img/bg_default_5.png') repeat-y !important;
     }
     #settings, #groups, #scheduled, #history, #account, #account, #newgroup, #messagecredits, #help, #terms.bg-light,
  #help-1, #help-2, #help-3, #help-4, #help-5, #help-6, #help-7, #addcontactfromnumber, #new, #status-dialog,

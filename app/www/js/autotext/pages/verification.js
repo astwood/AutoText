@@ -56,5 +56,7 @@
             $('#verification-password_text').show();
             $('#verification-firstline').text('You will shortly receive your verification code via text message. Simply enter the code in the box below and hit Verify.');
         }
+        $("#verification-password").val("");
+        $("#verification-pin").val("");
     }
 };
