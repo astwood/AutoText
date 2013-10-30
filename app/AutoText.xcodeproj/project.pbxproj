@@ -359,6 +359,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0460;
+				TargetAttributes = {
+					1D6058900D05DD3D006BFB54 = {
+						DevelopmentTeam = NXXXZECCW4;
+					};
+				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AutoText" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -511,7 +516,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Michael Capewell (NCL5YQ3MW8)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Astwood Consulting Limited (NXXXZECCW4)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Michael Capewell (NCL5YQ3MW8)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -524,7 +529,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = AutoText;
-				PROVISIONING_PROFILE = "8348F538-568E-4CDC-A3F0-0893D437413F";
+				PROVISIONING_PROFILE = "140005E0-1DF5-41B6-AE6C-11F44904CE60";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -536,8 +541,8 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Michael Capewell (NCL5YQ3MW8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Michael Capewell (NCL5YQ3MW8)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Astwood Consulting Limited (NXXXZECCW4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Astwood Consulting Limited (NXXXZECCW4)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoText/AutoText-Prefix.pch";
@@ -547,7 +552,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = AutoText;
-				PROVISIONING_PROFILE = "8348F538-568E-4CDC-A3F0-0893D437413F";
+				PROVISIONING_PROFILE = "140005E0-1DF5-41B6-AE6C-11F44904CE60";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
