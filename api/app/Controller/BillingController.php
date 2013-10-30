@@ -16,45 +16,55 @@ class BillingController extends AppController {
      */
     public function verify() {
         $fail = true;
-        
-        if (isset($this->request->data['receipt'])) {           
+        if (isset($this->request->data['transactionReceipt'])) {           
             // Post to App Store to validate
-            $data = array('receipt-data' => base64_encode($this->request->data['receipt']));
-            $ch = curl_init(Configure::read('Settings.AppStore_verifyUrl'));
+            $data = array('receipt-data' => $this->request->data['transactionReceipt']);
+            //$ch = curl_init(Configure::read('Settings.AppStore_verifyUrl'));
+            $ch = curl_init("https://sandbox.itunes.apple.com/verifyReceipt");
+            curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
             $res = curl_exec($ch);
             $err = curl_errno($ch);
             $errMsg = curl_error($ch);
             curl_close($ch);
-            $res = json_encode($res);
-            
-            if ($errMsg == 0) {
+            if ($errMsg == "" || $errMsg == null || $errMsg == 0 ) {
                 $res = json_decode($res);
-                if (isset($res->status) && $res->status == 0) { // Valid receipt
+                if (isset($res->status) && $res->status == 0) 
+                { // Valid receipt
                     // Check transaction hasn't already been processed
                     if (!$this->Billing->alreadyProcessed($res->receipt->transaction_id)) {
                         // Store purchase info
                         $credits = $this->Billing->getCreditsForProductId($res->receipt->product_id);
-                        $userId = Configure::read('User.id');
-                        $data = array(
-                            'product_id' => $res->receipt->product_id,
-                            'transaction_id' => $res->receipt->transaction_id,
-                            'credits' => $credits,
-                            'user_id' => $userId,
-                        );
-                        $this->Billing->create();
-                        $this->Billing->save($data);
 
-                        // Increase user's credits
-                        $this->Billing->User->increaseCredits($userId, $credits);
-                        
-                        // Update no_credit statuses (user might have enough credit now)
-                        $this->Billing->User->updateNoCreditStatuses($userId);
+                        if($credits === false)
+                        {
+                            $this->renderJson(false, array('Message' => 'Product not found'));
+                            $fail = false;
+                        }
+                        else
+                        {
+                            $userId = Configure::read('User.id');
+                            $data = array( 
+                                'product_id' => $res->receipt->product_id,
+                                'transaction_id' => $res->receipt->transaction_id,
+                                'credits' => $credits,
+                                'user_id' => $userId
+                            );
+                            $this->Billing->create();
+                            $this->Billing->save($data);
+                            // Increase user's credits
+                            $this->Billing->User->increaseCredits($userId, $credits);
+                            
+                            // Update no_credit statuses (user might have enough credit now)
+                            $this->Billing->User->updateNoCreditStatuses($userId);
 
-                        $fail = false;
-                        $this->renderJson(true, array('credits' => $credits));
+                            $fail = false;
+                            $this->renderJson(true, array('credits' => $credits));
+                        }
                     }
                 }
             }
