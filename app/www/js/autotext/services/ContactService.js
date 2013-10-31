@@ -16,7 +16,7 @@ app.services.ContactService.prototype.getAllContacts = function (successCallback
             successCallback(items);
         }
         catch (ex) {
-            alert('init contacts error: ' + ex);
+            app.alert('init contacts error: ' + ex, "Error");
         }
     }, function () {
         app.ajaxAlert('login', 'Your phone book seems unavaiable at present please trying reaccessing.');

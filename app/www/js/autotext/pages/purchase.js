@@ -10,10 +10,10 @@
                 purchaseManager.requestProductData(id, function (result) {
                     purchaseManager.makePurchase(result.id, 1);
                 }, function (errr) {
-                    alert("purchase callback error: " + errr);
+                    app.alert("purchase callback error: " + errr, "Error");
                 });
             } catch (expurchange) {
-                alert("purchase error: " + expurchange);
+                app.alert("purchase error: " + expurchange, "Error");
             }
         });
         $(document).bind('purchaseManagerLoaded', function () {
@@ -39,8 +39,9 @@
                 logger.log('purchased: ' + productId);
                 var service = new app.services.BillingService();
                 service.verify(transactionIdentifier, productId, transactionReceipt, function () {
-                    alert('Thanks. Your purchase has been completed and balance updated.');
-                    $.mobile.changePage('#account');
+                    app.alert('Thanks. Your purchase has been completed and balance updated.', "Done", function() {
+                        $.mobile.changePage('#account');
+                    });
                 });
             };
 

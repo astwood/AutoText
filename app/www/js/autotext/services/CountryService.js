@@ -21,9 +21,11 @@ app.services.CountryService.prototype.load = function() {
 
         try {
             $('#forgotten-country, #login-country, #register-country').selectmenu().selectmenu('refresh');
+            $('#login-country').trigger('change');
         } catch(e) {
-            alert(e);
+            app.alert(e, "Error", function() {
+                $('#login-country').trigger('change');
+            });
         }
-        $('#login-country').trigger('change');
     });
 };

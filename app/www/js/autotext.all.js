@@ -1,4 +1,4 @@
-// last build: 20130929.1038
+// last build: 20131031.0407
 
 window.app = {
     protocol: 'https://',
@@ -91,7 +91,12 @@ app.initialize = function() {
     $('body').show();
 };
 
-
+app.alert = function(message, title, callback) {
+    title = title == undefined ? 'Alert' : title;
+    navigator.notification.alert(message, function () {
+        callback && callback();
+    }, title, 'OK');
+};
 app.pages.account = {
     init:function() {
         $('#account').live('pagebeforeshow', function () { app.pages.account.onLoaded(); });
@@ -1112,6 +1117,7 @@ app.pages.login = {
         app.stopCountryChange = false;
         $("#login-phone_number").val("");
         $("#login-password").val("");
+
     }
 };
 app.pages.messageCredits = {
@@ -1798,10 +1804,10 @@ app.pages.purchase = {
                 purchaseManager.requestProductData(id, function (result) {
                     purchaseManager.makePurchase(result.id, 1);
                 }, function (errr) {
-                    alert("purchase callback error: " + errr);
+                    app.alert("purchase callback error: " + errr, "Error");
                 });
             } catch (expurchange) {
-                alert("purchase error: " + expurchange);
+                app.alert("purchase error: " + expurchange, "Error");
             }
         });
         $(document).bind('purchaseManagerLoaded', function () {
@@ -1827,8 +1833,9 @@ app.pages.purchase = {
                 logger.log('purchased: ' + productId);
                 var service = new app.services.BillingService();
                 service.verify(transactionIdentifier, productId, transactionReceipt, function () {
-                    alert('Thanks. Your purchase has been completed and balance updated.');
-                    $.mobile.changePage('#account');
+                    app.alert('Thanks. Your purchase has been completed and balance updated.', "Done", function() {
+                        $.mobile.changePage('#account');
+                    });
                 });
             };
 
@@ -2547,7 +2554,7 @@ app.services.ContactService.prototype.getAllContacts = function (successCallback
             successCallback(items);
         }
         catch (ex) {
-            alert('init contacts error: ' + ex);
+            app.alert('init contacts error: ' + ex, "Error");
         }
     }, function () {
         app.ajaxAlert('login', 'Your phone book seems unavaiable at present please trying reaccessing.');
@@ -2635,10 +2642,12 @@ app.services.CountryService.prototype.load = function() {
 
         try {
             $('#forgotten-country, #login-country, #register-country').selectmenu().selectmenu('refresh');
+            $('#login-country').trigger('change');
         } catch(e) {
-            alert(e);
+            app.alert(e, "Error", function() {
+                $('#login-country').trigger('change');
+            });
         }
-        $('#login-country').trigger('change');
     });
 };
 app.services.CreditService = function() {

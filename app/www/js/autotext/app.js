@@ -89,3 +89,9 @@ app.initialize = function() {
     $('body').show();
 };
 
+app.alert = function(message, title, callback) {
+    title = title == undefined ? 'Alert' : title;
+    navigator.notification.alert(message, function () {
+        callback && callback();
+    }, title, 'OK');
+};

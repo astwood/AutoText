@@ -1,6 +1,22 @@
 ﻿if(window.navigator == undefined) {
     window.navigator = { };
 }
+
+if (navigator.notification == undefined) {
+    navigator.notification = {
+        confirm: function (message, confirmCallback, title, buttonLabels) {
+            if (confirm(message)) {
+                confirmCallback(1);
+            }
+        },
+        alert: function (message, alertCallback, title, buttonName) {
+            alert(message);
+            setTimeout(alertCallback);
+        }
+    };
+}
+
+
 setTimeout(function () {
     var event = new Event('deviceready');
     document.dispatchEvent(event);

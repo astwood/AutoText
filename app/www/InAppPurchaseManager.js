@@ -182,7 +182,7 @@ document.addEventListener("deviceready", function()  {
         window.plugins.inAppPurchaseManager = InAppPurchaseManager.manager = new InAppPurchaseManager();
     }
     catch(ex) {
-        alert('init in-app purchase failed: ' + ex);
+        app.alert('init in-app purchase failed: ' + ex);
     }
     $(document).trigger('purchaseManagerLoaded');
       
