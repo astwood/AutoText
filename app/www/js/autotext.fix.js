@@ -4,5 +4,5 @@ $(document).on('focus', 'textarea', function() {
     }, 0);
 });
 
-element.on('tap', 'textarea', function(e){element.focus()});
-element.on('tap', 'input', function(e){element.focus()});
+input.on('focus', function(e){element.focus()});
+textarea.on('focus', function(e){element.focus()});

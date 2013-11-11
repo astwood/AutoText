@@ -702,7 +702,7 @@ div.page-default a.back.ui-btn {
     float: left;
     height: 28px; 
     max-height: 93px;
-    overflow: scroll;
+    overflow-y: scroll !important;
 }
 #new-content.bigger-max-height {
     max-height: 93px;
