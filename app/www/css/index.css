@@ -701,7 +701,7 @@ div.page-default a.back.ui-btn {
     width: 12.9em;
     float: left;
     height: 28px; 
-    max-height: 264px;
+    max-height: 150px;
 }
 #new-content.bigger-max-height {
     max-height: 352px;
