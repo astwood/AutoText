@@ -20,7 +20,7 @@ class BillingController extends AppController {
             // Post to App Store to validate
             $data = array('receipt-data' => $this->request->data['transactionReceipt']);
             //$ch = curl_init(Configure::read('Settings.AppStore_verifyUrl'));
-            $ch = curl_init("https://sandbox.itunes.apple.com/verifyReceipt");
+            $ch = curl_init("https://buy.itunes.apple.com/verifyReceipt");
             curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
